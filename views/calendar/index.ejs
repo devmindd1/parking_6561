@@ -1,0 +1,172 @@
+<% layout("../layouts/main") -%>
+
+<section class="content">
+    <form action="">
+
+        <div class="container-fluid">
+            <div id="dashboard">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="form-check-label">Airfield</label>
+                            <select name="airfield_id" id="airfields_input" class="form-control">
+                                <option value="0">-- Select Airfield --</option>
+                                <% airfields.forEach(function(airfield) { %>
+                                    <option value="<%= airfield.id %>"> <%= airfield.address %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="form-check-label">Runways</label>
+                            <select id="airfield_spaces_input" name="runways" class="form-control">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Date range:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="far fa-calendar-alt"></i>
+                              </span>
+                                </div>
+                                <input type="text" class="form-control float-right" id="range_date">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group float-right">
+                            <button type="button" class="btn btn-primary" id="filter">Search</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <!-- /.col -->
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-body p-0">
+                            <!-- THE CALENDAR -->
+                            <div id="calendar"></div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </form>
+</section>
+
+
+<script type="module">
+    import XhrClass from '/admin/js/XhrClass.js';
+
+    const xhr = new XhrClass();
+
+    const loader = `<div class="overlay calendar_overlay"><i class="fas fa-2x fa-sync-alt fa-spin spin_calendar"></i></div>`;
+
+    const colors = [
+        '#623bbe',
+        '#f99b56'
+    ];
+
+    addEventListener('DOMContentLoaded', () => {
+        const airfieldSpacesInput = $('#airfield_spaces_input');
+        const Calendar = FullCalendar.Calendar;
+        const calendarEl = document.getElementById('calendar');
+
+        function createAirfieldSpaceOptions(airfieldSpaces){
+            airfieldSpacesInput.html('');
+
+            if(!airfieldSpaces.length) return;
+
+            airfieldSpacesInput.append(`<option value="0">-- All --</option>`);
+
+            for(const airfieldSpace of airfieldSpaces)
+                airfieldSpacesInput.append(`<option value="${airfieldSpace.id}">${airfieldSpace.title}</option>`);
+        }
+
+        $(document).on('click', '#filter', async function(){
+            const [startDate, endDate] = $('#range_date').val().split(' - ');
+            const airfieldId = parseInt($('#airfields_input').val());
+            const airfieldSpaceId = parseInt($('#airfield_spaces_input').val());
+
+            if(!airfieldId) return
+
+            const {data, status} = await xhr.post('calendar/get', {
+                airfieldId: airfieldId,
+                airfieldSpaceId: airfieldSpaceId,
+                startDate: startDate,
+                endDate: endDate,
+            });
+
+            if(status !== 200) return;
+
+            calendar.removeAllEvents();
+            calendar.addEventSource(data.bookings.map(booking => ({
+                title           : 'space ' + booking.title,
+                start           : booking.start_timestamp,
+                end             : booking.end_timestamp,
+                backgroundColor : colors[booking.status]
+            })));
+
+            // $('body').prepend(loader)
+        });
+
+        $(document).on('change', '#airfields_input', async function(){
+            const airfieldId = $(this).val();
+
+            const {data, status} = await xhr.get(`/airfields-space/${airfieldId}`);
+
+            if(status !== 200)
+                return;
+
+            createAirfieldSpaceOptions(data.airfieldSpaces);
+        });
+
+        const calendar = new Calendar(calendarEl, {
+            height: 900,
+            themeSystem: 'bootstrap',
+            customButtons: {
+                reservedParking: { text: 'Reserved Parking' },
+                busyParking: { text: 'Busy Parking' }
+            },
+            headerToolbar: {
+                left  : 'prev,next reservedParking busyParking',
+                center: 'title',
+                right : 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+        });
+
+        calendar.render();
+
+        $('#range_date').daterangepicker({
+            timePicker: true,
+            timeZone: 'local',
+            timePickerIncrement: 30,
+            initialDate: '2023-09-01',
+            endDate: moment().add(30, 'day'),
+            locale: {
+                format: 'YYYY-MM-DD hh:mm'
+            }
+        });
+
+    });
+</script>
+
+
+

@@ -1,0 +1,88 @@
+<% layout("../main") -%>
+<section class="content">
+    <form action="/admin/airfields/update/<%= airfield['airfield_id'] %>" method="POST">
+        <div class="container-fluid">
+            <div class="card card-primary">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-header">
+                            <h3 class="card-title">About Airfield</h3>
+                        </div>
+
+                        <div class="card-body">
+                            <strong>
+                                <i class="fas fa-book mr-1"></i>
+                                Personal Info
+                            </strong>
+
+                            <p class="text-muted">
+                                <%= airfield['name'] %>
+                                <%= airfield['surname'] %>
+                            </p>
+                            <hr>
+
+                            <strong>
+                                <i class="fas fa-map-marker-alt mr-1"></i>
+                                Location
+                            </strong>
+
+                            <p class="text-muted">Malibu, California</p>
+
+                            <hr>
+
+                            <strong>
+                                <i class="fas fa-pencil-alt mr-1"></i>
+                                Skills
+                            </strong>
+
+                            <p class="text-muted">
+                                <span class="tag tag-danger">UI Design</span>
+                                <span class="tag tag-success">Coding</span>
+                                <span class="tag tag-info">Javascript</span>
+                                <span class="tag tag-warning">PHP</span>
+                                <span class="tag tag-primary">Node.js</span>
+                            </p>
+
+                            <hr>
+
+                            <strong>
+                                <i class="far fa-file-alt mr-1"></i>
+                                Notes
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-check-label">Status</label>
+                                    <select name="airfield_status" class="form-control">
+                                        <% for(const [key, status] of Object.entries(statuses)) { %>
+                                        <option
+                                        <%if (key == airfield['status']) { %>
+                                            selected
+                                                <% } %>
+                                            value="<%= key %>">
+                                            <%= status['name'] %>
+                                        </option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-12">
+                                <input type="submit" value="Save Changes" id="create" class="btn btn-success float-right">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

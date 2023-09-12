@@ -1,0 +1,88 @@
+<div class="modal fade show" id="modal-lg" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img class="close-modal-custom-icon" data-dismiss="modal" src="/admin/images/close_modal_icon.png" alt="">
+            </div>
+            <div class="modal-body">
+                <b class="modal-title">Submit Your Document</b>
+                <div class="row" style="padding: 40px; border: 1px solid rgba(235, 235, 235, 1);">
+                    <div class="col-md-12" style="border: 1px dashed #9e9e9e; height: 175px;">
+                        <div class="row" style="margin-top: 25px;">
+                            <div class="col-sm-5"></div>
+                            <div class="col-sm-2">
+                                <img class="click_to_upload upload_document_image" src="/admin/images/upload_icon.png" alt="">
+                            </div>
+                            <div class="col-sm-5"></div>
+                        </div>
+                        <div class="row" style="margin-top: 33px;">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label style="margin-left: 15px;" class="form-check-label">
+                                        <a class="click_to_upload upload_document_image" href="javascript:void(0);">Upload</a>
+                                        Document Image
+                                    </label>
+                                    <input hidden id="document_image_input" type="file" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="uploaded-images">
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="form-check-label">Driver’s license number</label>
+                            <input type="text" name="license_id" class="form-control" placeholder="License ID">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="form-check-label">Issuing State</label>
+                            <select name="issuing_state" class="form-control">
+                                <option>option 1</option>
+                                <option>option 2</option>
+                                <option>option 3</option>
+                                <option>option 4</option>
+                                <option>option 5</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="form-check-label">Expiration date</label>
+                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                <input type="text" name="expiration_date" class="form-control datetimepicker-input" data-target="#reservationdate">
+                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="form-check-label">Linked resources</label>
+                            <input type="text" name="linkedin_url" class="form-control" placeholder="https://">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5"></div>
+                    <div class="col-sm-2">
+                        <button type="button" data-dismiss="modal" class="btn btn-primary btn-block bg-gradient-secondary">
+                            <i class="fas fa-file-upload"></i>
+                            Save
+                        </button>
+                    </div>
+                    <div class="col-sm-5"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

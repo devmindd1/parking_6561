@@ -1,0 +1,49 @@
+.close-modal-custom-icon:hover{
+    opacity: .8;
+    cursor: pointer;
+}
+
+.upload-image-remove{
+    position: absolute;
+    right: 4%;
+    top: 3%;"
+}
+
+.upload-image-remove:hover{
+    opacity: .8;
+    cursor: pointer;
+}
+
+.upload-image-item{
+    padding: 5px;
+}
+
+.click_to_upload{
+    cursor: pointer;
+}
+
+.fc-reservedParking-button{
+    border-radius: 25px;
+    background-color: #ece5f4;
+    color: #623bbe;
+}
+
+.fc-busyParking-button{
+    border-radius: 25px;
+    background-color: #f99b56;
+    color: #b54b0d;
+}
+
+.calendar_overlay{
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    background-color: red;
+    text-align: center;
+    justify-content: center;
+    z-index: 9;
+}
+
+.spin_calendar{
+    margin-top: 45%;
+}
