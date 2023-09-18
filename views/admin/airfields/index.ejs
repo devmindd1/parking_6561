@@ -11,6 +11,7 @@
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
+                                    <th>Owner Name</th>
                                     <th>Manager Name</th>
                                     <th>Address</th>
                                     <th>Primary email</th>
@@ -29,6 +30,7 @@
                                             <%= items[i]['surname'] %>
                                         </a>
                                     </td>
+                                    <td><%= items[i]['manager_name'] %></td>
                                     <td><%= items[i]['address'] %></td>
                                     <td><%= items[i]['primary_email'] %></td>
                                     <td><%= items[i]['phone_number'] %></td>

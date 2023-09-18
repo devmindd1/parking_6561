@@ -12,25 +12,32 @@
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>Name Surname</th>
                                 <th>Email</th>
-                                <th>Phone</th>
-                                <th>Country</th>
-                                <th>status</th>
+                                <th>Quick Actions</th>
                             </tr>
                             </thead>
                             <tbody>
+                            <% for(var i=0; i < items.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <a class="main-anchor-link" href="/airfields/edit/<%= items[i]['id'] %>">
+                                            <%= items[i]['name'] %>
+                                            <%= items[i]['surname'] %>
+                                        </a>
+                                    </td>
+                                    <td><%= items[i]['email'] %></td>
 
-                            <tr>
-                                <td>Trident</td>
-                                <td>Internet
-                                    Explorer 4.0
-                                </td>
-                                <td>Win 95+</td>
-                                <td> 4</td>
-                                <td>X</td>
-                            </tr>
-
+                                    <td class="project-actions">
+                                        <a class="btn btn-info btn-sm" href="/airfields/edit/<%= items[i]['id'] %>">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
+                                        <a class="btn btn-danger btn-sm" href="javascript:void(0);">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <% } %>
                             </tbody>
                         </table>
                     </div>
@@ -39,20 +46,5 @@
         </div>
     </div>
 </section>
-
-<script>
-    addEventListener("DOMContentLoaded", () => {
-        $("#example1").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,
-            "buttons": [{
-                text: 'Create',
-                action: function () {
-                    location.href = location.href + '/create';
-                }
-            }]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    });
-</script>
-
 
 

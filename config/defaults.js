@@ -1,3 +1,4 @@
 module.exports = {
-    ownerDocumentsPath: "uploads/users/owners/",
+    defaultStaticPath: 'public',
+    airfieldsDocumentsPath: "/uploads/airfields/",
 };

@@ -7,3 +7,10 @@ exports.validate = async function(req, $bodies = []){
 
     return validationResult(req);
 };
+
+exports.indexByName = async function(errors){
+
+
+    console.log(errors);
+
+};

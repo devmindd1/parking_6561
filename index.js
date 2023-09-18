@@ -11,7 +11,8 @@ const indexRoutes = require('./route/index');
 const ejs_locals_engine = require('ejs-locals');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
-const {apiResponse} = require('./core/apiResponse');
+const {apiResponse, adminResponse} = require('./core/Response');
+const {defaultStaticPath} = require('./config/defaults');
 
 const app = express();
 const server = require('http').createServer(app);
@@ -38,14 +39,17 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(fileUpload({ createParentPath: true }));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(`${__dirname}/${defaultStaticPath}`));
 
 app.use('/api', [
     apiResponse(),
     apiRoutes
 ]);
 
-app.use('/admin', adminRoutes);
+app.use('/admin',  [
+    adminResponse(),
+    adminRoutes
+]);
 
 app.use('/', [
     apiResponse(),

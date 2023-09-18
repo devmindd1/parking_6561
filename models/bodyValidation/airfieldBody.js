@@ -34,10 +34,10 @@ const insertBody = [
     body('primary_email').notEmpty()
         .withMessage('Email is require'),
     body('primary_email').isEmail().normalizeEmail().withMessage('please write true email')
-        .custom(async value => {
+        .custom(async (value, {req}) => {
             const airfieldModel = new AirfieldModel();
 
-            return airfieldModel.checkPrimaryEmailExists(value).then(has => {
+            return airfieldModel.checkPrimaryEmailExists(req.user.id, value).then(has => {
                 if(has) throw new Error('Primary email is exists');
             });
         }),

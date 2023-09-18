@@ -1,88 +1,205 @@
 <% layout("../main") -%>
+
 <section class="content">
     <form action="/admin/airfields/update/<%= airfield['airfield_id'] %>" method="POST">
         <div class="container-fluid">
-            <div class="card card-primary">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card-header">
-                            <h3 class="card-title">About Airfield</h3>
+            <div class="row">
+                <div class="col-12 col-sm-12">
+                    <div class="card card-primary card-outline card-outline-tabs">
+                        <div class="card-header p-0 border-bottom-0">
+                            <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-four-home-tab" data-toggle="pill"
+                                       href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home"
+                                       aria-selected="false">General</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill"
+                                       href="#custom-tabs-four-profile" role="tab"
+                                       aria-controls="custom-tabs-four-profile" aria-selected="false">Documents</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill"
+                                       href="#custom-tabs-four-messages" role="tab"
+                                       aria-controls="custom-tabs-four-messages" aria-selected="false">Bank details</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="custom-tabs-four-settings-tab" data-toggle="pill"
+                                       href="#custom-tabs-four-settings" role="tab"
+                                       aria-controls="custom-tabs-four-settings" aria-selected="true">Settings</a>
+                                </li>
+                            </ul>
                         </div>
-
                         <div class="card-body">
-                            <strong>
-                                <i class="fas fa-book mr-1"></i>
-                                Personal Info
-                            </strong>
+                            <div class="tab-content" id="custom-tabs-four-tabContent">
+                                <div class="tab-pane fade" id="custom-tabs-four-home" role="tabpanel"
+                                     aria-labelledby="custom-tabs-four-home-tab">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div id="map"></div>
+                                        </div>
+                                    </div>
 
-                            <p class="text-muted">
-                                <%= airfield['name'] %>
-                                <%= airfield['surname'] %>
-                            </p>
-                            <hr>
+                                    <div style="display: none;" class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <input type="text" name="latitude" class="form-control" id="latitude" value="<%= airfield['latitude'] %>">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <input type="text" name="longitude" class="form-control" id="longitude" value="<%= airfield['longitude'] %>">
+                                            </div>
+                                        </div>
+                                    </div>
 
-                            <strong>
-                                <i class="fas fa-map-marker-alt mr-1"></i>
-                                Location
-                            </strong>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card-body">
+                                                <strong>Owner Name</strong>
+                                                <p class="text-muted">
+                                                    <%= airfield['name'] %>
+                                                    <%= airfield['surname'] %>
+                                                </p>
+                                                <hr>
 
-                            <p class="text-muted">Malibu, California</p>
+                                                <strong>Owner email</strong>
+                                                <p class="text-muted">
+                                                    <%= airfield['email'] %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card-body">
+                                                <strong>Address</strong>
+                                                <p class="text-muted">
+                                                    <%= airfield['address'] %>
+                                                </p>
+                                                <hr>
 
-                            <hr>
+                                                <strong>Manager name</strong>
+                                                <p class="text-muted">
+                                                    <%= airfield['manager_name'] %>
+                                                </p>
+                                                <hr>
 
-                            <strong>
-                                <i class="fas fa-pencil-alt mr-1"></i>
-                                Skills
-                            </strong>
+                                                <strong>Phone Number</strong>
+                                                <p class="text-muted">
+                                                    <%= airfield['phone_number'] %>
+                                                </p>
+                                                <hr>
 
-                            <p class="text-muted">
-                                <span class="tag tag-danger">UI Design</span>
-                                <span class="tag tag-success">Coding</span>
-                                <span class="tag tag-info">Javascript</span>
-                                <span class="tag tag-warning">PHP</span>
-                                <span class="tag tag-primary">Node.js</span>
-                            </p>
+                                                <strong>Number of Spaces</strong>
+                                                <p class="text-muted">
+                                                    <%= airfield['spaces_count'] %>
+                                                </p>
+                                                <hr>
 
-                            <hr>
+                                                <strong>Runways</strong>
+                                                <p class="text-muted">
+                                                    <%= runwayTypes[airfield['runway_type_id']] %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel"
+                                     aria-labelledby="custom-tabs-four-profile-tab">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card-body">
+                                                <strong>Operating license Image</strong>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <% if (!airfield.operating_license_img) { %>
+                                                            <p>Photos not found</p>
+                                                        <% } else { %>
+                                                            <div>
+                                                                <div class="filter-container p-0 row">
+                                                                    <div class="filtr-item col-sm-2" data-category="1">
+                                                                        <a href="<%= airfield.operating_license_img %>" data-toggle="lightbox" data-title="">
+                                                                            <img src="<%= airfield.operating_license_img %>" class="img-fluid mb-2" alt=""/>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                                <hr>
 
-                            <strong>
-                                <i class="far fa-file-alt mr-1"></i>
-                                Notes
-                            </strong>
-                        </div>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="form-check-label">Status</label>
-                                    <select name="airfield_status" class="form-control">
-                                        <% for(const [key, status] of Object.entries(statuses)) { %>
-                                        <option
-                                        <%if (key == airfield['status']) { %>
-                                            selected
-                                                <% } %>
-                                            value="<%= key %>">
-                                            <%= status['name'] %>
-                                        </option>
-                                        <% } %>
-                                    </select>
+                                                <strong>Airfield Pictures</strong>
+                                                <div class="row">
+                                                    <% if (!airfieldPhotos.length) { %>
+                                                        <div class="col-sm-12"><p>Photos not found</p></div>
+                                                    <% } else { %>
+                                                        <% for(const photo of airfieldPhotos) { %>
+                                                            <div class="col-sm-2">
+                                                                <a href="<%= photo['file_path'] %>"
+                                                                   data-toggle="lightbox"
+                                                                   data-title="" data-gallery="gallery">
+                                                                    <img src="<%= photo['file_path'] %>"
+                                                                         class="img-fluid mb-2" alt="white sample">
+                                                                </a>
+                                                            </div>
+                                                        <% } %>
+                                                    <% } %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="custom-tabs-four-messages" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
+                                    Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris. Phasellus
+                                    volutpat augue id mi placerat mollis. Vivamus faucibus eu massa eget condimentum
+                                </div>
+                                <div class="tab-pane fade active show" id="custom-tabs-four-settings" role="tabpanel"
+                                     aria-labelledby="custom-tabs-four-settings-tab">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="form-check-label">Status</label>
+                                                <select name="airfield_status" class="form-control">
+                                                    <% for(const [key, status] of Object.entries(statuses)) { %>
+                                                        <option <% if (key == airfield['status']) { %> selected <% } %> value="<%= key %>">
+                                                            <%= status['name'] %>
+                                                        </option>
+                                                    <% } %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col-12">
-                                <input type="submit" value="Save Changes" id="create" class="btn btn-success float-right">
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
+
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12">
+                        <input type="submit" value="Save Changes" id="create" class="btn btn-success float-right">
+                    </div>
+                </div>
+            </div>
+
         </div>
     </form>
 </section>
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5wZV3BX0WF1P41cMheOw27qC8wnVBgQg&callback=initMap&libraries=places&v=weekly" defer async></script>
+<script src="/js/admin/airfields/common/map.js"></script>
+
+
+<script>
+    addEventListener('DOMContentLoaded', () => {
+        $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+            event.preventDefault();
+            $(this).ekkoLightbox({
+                alwaysShowClose: true
+            });
+        });
+    });
+</script>

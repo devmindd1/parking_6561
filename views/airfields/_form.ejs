@@ -1,0 +1,130 @@
+<div class="card-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="map" ></div>
+        </div>
+    </div>
+
+    <div style="display: none;" class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <input type="text" name="latitude" class="form-control" id="latitude">
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <input type="text" name="longitude" class="form-control" id="longitude">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="form-check-label">Address</label>
+                <input type="text" id="address" name="address" class="form-control" placeholder="Select your location(OACI)">
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="form-check-label">Runways</label>
+                <select name="runway_type_id" class="form-control">
+                    <option>-- Select Runway --</option>
+                    <% runwayTypes.forEach(function(type) { %>
+                        <option value="<%= type.id %>"><%= type.title %></option>
+                    <% }); %>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="form-check-label">Manager name</label>
+                <input type="text" name="manager_name" class="form-control" placeholder="Manager name">
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="form-check-label">Phone Number</label>
+                <input type="text" name="phone_number" class="form-control" placeholder="Phone Number">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="form-check-label">Primary email</label>
+                <input type="text" id="primary_email" name="primary_email" class="form-control" placeholder="Primary email">
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="form-check-label">Number of Spaces</label>
+                <input type="text" name="spaces_count" class="form-control" placeholder="Number of Spaces">
+                <span class="error invalid-feedback">Please enter a email address</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card card-default">
+                <div class="card-header">
+                    <b>Upload your operating license</b>
+                </div>
+                <div class="card-body">
+                    <div id="actions" class="row">
+                        <button type="button" class="btn btn-primary btn-block bg-gradient-secondary" data-toggle="modal" data-target="#modal-lg">
+                            <i class="fas fa-file-upload"></i>
+                            Upload Document Image
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card card-default">
+                <div class="card-header">
+                    <b>Fill your bank details</b>
+                </div>
+                <div class="card-body">
+                    <div id="actions" class="row">
+                        <button type="button" class="btn btn-primary btn-block bg-gradient-secondary" data-toggle="modal" data-target="#modal-lg-1">
+                            <i class="fas fa-pencil-alt"></i>
+                            Fill your bank details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card card-default">
+                <div class="card-header">
+                    <b>Upload Airfield Pictures</b>
+                </div>
+                <div class="card-body">
+                    <div id="actions" class="row">
+                        <button type="button" class="btn btn-primary btn-block bg-gradient-secondary" data-toggle="modal" data-target="#modal-lg-2">
+                            <i class="fas fa-file-upload"></i>
+                            Upload Airfield Pictures
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include ./common/airfield-photos-modal.ejs %>
+
+    <%- include ./common/document-modal.ejs %>
+
+    <%- include ./common/bank-detail-modal.ejs %>
+
+</div>
+
+<script src="/js/airfields/validation.js"></script>

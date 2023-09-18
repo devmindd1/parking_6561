@@ -16,9 +16,10 @@ class AirfieldModel extends Model{
     constructor(){ super('airfields'); }
 
     async getById(id){
-        const [item] = await this.t.select('users.id', 'users.name', 'users.surname', 'airfields.id AS airfield_id',
+        const [item] = await this.t.select('users.id', 'users.name', 'users.surname', 'users.email', 'airfields.id AS airfield_id',
             'airfields.spaces_count', 'airfields.address', 'airfields.primary_email', 'airfields.manager_name',
-            'airfields.status', 'airfields.phone_number')
+            'airfields.operating_license_img', 'airfields.status', 'airfields.phone_number', 'airfields.latitude',
+            'airfields.longitude', 'airfields.runway_type_id')
             .leftJoin('users', 'airfields.user_id', 'users.id')
             .where({'airfields.id': id});
 
@@ -37,10 +38,10 @@ class AirfieldModel extends Model{
         return this.t.select('*').where(where);
     }
 
-    async checkPrimaryEmailExists(primaryEmail){
-        const [airfield] = await this.t.select('id').where({
-            primary_email: primaryEmail
-        });
+    async checkPrimaryEmailExists(userId, primaryEmail){
+        const [airfield] = await this.t.select('id')
+            .where({primary_email: primaryEmail})
+            .andWhere('user_id', '!=', userId);
 
         this.freeResult();
 

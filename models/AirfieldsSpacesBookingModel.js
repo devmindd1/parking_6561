@@ -1,4 +1,5 @@
 const Model = require('../core/Model');
+const {_ROLES} = require('../models/UserModel');
 
 class AirfieldsSpacesBookingModel extends Model{
     constructor(){ super('airfields_spaces_bookings'); }
@@ -24,14 +25,14 @@ class AirfieldsSpacesBookingModel extends Model{
     getOwnerCustomers(ownerId){
         const query =`
           SELECT
-            DISTINCT  airfields_spaces_bookings.user_id,
+            DISTINCT airfields_spaces_bookings.user_id,
             users.*
           FROM
             airfields
               LEFT JOIN airfields_spaces ON airfields.id = airfields_spaces.airfield_id
               INNER JOIN airfields_spaces_bookings ON airfields_spaces.id = airfields_spaces_bookings.airfields_space_id
               LEFT JOIN users ON airfields_spaces_bookings.user_id = users.id
-          WHERE airfields.user_id = ${ownerId}`;
+          WHERE airfields.user_id = ${ownerId} AND users.role = '${_ROLES['user']}'`;
 
         return this.exec(query);
     }

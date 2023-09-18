@@ -3,16 +3,20 @@
     cursor: pointer;
 }
 
-.upload-image-remove{
+.upload-image-remove,
+.upload-document-remove{
     position: absolute;
     right: 4%;
     top: 3%;"
 }
 
-.upload-image-remove:hover{
+.upload-image-remove:hover,
+.upload-document-remove:hover{
     opacity: .8;
     cursor: pointer;
 }
+
+
 
 .upload-image-item{
     padding: 5px;
@@ -46,4 +50,8 @@
 
 .spin_calendar{
     margin-top: 45%;
+}
+
+#map{
+    height: 450px;
 }

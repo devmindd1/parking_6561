@@ -3,7 +3,7 @@ const AirfieldsSpacesBookingModel = require('../models/AirfieldsSpacesBookingMod
 exports.index = async function(req, res){
     const airfieldsSpacesBookingModel = new AirfieldsSpacesBookingModel();
 
-    res.data.customers = await airfieldsSpacesBookingModel.getOwnerCustomers(req.user.id);
+    res.data.items = await airfieldsSpacesBookingModel.getOwnerCustomers(req.user.id);
 
     return res.render('customers/index', res.data);
 };

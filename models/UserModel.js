@@ -1,6 +1,5 @@
 const Model = require('../core/Model');
 
-
 class UserModel extends Model{
     static _ROLES = {
         'admin': 'admin',
@@ -20,6 +19,11 @@ class UserModel extends Model{
         });
 
         return user;
+    }
+
+    getAllOwners(){
+        return this.t.select('id', 'status', 'email', 'surname', 'name')
+            .where({role: UserModel._ROLES['owner']});
     }
 
     async getOwnerByEmailPassword(email, password){

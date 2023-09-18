@@ -8,6 +8,14 @@ class Model{
         this.t = this.db(this._table);
     }
 
+    async getById(id){
+        const [item] = await this.t.select('*').where({id: id});
+
+        this.freeResult();
+
+        return item;
+    }
+
     getAll(){
         return this.t.select('*');
     }

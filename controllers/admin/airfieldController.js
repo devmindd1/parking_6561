@@ -1,6 +1,6 @@
-const {validationResult} = require('express-validator');
-const {string2sha1} = require('../../helpers/stringHelper.js');
 const AirfieldModel = require('../../models/AirfieldModel.js');
+const AirfieldsSourceModel = require('../../models/AirfieldsSourceModel.js');
+const RunwayTypeModel = require('../../models/RunwayTypeModel.js');
 
 exports.index = async function(req, res){
     const airfieldModel = new AirfieldModel();
@@ -16,9 +16,13 @@ exports.index = async function(req, res){
 exports.edit = async function(req, res){
     const {id} = req.params;
     const airfieldModel = new AirfieldModel();
+    const airfieldsSourceModel = new AirfieldsSourceModel();
+    const runwayTypeModel = new RunwayTypeModel();
 
     return res.render("admin/airfields/edit",  {
         airfield: await airfieldModel.getById(id),
+        airfieldPhotos: await airfieldsSourceModel.getByAirfieldId(id),
+        runwayTypes: await await runwayTypeModel.getAllIndexedById(),
         statuses: AirfieldModel._STATUSES
     });
 };

@@ -55,19 +55,5 @@
     </div>
 </section>
 
-<script>
-    addEventListener("DOMContentLoaded", () => {
-        $("#example1").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,
-            "buttons": [{
-                text: 'Create',
-                action: function () {
-                    location.href = location.href + '/create';
-                }
-            }]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    });
-</script>
-
 
 
