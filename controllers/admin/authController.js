@@ -14,15 +14,12 @@ exports.login = async function(req, res){
 
     if(errors.errors.length){
         errorMessage = [...errors.array().map(item => item.msg)].join('\n');
-        return res.render("admin/auth/login", {errorMessage: errorMessage});
+        return res.render("admin/auth/login", res.data);
     }
 
     const [user] = await userModel.getAdminByEmailPassword(req.body.email, string2sha1(req.body.password));
-
-    console.log(user);
-
     if(!user)
-        return res.render("admin/auth/login", {errorMessage: errorMessage});
+        return res.render("admin/auth/login", res.data);
 
     const token = randomString(32);
     await userModel.updateToken(user.id, token);

@@ -75,6 +75,8 @@ addEventListener('DOMContentLoaded', () => {
     const uploadedImages = $('#uploaded-images');
     const uploadedDocument = $('#uploaded-document');
 
+    $('.select2').select2();
+
     $(document).on('click', '#create', function(e){
         const primaryEmailInput = $('#primary_email');
         const isValid = $('form').valid();

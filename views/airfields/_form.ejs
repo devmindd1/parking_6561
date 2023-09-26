@@ -17,6 +17,21 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Disabled Result</label>
+                <select class="form-control select2" style="width: 100%;">
+                    <option selected="selected">-- Select OACI --</option>
+                    <% oaciTypes.forEach(function(oaciType) { %>
+                        <option value="<%= oaciType.id %>">
+                            <%= oaciType.oaci_code %>: &#160;&#160; <%= oaciType.airfield_name %>
+                        </option>
+                    <% }); %>
+                </select>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-sm-6">

@@ -22,7 +22,7 @@ class UserModel extends Model{
     }
 
     getAllOwners(){
-        return this.t.select('id', 'status', 'email', 'surname', 'name')
+        return this.t.select('id', 'status', 'email', 'first_name', 'last_name')
             .where({role: UserModel._ROLES['owner']});
     }
 
@@ -42,6 +42,15 @@ class UserModel extends Model{
         this.freeResult();
 
         return item;
+    }
+
+    async checkEmailExists(email){
+        const [user] = await this.t.select('email').where({
+            email: email,
+            role: UserModel._ROLES['user']
+        });
+
+        if(user) return true;
     }
 
     updateToken(userId, token){

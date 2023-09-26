@@ -11,7 +11,6 @@
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Owner Name</th>
                                     <th>Manager Name</th>
                                     <th>Address</th>
                                     <th>Primary email</th>
@@ -26,11 +25,9 @@
                                 <tr>
                                     <td>
                                         <a class="main-anchor-link" href="/admin/airfields/edit/<%= items[i]['airfield_id'] %>">
-                                            <%= items[i]['name'] %>
-                                            <%= items[i]['surname'] %>
+                                            <%= items[i]['manager_name'] %>
                                         </a>
                                     </td>
-                                    <td><%= items[i]['manager_name'] %></td>
                                     <td><%= items[i]['address'] %></td>
                                     <td><%= items[i]['primary_email'] %></td>
                                     <td><%= items[i]['phone_number'] %></td>

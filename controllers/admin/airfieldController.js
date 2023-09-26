@@ -5,12 +5,10 @@ const RunwayTypeModel = require('../../models/RunwayTypeModel.js');
 exports.index = async function(req, res){
     const airfieldModel = new AirfieldModel();
 
-    const airfields = await airfieldModel.getAllOwnersAirfields();
+    res.data.items = await airfieldModel.getAllOwnersAirfields();
+    res.data.statuses = AirfieldModel._STATUSES;
 
-    return res.render('admin/airfields/index', {
-        items: airfields,
-        statuses: AirfieldModel._STATUSES
-    });
+    return res.render('admin/airfields/index', res.data);
 };
 
 exports.edit = async function(req, res){
@@ -19,12 +17,12 @@ exports.edit = async function(req, res){
     const airfieldsSourceModel = new AirfieldsSourceModel();
     const runwayTypeModel = new RunwayTypeModel();
 
-    return res.render("admin/airfields/edit",  {
-        airfield: await airfieldModel.getById(id),
-        airfieldPhotos: await airfieldsSourceModel.getByAirfieldId(id),
-        runwayTypes: await await runwayTypeModel.getAllIndexedById(),
-        statuses: AirfieldModel._STATUSES
-    });
+    res.data.airfield =  await airfieldModel.getById(id);
+    res.data.airfieldPhotos =  await airfieldsSourceModel.getByAirfieldId(id);
+    res.data.runwayTypes =  await runwayTypeModel.getAllIndexedById();
+    res.data.statuses =  AirfieldModel._STATUSES;
+
+    return res.render("admin/airfields/edit", res.data);
 };
 
 exports.update = async function(req, res){
@@ -33,9 +31,9 @@ exports.update = async function(req, res){
 
     const airfieldModel = new AirfieldModel();
 
-    await airfieldModel.update(id, {
-        status: airfield_status
-    });
+    res.data.status = airfield_status;
+
+    await airfieldModel.update(id, res.data);
 
     return res.redirect("/admin/airfields");
 };

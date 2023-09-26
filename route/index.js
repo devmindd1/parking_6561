@@ -21,7 +21,7 @@ router.get('/logout', [authMiddleware], auth.logout);
 router.get('/', [authMiddleware], home.index);
 
 router.get('/airfields', [authMiddleware], airfield.index);
-router.get('/airfields/create', [authMiddleware], airfield.createNew);
+router.get('/airfields/create', [authMiddleware], airfield.create);
 router.post('/airfields/create', [authMiddleware, insertBody], airfield.insert);
 router.post('/airfields/check-primary-email', [authMiddleware], airfield.checkPrimaryEmail);
 

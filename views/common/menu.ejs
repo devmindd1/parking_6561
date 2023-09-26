@@ -2,30 +2,29 @@
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-header">EXAMPLES</li>
         <li class="nav-item">
-            <a href="/" class="nav-link">
+            <a href="/" class="nav-link <%= activeMenu === '/' ? 'active-menu': '' %>">
                 <i class="nav-icon far fa-image"></i>
                 <p>Home</p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="/airfields" class="nav-link">
+            <a href="/airfields" class="nav-link <%= activeMenu === 'airfields' ? 'active-menu': '' %>">
                 <i class="nav-icon far fa-image"></i>
                 <p>Airfields</p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="/calendar" class="nav-link">
+            <a href="/calendar" class="nav-link <%= activeMenu === 'calendar' ? 'active-menu': '' %>">
                 <i class="nav-icon far fa-image"></i>
                 <p>Calendar</p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="/customers" class="nav-link">
+            <a href="/customers" class="nav-link <%= activeMenu === 'customers' ? 'active-menu': '' %>">
                 <i class="nav-icon far fa-image"></i>
                 <p>Customers</p>
             </a>
         </li>
-
         <li class="nav-item">
             <a href="/logout" class="nav-link">
                 <i class="nav-icon far fa-image"></i>

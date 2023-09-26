@@ -16,6 +16,10 @@ class Model{
         return item;
     }
 
+    deleteById(id){
+        return this.t.where('id', id).del();
+    }
+
     getAll(){
         return this.t.select('*');
     }

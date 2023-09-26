@@ -18,9 +18,9 @@
   <link rel="stylesheet" href="/admin/plugins/jquery-ui/jquery-ui.css">
 
 
-    <link rel="stylesheet" href="/admin/plugins/ekko-lightbox/ekko-lightbox.css">
+  <link rel="stylesheet" href="/admin/plugins/ekko-lightbox/ekko-lightbox.css">
 
-    <link rel="stylesheet" href="/admin/css/custom.css">
+  <link rel="stylesheet" href="/admin/css/custom.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
     <div class="wrapper">
@@ -38,6 +38,31 @@
 
         </div>
     </div>
+
+    <div class="modal fade" id="modal-danger">
+        <div class="modal-dialog">
+            <div class="modal-content bg-danger">
+                <div class="modal-header">
+                    <h4 class="modal-title">Danger Modal</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure to delete item?</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-light cancel-module-item-delete-button" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-outline-light confirm-module-item-delete-button">Delete</button>
+                </div>
+            </div>
+        </div>
+        <button id="delete-module-item-open" style="display: none;" type="button" class="btn btn-danger"
+                data-toggle="modal" data-target="#modal-danger"></button>
+    </div>
+
+
+
     <script src="/admin/plugins/jquery/jquery.min.js"></script>
     <script src="/admin/plugins/jquery-ui/jquery-ui.js"></script>
     <script src="/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -68,15 +93,25 @@
     <script src="/admin/js/main.js"></script>
     <script>
         $(function () {
+            let deletingItem = null;
+
             $("#example1").DataTable({
                 "responsive": true, "lengthChange": false, "autoWidth": false,
-                "buttons": [{
-                    text: 'Create',
-                    action: function () {
-                        location.href = location.href + '/create';
-                    }
-                }, "excel"]
+                "buttons": ["excel"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+            $(document).on('click', '.delete-module-item', function(e){
+                e.preventDefault();
+
+                deletingItem = !e.target.href ? e.target.closest('a'): e.target;
+
+                $('#delete-module-item-open').click();
+            });
+
+            $(document).on('click', '.confirm-module-item-delete-button', function(e){
+                location.href = deletingItem.href;
+            });
+
         });
     </script>
 </body>

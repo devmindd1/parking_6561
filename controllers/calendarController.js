@@ -4,9 +4,9 @@ const AirfieldsSpacesBookingModel = require('../models/AirfieldsSpacesBookingMod
 exports.index = async function(req, res){
     const airfieldModel = new AirfieldModel();
 
-    return res.render('calendar/index', {
-        airfields: await airfieldModel.getByUserId(req.user.id, true)
-    });
+    res.data.airfields =  await airfieldModel.getByUserId(req.user.id, true);
+
+    return res.render('calendar/index', res.data);
 };
 
 

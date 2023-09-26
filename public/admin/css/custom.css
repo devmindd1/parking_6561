@@ -55,3 +55,21 @@
 #map{
     height: 450px;
 }
+
+.main-sidebar{
+    background-color: #034168;
+}
+
+.active-menu{
+    background-color: #344054 !important;
+}
+
+.nav-pills .nav-link{
+    background-color: #7a859c;
+    border-radius: 8px;
+}
+
+.user-panel img {
+    height: auto;
+    width: 205px;
+}

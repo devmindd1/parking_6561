@@ -11,7 +11,7 @@ const indexRoutes = require('./route/index');
 const ejs_locals_engine = require('ejs-locals');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
-const {apiResponse, adminResponse} = require('./core/Response');
+const {apiResponse, adminResponse, indexResponse} = require('./core/Response');
 const {defaultStaticPath} = require('./config/defaults');
 
 const app = express();
@@ -25,11 +25,11 @@ const io = socketIo(server, {
     }
 });
 
-// app.use(cors({
-//     credentials: true,
-//     // origin: 'http://ec2-100-26-17-9.compute-1.amazonaws.com:8080',
-//     origin: 'http://music/',
-// }));
+app.use(cors({
+    credentials: true,
+    // origin: 'http://ec2-100-26-17-9.compute-1.amazonaws.com:8080',
+    origin: 'http://music/',
+}));
 
 app.engine('ejs', ejs_locals_engine);
 app.set("views", path.join(__dirname, "views"));
@@ -41,7 +41,9 @@ app.use(cookieParser());
 app.use(fileUpload({ createParentPath: true }));
 app.use(express.static(`${__dirname}/${defaultStaticPath}`));
 
-app.use('/api', [
+app.get('/favicon.ico', (req, res) => res.status(204));
+
+app.use('/api/v1', [
     apiResponse(),
     apiRoutes
 ]);
@@ -52,7 +54,7 @@ app.use('/admin',  [
 ]);
 
 app.use('/', [
-    apiResponse(),
+    indexResponse(),
     indexRoutes
 ]);
 
@@ -62,7 +64,8 @@ app.use('/', [
 
         io.on('connection', socket => new Socket(socket));
 
-        server.listen(port, () => console.log('server in ' + port))
+        // server.listen(port, '192.168.77.129', () => console.log('server in ' + port));
+        server.listen(port, () => console.log('server in ' + port));
     }catch (e) {
         console.log(e);
     }

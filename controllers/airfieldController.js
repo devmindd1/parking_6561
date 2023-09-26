@@ -5,6 +5,7 @@ const AirfieldModel = require('../models/AirfieldModel');
 const AirfieldsSpaceModel = require('../models/AirfieldsSpaceModel');
 const AirfieldsSourceModel = require('../models/AirfieldsSourceModel');
 const RunwayTypeModel = require('../models/RunwayTypeModel');
+const OaciTypeModel = require('../models/OaciTypeModel');
 
 exports.index = async function(req, res){
     const airfieldModel = new AirfieldModel();
@@ -15,10 +16,12 @@ exports.index = async function(req, res){
     return res.render('airfields/index', res.data);
 };
 
-exports.createNew = async function(req, res){
+exports.create = async function(req, res){
     const runwayTypeModel = new RunwayTypeModel();
+    const oaciTypeModel = new OaciTypeModel();
 
     res.data.runwayTypes = await runwayTypeModel.getAll();
+    res.data.oaciTypes = await oaciTypeModel.getAll();
 
     return res.render('airfields/create', res.data);
 };

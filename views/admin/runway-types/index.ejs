@@ -8,6 +8,11 @@
                         <h3 class="card-title">DataTable with default features</h3>
                     </div>
                     <div class="card-body">
+                        <div class="row" style="margin-bottom: 5px;">
+                            <div class="col-sm-4">
+                                <a href="/admin/runway-types/create" style="width: 100px;" class="btn btn-block bg-gradient-success btn-sm">Create</a>
+                            </div>
+                        </div>
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
@@ -23,7 +28,7 @@
                                             <a class="btn btn-info btn-sm" href="/admin/runway-types/edit/<%= items[i]['id'] %>">
                                                 <i class="fas fa-pencil-alt"></i>
                                             </a>
-                                            <a class="btn btn-danger btn-sm" href="javascript:void(0);">
+                                            <a class="btn btn-danger btn-sm delete-module-item" href="/admin/runway-types/delete/<%= items[i]['id'] %>">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </td>

@@ -11,8 +11,8 @@
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Surname</th>
+                                    <th>First name</th>
+                                    <th>Last name</th>
                                     <th>email</th>
                                     <th>quick actions</th>
                                 </tr>
@@ -20,8 +20,8 @@
                             <tbody>
                                 <% for(var i=0; i < items.length; i++) { %>
                                     <tr>
-                                        <td><a class="main-anchor-link" href="/admin/owners/edit/<%= items[i]['id'] %>"><%= items[i]['name'] %></a></td>
-                                        <td><%= items[i]['surname'] %></td>
+                                        <td><a class="main-anchor-link" href="/admin/owners/edit/<%= items[i]['id'] %>"><%= items[i]['first_name'] %></a></td>
+                                        <td><%= items[i]['last_name'] %></td>
                                         <td><%= items[i]['email'] %></td>
                                         <td class="project-actions">
                                             <a class="btn btn-info btn-sm" href="/admin/owners/edit/<%= items[i]['id'] %>">

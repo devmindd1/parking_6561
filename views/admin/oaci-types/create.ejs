@@ -1,0 +1,21 @@
+<% layout("../main") -%>
+
+<section class="content">
+    <form action="/admin/oaci-types/create" id="form" method="post">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Title</h3>
+            </div>
+
+            <%- include ./_form.ejs %>
+
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12">
+                        <input type="submit" value="Save Changes" id="create" class="btn btn-success float-right">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

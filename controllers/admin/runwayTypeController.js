@@ -4,9 +4,9 @@ const {validationResult} = require('express-validator');
 exports.index = async function(req, res){
     const runwayTypeModel = new RunwayTypeModel();
 
-    return res.render('admin/runway-types/index', {
-        items: await runwayTypeModel.getAll()
-    });
+    res.data.items = await runwayTypeModel.getAll();
+
+    return res.render('admin/runway-types/index', res.data);
 };
 
 exports.create = async function(req, res){
@@ -33,21 +33,27 @@ exports.edit = async function(req, res){
     const runwayTypeModel = new RunwayTypeModel();
 
     res.data.model = await runwayTypeModel.getById(id);
-
-    return res.render('admin/runway-types/edit', res.data);
-};
-
-exports.update = async function(req, res){
-    const {id} = req.params;
-    const runwayTypeModel = new RunwayTypeModel();
+    if(req.method === 'GET')
+        return res.render('admin/colors/edit', res.data);
 
     const errors = validationResult(req);
     if(!errors.isEmpty()){
-        res.data.validationErrors = errors.array();
-        return res.status(400).json(res.data);
+        res.data.errors =  errors.mapped();
+        res.data.model = req.body;
+
+        return res.render('admin/runway-types/edit', res.data);
     }
 
     await runwayTypeModel.update(id, req.body);
 
-    return res.status(200).json(res.data);
+    return res.redirect('/admin/runway-types');
+};
+
+exports.delete = async function(req, res){
+    const {id} = req.params;
+    const runwayTypeModel = new RunwayTypeModel();
+
+    await runwayTypeModel.deleteById(id);
+
+    return res.redirect('/admin/runway-types');
 };

@@ -16,7 +16,7 @@ class AirfieldModel extends Model{
     constructor(){ super('airfields'); }
 
     async getById(id){
-        const [item] = await this.t.select('users.id', 'users.name', 'users.surname', 'users.email', 'airfields.id AS airfield_id',
+        const [item] = await this.t.select('users.id', 'users.first_name', 'users.last_name', 'users.email', 'airfields.id AS airfield_id',
             'airfields.spaces_count', 'airfields.address', 'airfields.primary_email', 'airfields.manager_name',
             'airfields.operating_license_img', 'airfields.status', 'airfields.phone_number', 'airfields.latitude',
             'airfields.longitude', 'airfields.runway_type_id')
@@ -49,8 +49,7 @@ class AirfieldModel extends Model{
     }
 
     getAllOwnersAirfields(){
-
-        return this.t.select('users.id', 'users.name', 'users.surname', 'airfields.id AS airfield_id',
+        return this.t.select('users.id', 'users.first_name', 'users.last_name', 'airfields.id AS airfield_id',
             'airfields.spaces_count', 'airfields.address', 'airfields.primary_email', 'airfields.manager_name',
             'airfields.status', 'airfields.phone_number')
             .leftJoin('users', 'airfields.user_id', 'users.id')
@@ -59,6 +58,25 @@ class AirfieldModel extends Model{
             });
     }
 
+    getFreeAirfieldsByRange(start_date, end_date){
+        const query =`
+          SELECT DISTINCT airfields.id,
+            f_airfields_spaces_bookings.airfields_space_id AS airfield_space_is_busy
+          FROM airfields_spaces
+          LEFT JOIN (
+            SELECT airfields_spaces_bookings.airfields_space_id
+            FROM airfields_spaces_bookings
+            WHERE start_timestamp BETWEEN '${start_date}' AND '${end_date}'
+            OR end_timestamp BETWEEN '${start_date}' AND '${end_date}'
+            GROUP BY airfields_space_id
+          ) AS f_airfields_spaces_bookings 
+            ON airfields_spaces.id = f_airfields_spaces_bookings.airfields_space_id
+          INNER JOIN airfields 
+            ON airfields_spaces.airfield_id = airfields.id
+          WHERE f_airfields_spaces_bookings.airfields_space_id IS NULL`;
+
+        return this.exec(query);
+    }
 }
 
 module.exports = AirfieldModel;
