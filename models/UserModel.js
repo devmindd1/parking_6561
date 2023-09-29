@@ -26,6 +26,17 @@ class UserModel extends Model{
             .where({role: UserModel._ROLES['owner']});
     }
 
+    async getByEmail(email){
+        const [user] = await this.t
+            .select('id', 'first_name', 'last_name', 'email', 'password')
+            .where({
+                email: email,
+                role: UserModel._ROLES['user']
+            });
+
+        return user;
+    }
+
     async getOwnerByEmailPassword(email, password){
         const [user] =  await this.t.select('*').where({
             email: email,

@@ -17,16 +17,35 @@
             </div>
         </div>
     </div>
+    <div class="row margin">
+        <div class="col-sm-6">
+            <input id="short_hr_price_eur_input" type="text" name="short_hr_price_eur" value="10">
+        </div>
+        <div class="col-sm-6">
+            <input id="long_hr_price_eur_input" type="text" name="long_hr_price_eur" value="">
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label>Disabled Result</label>
-                <select class="form-control select2" style="width: 100%;">
-                    <option selected="selected">-- Select OACI --</option>
+                <label class="form-check-label">OACI</label>
+                <select name="oaci_type_id" class="form-control select2" style="width: 100%;">
+                    <option value="" selected="selected">-- Select OACI --</option>
                     <% oaciTypes.forEach(function(oaciType) { %>
                         <option value="<%= oaciType.id %>">
                             <%= oaciType.oaci_code %>: &#160;&#160; <%= oaciType.airfield_name %>
                         </option>
+                    <% }); %>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-check-label">Amenities</label>
+                <select class="select2" name="amenity_type_ids" multiple="multiple" data-placeholder="Select a Amenity" style="width: 100%;">
+                    <% amenities.forEach(function(type) { %>
+                        <option value="<%= type.id %>"><%= type.title %></option>
                     <% }); %>
                 </select>
             </div>
@@ -40,11 +59,11 @@
                 <input type="text" id="address" name="address" class="form-control" placeholder="Select your location(OACI)">
             </div>
         </div>
-        <div class="col-sm-6">
+
+        <div class="col-md-6">
             <div class="form-group">
                 <label class="form-check-label">Runways</label>
-                <select name="runway_type_id" class="form-control">
-                    <option>-- Select Runway --</option>
+                <select class="select2" name="runway_type_ids" multiple="multiple" data-placeholder="Select a Runway" style="width: 100%;">
                     <% runwayTypes.forEach(function(type) { %>
                         <option value="<%= type.id %>"><%= type.title %></option>
                     <% }); %>

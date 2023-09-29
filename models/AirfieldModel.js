@@ -19,7 +19,7 @@ class AirfieldModel extends Model{
         const [item] = await this.t.select('users.id', 'users.first_name', 'users.last_name', 'users.email', 'airfields.id AS airfield_id',
             'airfields.spaces_count', 'airfields.address', 'airfields.primary_email', 'airfields.manager_name',
             'airfields.operating_license_img', 'airfields.status', 'airfields.phone_number', 'airfields.latitude',
-            'airfields.longitude', 'airfields.runway_type_id')
+            'airfields.longitude')
             .leftJoin('users', 'airfields.user_id', 'users.id')
             .where({'airfields.id': id});
 
@@ -58,22 +58,32 @@ class AirfieldModel extends Model{
             });
     }
 
-    getFreeAirfieldsByRange(start_date, end_date){
+    getAllApproved(){
+        return this.t.select('*')
+            .where({status: AirfieldModel._STATUSES[1]['name']});
+    }
+
+    getFreeAirfieldsByRange(startDate, endDate){
         const query =`
-          SELECT DISTINCT airfields.id,
-            f_airfields_spaces_bookings.airfields_space_id AS airfield_space_is_busy
+          SELECT
+            airfields.id,
+            airfields.latitude,
+            airfields.longitude,
+            f_airfields_spaces_bookings.airfields_space_id AS airfield_space_is_busy,
+            COUNT(airfields.id) AS free_spaces_count
           FROM airfields_spaces
           LEFT JOIN (
             SELECT airfields_spaces_bookings.airfields_space_id
             FROM airfields_spaces_bookings
-            WHERE start_timestamp BETWEEN '${start_date}' AND '${end_date}'
-            OR end_timestamp BETWEEN '${start_date}' AND '${end_date}'
+            WHERE start_timestamp BETWEEN '${startDate}' AND '${endDate}'
+              OR end_timestamp BETWEEN '${startDate}' AND '${endDate}'
             GROUP BY airfields_space_id
-          ) AS f_airfields_spaces_bookings 
+          ) AS f_airfields_spaces_bookings
             ON airfields_spaces.id = f_airfields_spaces_bookings.airfields_space_id
-          INNER JOIN airfields 
+          INNER JOIN airfields
             ON airfields_spaces.airfield_id = airfields.id
-          WHERE f_airfields_spaces_bookings.airfields_space_id IS NULL`;
+          WHERE f_airfields_spaces_bookings.airfields_space_id IS NULL
+          GROUP BY airfields.id`;
 
         return this.exec(query);
     }

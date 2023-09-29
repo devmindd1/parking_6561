@@ -34,8 +34,6 @@ exports.adminResponse = function(){
         res.data = new AdminResponse();
         res.data.activeMenu = req.originalUrl === '/admin' ? '/': req.originalUrl.split('/')[2];
 
-
-        console.log(res.data.activeMenu);
         next();
     }
 };

@@ -9,6 +9,7 @@ const color = require('../controllers/admin/colorController.js');
 const equipment = require('../controllers/admin/equipmentController.js');
 const additionalQualification = require('../controllers/admin/additionalQualificationController.js');
 const oaciType = require('../controllers/admin/oaciTypeController.js');
+const amenityType = require('../controllers/admin/amenityTypeController.js');
 
 const adminAuthMiddleware = require('../middlewares/adminAuthMiddleware.js');
 
@@ -59,5 +60,10 @@ router.get('/oaci-types', [adminAuthMiddleware], oaciType.index);
 router.all('/oaci-types/create', [adminAuthMiddleware, oaciTypeInsertBody], oaciType.create);
 router.all('/oaci-types/edit/:id', [adminAuthMiddleware, oaciTypeInsertBody], oaciType.edit);
 router.get('/oaci-types/delete/:id', [adminAuthMiddleware], oaciType.delete);
+
+router.get('/amenity-types', [adminAuthMiddleware], amenityType.index);
+router.all('/amenity-types/create', [adminAuthMiddleware], amenityType.create);
+router.all('/amenity-types/edit/:id', [adminAuthMiddleware], amenityType.edit);
+router.get('/amenity-types/delete/:id', [adminAuthMiddleware], amenityType.delete);
 
 module.exports = router;

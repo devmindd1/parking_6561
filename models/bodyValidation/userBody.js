@@ -35,8 +35,10 @@ const signUpBody = [
         .withMessage('additional_qualifications is require (one or more)'),
     body('equipments').notEmpty()
         .withMessage('equipments is require (one or more)'),
-    body('equipments').isNumeric()
-        .withMessage('equipments is int'),
+    body('equipments').custom(async value => {
+        if(!Array.isArray(value))
+            throw new Error('equipments is array input [ARRAY] with int params');
+    }),
     body('country_id').notEmpty()
         .withMessage('country_id is require'),
     body('issue_date').notEmpty()

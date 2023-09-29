@@ -31,6 +31,10 @@ const insertBody = [
     }),
     body('manager_name').notEmpty()
         .withMessage('manager name is require'),
+    body('short_hr_price_eur').isNumeric()
+        .withMessage('short_hr_price_eur name is numeric'),
+    body('long_hr_price_eur').isNumeric()
+        .withMessage('long_hr_price_eur name is require'),
     body('primary_email').notEmpty()
         .withMessage('Email is require'),
     body('primary_email').isEmail().normalizeEmail().withMessage('please write true email')
@@ -41,8 +45,8 @@ const insertBody = [
                 if(has) throw new Error('Primary email is exists');
             });
         }),
-    body('spaces_count').notEmpty()
-        .withMessage('spaces_count is require'),
+    body('runway_type_ids').notEmpty()
+        .withMessage('runway_type_ids is require'),
     body('address').notEmpty()
         .withMessage('Address name is require'),
 ];

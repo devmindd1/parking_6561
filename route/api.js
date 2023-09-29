@@ -1,6 +1,6 @@
 const router = new (require('express').Router)();
-// const authMiddleware = require('../middlewares/authMiddleware');
-const {signUpBody} = require('../models/bodyValidation/userBody');
+const apiAuthMiddleware = require('../middlewares/apiAuthMiddleware');
+const {signUpBody, loginBody} = require('../models/bodyValidation/userBody');
 // const {postInsertBody} = require('../models/bodyValidation/postBody');
 // const {postLikeUpdateBody} = require('../models/bodyValidation/postsLikeBody');
 // const {usersFollowUpdateBody} = require('../models/bodyValidation/usersFollowBody');
@@ -13,6 +13,7 @@ const {signUpBody} = require('../models/bodyValidation/userBody');
 
 const auth = require('../controllers/api/v1/authController');
 const source = require('../controllers/api/v1/sourceController');
+const airfield = require('../controllers/api/v1/airfieldController');
 // const user = require('../controllers/api/v1/userController');
 // const index = require('../controllers/api/v1/indexController');
 // const question = require('../controllers/api/v1/questionController');
@@ -27,7 +28,7 @@ const country = require('../controllers/api/v1/countryController');
 // const negotiationUser = require('../controllers/api/v1/negotiationUserController');
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-// router.post('/login', [loginBody], auth.login);
+router.post('/login', [loginBody], auth.login);
 router.post('/sign-up', [signUpBody], auth.signUp);
 // router.put('/auth-refresh', auth.refresh);
 
@@ -56,7 +57,7 @@ router.get('/sources/aircraft-info-filtered/:keyword', source.aircraftInfoFilter
 
 //todo authmidlware to all('*'); without login sign in
 
-// router.get('/connect', [authMiddleware], auth.connect);
+router.get('/airfields/free-by-range', [apiAuthMiddleware], airfield.freeAirfieldsByRange);
 // router.post('/logout', [authMiddleware], auth.logout);
 
 // router.put('/users/reset-password', [authMiddleware, resetPasswordBody], user.resetPassword);

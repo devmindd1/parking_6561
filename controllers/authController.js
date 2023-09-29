@@ -28,7 +28,7 @@ exports.login = async function(req, res){
 
         const user = await userModel.getOwnerByEmailPassword(req.body.email, string2sha1(req.body.password));
         if(!user)
-            return res.render("auth/login", {errorMessage: errorMessage});
+            return res.render("auth/login", {errorMessage: 'error'});
 
         const token = randomString(32);
         await userModel.updateToken(user.id, token);

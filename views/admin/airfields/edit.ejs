@@ -97,7 +97,9 @@
 
                                                 <strong>Runways</strong>
                                                 <p class="text-muted">
-                                                    <%= runwayTypes[airfield['runway_type_id']] %>
+                                                    <% for(const runway of airfieldRunways) { %>
+                                                        <%= runwayTypes[runway['runway_type_id']] %>
+                                                    <% } %>
                                                 </p>
                                             </div>
                                         </div>

@@ -6,6 +6,10 @@ const AirfieldsSpaceModel = require('../models/AirfieldsSpaceModel');
 const AirfieldsSourceModel = require('../models/AirfieldsSourceModel');
 const RunwayTypeModel = require('../models/RunwayTypeModel');
 const OaciTypeModel = require('../models/OaciTypeModel');
+const AmenityTypeModel = require('../models/AmenityTypeModel');
+const AirfieldsRunwayTypesMapModel = require('../models/AirfieldsRunwayTypesMapModel');
+const AirfieldsAmenityTypesMapModel = require('../models/AirfieldsAmenityTypesMapModel');
+const http = require('http');
 
 exports.index = async function(req, res){
     const airfieldModel = new AirfieldModel();
@@ -17,30 +21,23 @@ exports.index = async function(req, res){
 };
 
 exports.create = async function(req, res){
+    let operating_license_img = '';
     const runwayTypeModel = new RunwayTypeModel();
     const oaciTypeModel = new OaciTypeModel();
+    const amenityTypeModel = new AmenityTypeModel();
 
     res.data.runwayTypes = await runwayTypeModel.getAll();
     res.data.oaciTypes = await oaciTypeModel.getAll();
+    res.data.amenities = await amenityTypeModel.getAll();
 
-    return res.render('airfields/create', res.data);
-};
-
-exports.checkPrimaryEmail = async function(req, res){
-    const {primaryEmail} = req.body;
-    const airfieldModel = new AirfieldModel();
-
-    res.data.primaryEmailExists = await airfieldModel.checkPrimaryEmailExists(req.user.id, primaryEmail);
-
-    return res.status(200).json(res.data);
-};
-
-exports.insert = async function(req, res){
-    let operating_license_img = '';
+    if(req.method === 'GET')
+        return res.render('airfields/create', res.data);
 
     const airfieldModel = new AirfieldModel();
     const airfieldsSpaceModel = new AirfieldsSpaceModel();
     const airfieldsSourceModel = new AirfieldsSourceModel();
+    const airfieldsRunwayTypesMapModel = new AirfieldsRunwayTypesMapModel();
+    const airfieldsAmenityTypesMapModel = new AirfieldsAmenityTypesMapModel();
 
     const errors = validationResult(req);
     if(!errors.isEmpty()){
@@ -51,6 +48,9 @@ exports.insert = async function(req, res){
     if(req.files && req.files['operating_license_img'])
         operating_license_img = await upload(req.files['operating_license_img'], airfieldsDocumentsPath);
 
+
+    console.log(req.body);
+
     const newAirfieldId = await airfieldModel.insert({
         user_id: req.user.id,
         address: req.body.address,
@@ -60,15 +60,19 @@ exports.insert = async function(req, res){
         spaces_count: req.body.spaces_count,
         operating_license_img: operating_license_img,
         latitude: req.body.latitude,
-        longitude: req.body.longitude
+        longitude: req.body.longitude,
+        short_hr_price_eur: parseFloat(req.body.short_hr_price_eur),
+        long_hr_price_eur: parseFloat(req.body.long_hr_price_eur),
     });
 
+    const saveAirfieldImagesIds = req.body.save_airfield_photo_ids.split(',');
     if(req.files && req.files['airfield_images'])
-        for(const file of req.files['airfield_images'])
-            await airfieldsSourceModel.insert({
-                airfield_id: newAirfieldId,
-                file_path: await upload(file, airfieldsDocumentsPath)
-            });
+        for(let i = 0; i < req.files['airfield_images'].length; i++)
+            if(saveAirfieldImagesIds.includes(i.toString()))
+                await airfieldsSourceModel.insert({
+                    airfield_id: newAirfieldId,
+                    file_path: await upload(req.files['airfield_images'][i], airfieldsDocumentsPath)
+                });
 
     for(let i = 0; i < parseInt(req.body.spaces_count); i++)
         await airfieldsSpaceModel.insert({
@@ -76,5 +80,27 @@ exports.insert = async function(req, res){
             title: String(i)
         });
 
+    for(let i = 0; i < req.body.runway_type_ids.length; i++)
+        await airfieldsRunwayTypesMapModel.insert({
+            airfield_id: newAirfieldId,
+            runway_type_id: req.body.runway_type_ids[i]
+        });
+
+    if(req.body.amenity_type_ids)
+        for(let i = 0; i < req.body.amenity_type_ids.length; i++)
+            await airfieldsAmenityTypesMapModel.insert({
+                airfield_id: newAirfieldId,
+                amenity_type_id: req.body.amenity_type_ids[i]
+            });
+
     return res.redirect('/airfields');
+};
+
+exports.checkPrimaryEmail = async function(req, res){
+    const {primaryEmail} = req.body;
+    const airfieldModel = new AirfieldModel();
+
+    res.data.primaryEmailExists = await airfieldModel.checkPrimaryEmailExists(req.user.id, primaryEmail);
+
+    return res.status(200).json(res.data);
 };

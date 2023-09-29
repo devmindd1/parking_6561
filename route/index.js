@@ -22,12 +22,16 @@ router.get('/', [authMiddleware], home.index);
 
 router.get('/airfields', [authMiddleware], airfield.index);
 router.get('/airfields/create', [authMiddleware], airfield.create);
-router.post('/airfields/create', [authMiddleware, insertBody], airfield.insert);
+router.post('/airfields/create', [authMiddleware, insertBody], airfield.create);
 router.post('/airfields/check-primary-email', [authMiddleware], airfield.checkPrimaryEmail);
 
 router.get('/customers', [authMiddleware], customer.index);
 router.get('/calendar', [authMiddleware], calendar.index);
 router.post('/calendar/get', [authMiddleware], calendar.get);
 router.get('/airfields-space/:airfieldId', [authMiddleware], airfieldsSpace.getByAirfieldId);
+
+router.get('/stripe-account-bank-on-boarding-redirect', home.test1);
+
+
 
 module.exports = router;

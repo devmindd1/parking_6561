@@ -75,6 +75,28 @@ addEventListener('DOMContentLoaded', () => {
     const uploadedImages = $('#uploaded-images');
     const uploadedDocument = $('#uploaded-document');
 
+
+    $('#short_hr_price_eur_input').ionRangeSlider({
+        min     : 0.1,
+        max     : 20,
+        type    : 'single',
+        step    : 0.1,
+        postfix : ' eur HT/hr',
+        prettify: false,
+        // hasGrid : true
+    });
+
+    $('#long_hr_price_eur_input').ionRangeSlider({
+        min     : 0.1,
+        max     : 20,
+        type    : 'single',
+        step    : 0.1,
+        postfix : ' eur HT/hr',
+        prettify: false,
+        // hasGrid : true
+    });
+
+
     $('.select2').select2();
 
     $(document).on('click', '#create', function(e){

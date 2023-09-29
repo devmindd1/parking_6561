@@ -8,14 +8,17 @@ addEventListener('DOMContentLoaded', () => {
         return regex.test(value);
     });
 
+    $.validator.addMethod("notEmptyValue", function(value, element) {
+        return !!value;
+    });
+
     $('form').validate({
         rules: {
             address: {
                 required: true
             },
-            runway_type_id: {
-                required: true,
-                number: true
+            runway_type_ids: {
+                required: true
             },
             manager_name: {
                 required: true,
@@ -31,10 +34,15 @@ addEventListener('DOMContentLoaded', () => {
             primary_email: {
                 required: true,
                 isEmail: true
+            },
+            oaci_type_id: {
+                notEmptyValue: true
             }
         },
         messages: {
-            runway_type_id: "Please select runway",
+            oaci_type_id: {
+                notEmptyValue: 'OACI is required'
+            },
             manager_name: {
                 alpha: 'Please Write alpha only'
             },
