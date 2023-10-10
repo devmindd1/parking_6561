@@ -1,11 +1,12 @@
-const {body, check} = require("express-validator");
+const {body, check, param} = require("express-validator");
 const AirfieldModel = require("../../models/AirfieldModel");
 
 const insertBody = [
     check('airfield_images').custom(async (value, {req}) => {
         const inputName = 'airfield_images';
 
-        if(!req.files || !req.files[inputName]) return;
+        if(!req.files || !req.files[inputName])
+            throw new Error('airfield_images is required');
 
         if(!Array.isArray(req.files[inputName]))
             req.files[inputName] = [req.files[inputName]];
@@ -21,7 +22,8 @@ const insertBody = [
     check('operating_license_img').custom(async (value, {req}) => {
         const inputName = 'operating_license_img';
 
-        if(!req.files || !req.files[inputName]) return;
+        if(!req.files || !req.files[inputName])
+            return;
 
         const file = req.files[inputName];
         const [type, ext] = file.mimetype.split('/');
@@ -29,12 +31,20 @@ const insertBody = [
         if(type !== 'image')
             throw new Error('img is not image type');
     }),
+    body('spaces_count').isInt({ min: 1})
+        .withMessage('spaces_count > 1'),
+    body('hangar_count').isInt({ min: 0})
+        .withMessage('hangar_count >= 0'),
+    body('parking_count').isInt({ min: 0})
+        .withMessage('parking_count >= 0'),
+    body('airfield_stripe_account_id').notEmpty()
+        .withMessage('airfield_stripe_account_id is require'),
     body('manager_name').notEmpty()
         .withMessage('manager name is require'),
     body('short_hr_price_eur').isNumeric()
         .withMessage('short_hr_price_eur name is numeric'),
-    body('long_hr_price_eur').isNumeric()
-        .withMessage('long_hr_price_eur name is require'),
+    body('long_day_price_eur').isNumeric()
+        .withMessage('long_day_price_eur name is require'),
     body('primary_email').notEmpty()
         .withMessage('Email is require'),
     body('primary_email').isEmail().normalizeEmail().withMessage('please write true email')
@@ -48,9 +58,16 @@ const insertBody = [
     body('runway_type_ids').notEmpty()
         .withMessage('runway_type_ids is require'),
     body('address').notEmpty()
-        .withMessage('Address name is require'),
+        .withMessage('Address name is require')
 ];
+
+const getByIdBody = [
+    param('airfieldId').notEmpty()
+        .withMessage('airfieldId is require')
+];
+
 
 module.exports = {
     insertBody,
+    getByIdBody
 };

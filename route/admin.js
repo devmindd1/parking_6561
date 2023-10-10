@@ -1,11 +1,10 @@
-const router = new (require('express').Router);
+const router = new (require('express').Router)();
 
 const auth = require('../controllers/admin/authController.js');
 const home = require('../controllers/admin/homeController.js');
 const owner = require('../controllers/admin/ownerController.js');
 const airfield = require('../controllers/admin/airfieldController.js');
 const runwayType = require('../controllers/admin/runwayTypeController.js');
-const color = require('../controllers/admin/colorController.js');
 const equipment = require('../controllers/admin/equipmentController.js');
 const additionalQualification = require('../controllers/admin/additionalQualificationController.js');
 const oaciType = require('../controllers/admin/oaciTypeController.js');
@@ -15,7 +14,6 @@ const adminAuthMiddleware = require('../middlewares/adminAuthMiddleware.js');
 
 const {adminLoginBody} = require('../models/bodyValidation/userBody.js');
 const {insertRunwayTypeBody} = require('../models/bodyValidation/runwayTypeBody.js');
-const {insertColorBody} = require('../models/bodyValidation/colorBody.js');
 const {insertEquipmentBody} = require('../models/bodyValidation/equipmentBody.js');
 const {oaciTypeInsertBody} = require('../models/bodyValidation/oaciTypeBody.js');
 
@@ -39,12 +37,7 @@ router.post('/airfields/update/:id', [adminAuthMiddleware], airfield.update);
 router.get('/runway-types', [adminAuthMiddleware], runwayType.index);
 router.all('/runway-types/create', [adminAuthMiddleware, insertRunwayTypeBody], runwayType.create);
 router.all('/runway-types/edit/:id', [adminAuthMiddleware, insertRunwayTypeBody], runwayType.edit);
-router.get('/runway-types/delete/:id', [adminAuthMiddleware], color.delete);
-
-router.get('/colors', [adminAuthMiddleware], color.index);
-router.all('/colors/create', [adminAuthMiddleware, insertColorBody], color.create);
-router.all('/colors/edit/:id', [adminAuthMiddleware, insertColorBody], color.edit);
-router.get('/colors/delete/:id', [adminAuthMiddleware], color.delete);
+router.get('/runway-types/delete/:id', [adminAuthMiddleware], runwayType.delete);
 
 router.get('/equipments', [adminAuthMiddleware], equipment.index);
 router.all('/equipments/create', [adminAuthMiddleware, insertEquipmentBody], equipment.create);

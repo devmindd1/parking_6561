@@ -22,7 +22,7 @@
             <input id="short_hr_price_eur_input" type="text" name="short_hr_price_eur" value="10">
         </div>
         <div class="col-sm-6">
-            <input id="long_hr_price_eur_input" type="text" name="long_hr_price_eur" value="">
+            <input id="long_day_price_eur_input" type="text" name="long_day_price_eur" value="">
         </div>
     </div>
 
@@ -71,7 +71,6 @@
             </div>
         </div>
     </div>
-
     <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
@@ -86,7 +85,6 @@
             </div>
         </div>
     </div>
-
     <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
@@ -94,11 +92,22 @@
                 <input type="text" id="primary_email" name="primary_email" class="form-control" placeholder="Primary email">
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-2">
             <div class="form-group">
-                <label class="form-check-label">Number of Spaces</label>
+                <label class="form-check-label">Total number of Spaces</label>
                 <input type="text" name="spaces_count" class="form-control" placeholder="Number of Spaces">
-                <span class="error invalid-feedback">Please enter a email address</span>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label class="form-check-label">Number of hangar</label>
+                <input type="text" name="hangar_count" class="form-control" placeholder="Number of hangar">
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label class="form-check-label">Number of parking</label>
+                <input type="text" name="parking_count" class="form-control" placeholder="Number of parking">
             </div>
         </div>
     </div>
@@ -158,7 +167,4 @@
     <%- include ./common/document-modal.ejs %>
 
     <%- include ./common/bank-detail-modal.ejs %>
-
 </div>
-
-<script src="/js/airfields/validation.js"></script>

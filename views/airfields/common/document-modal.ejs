@@ -44,11 +44,10 @@
                         <div class="form-group">
                             <label class="form-check-label">Issuing State</label>
                             <select name="issuing_state" class="form-control">
-                                <option>option 1</option>
-                                <option>option 2</option>
-                                <option>option 3</option>
-                                <option>option 4</option>
-                                <option>option 5</option>
+                                <option value="">-- Select country --</option>
+                                <% countries.forEach(function(country) { %>
+                                    <option value="<%= country.code %>"><%= country.name %></option>
+                                <% }); %>
                             </select>
                         </div>
                     </div>

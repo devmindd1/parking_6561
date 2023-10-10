@@ -11,7 +11,7 @@ const airfieldsSpace = require('../controllers/airfieldsSpaceController.js');
 
 const {insertBody} = require('../models/bodyValidation/airfieldBody');
 const {loginBody} = require('../models/bodyValidation/userBody');
-
+const {accountTokenCreateBody} = require('../models/bodyValidation/airfieldsStripeAccountBody');
 
 router.get('/test', home.test);
 
@@ -22,8 +22,11 @@ router.get('/', [authMiddleware], home.index);
 
 router.get('/airfields', [authMiddleware], airfield.index);
 router.get('/airfields/create', [authMiddleware], airfield.create);
+router.get('/airfields/bank-attached/:airfieldId', [authMiddleware], airfield.bankAttached);
 router.post('/airfields/create', [authMiddleware, insertBody], airfield.create);
-router.post('/airfields/check-primary-email', [authMiddleware], airfield.checkPrimaryEmail);
+router.post('/airfields/check-emails', [authMiddleware], airfield.checkEmails);
+router.post('/airfields/create-stripe-account', [authMiddleware, accountTokenCreateBody], airfield.createStripeAccount);
+router.post('/airfields/create-link-for-attach-bank', [authMiddleware], airfield.createLinkForAttachBankToAirfieldAccount);
 
 router.get('/customers', [authMiddleware], customer.index);
 router.get('/calendar', [authMiddleware], calendar.index);

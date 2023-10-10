@@ -28,6 +28,17 @@ class AirfieldModel extends Model{
         return item;
     }
 
+    async getInfo(id){
+        const [airfield] = await this.t.select('airfields.id', 'airfields.spaces_count', 'airfields.short_hr_price_eur',
+                'airfields.long_day_price_eur', 'oaci_types.airfield_name', 'oaci_types.oaci_code')
+            .leftJoin('oaci_types', 'airfields.oaci_type_id', 'oaci_types.id')
+            .where({'airfields.id': id});
+
+        this.freeResult();
+
+        return airfield;
+    }
+
     getByUserId(userId, status = false){
         const where = {
             user_id: userId
@@ -35,7 +46,11 @@ class AirfieldModel extends Model{
 
         if(status) where['status'] = 1;
 
-        return this.t.select('*').where(where);
+        return this.t.select('airfields.*', 'airfields_stripe_accounts_banks.bank_account_id AS has_bank')
+            .leftJoin('airfields_stripe_accounts', 'airfields.id', 'airfields_stripe_accounts.airfield_id')
+            .leftJoin('airfields_stripe_accounts_banks', 'airfields_stripe_accounts.id', 'airfields_stripe_accounts_banks.airfield_stripe_account_id')
+            .where(where)
+            .groupBy('airfields.id');
     }
 
     async checkPrimaryEmailExists(userId, primaryEmail){

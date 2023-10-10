@@ -152,8 +152,81 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="custom-tabs-four-messages" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
-                                    Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris. Phasellus
-                                    volutpat augue id mi placerat mollis. Vivamus faucibus eu massa eget condimentum
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="card-body">
+                                                <strong>Stripe account</strong>
+                                                <p class="text-muted">
+                                                    <%= stripeAccount['stripe_account_id'] %>
+                                                </p>
+                                                <hr>
+                                                <strong>Name</strong>
+                                                <p class="text-muted">
+                                                    <%= stripeAccount['first_name'] %> <%= stripeAccount['last_name'] %>
+                                                </p>
+                                                <hr>
+                                                <strong>Email</strong>
+                                                <p class="text-muted">
+                                                    <%= stripeAccount['email'] %>
+                                                </p>
+                                                <hr>
+                                                <strong>Bank Account Name</strong>
+                                                <p class="text-muted">
+                                                    <%= stripeAccount['account_name'] %>
+                                                </p>
+                                                <hr>
+                                                <strong>Gender</strong>
+                                                <p class="text-muted">
+                                                    <%= stripeAccount['gender'] %>
+                                                </p>
+                                                <hr>
+                                                <strong>Date of birth</strong>
+                                                <p class="text-muted">
+                                                    <%= stripeAccount['date_of_birth'] %>
+                                                </p>
+                                                <hr>
+                                                <strong>Country</strong>
+                                                <p class="text-muted">
+                                                    <%= stripeAccount['country_code'] %>
+                                                </p>
+                                                <hr>
+                                                <strong>City</strong>
+                                                <p class="text-muted">
+                                                    <%= stripeAccount['city'] %>
+                                                </p>
+                                                <hr>
+                                                <strong>Phone</strong>
+                                                <p class="text-muted">
+                                                    <%= stripeAccount['phone'] %>
+                                                </p>
+                                                <hr>
+                                                <strong>Postal/Zip Code</strong>
+                                                <p class="text-muted">
+                                                    <%= stripeAccount['postal_code'] %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="card-body">
+                                                <% if (!stripeAccountBanks) { %>
+                                                    <strong>Bank account d`ont attached</strong>
+                                                <% } else { %>
+                                                    <% for(const stripeAccountBank of stripeAccountBanks) { %>
+                                                        <strong><%= stripeAccountBank.bank_name %></strong>
+                                                        <p class="text-muted">
+                                                            Bank account: <%= stripeAccountBank.bank_account_id %>
+                                                            <br>
+                                                            Currency: <%= stripeAccountBank.currency_id %>
+                                                            <br>
+                                                            Default for currency: <%- stripeAccountBank.default_for_currency? 'Yes': 'No' %>
+                                                        </p>
+                                                        <hr>
+                                                    <% } %>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="tab-pane fade active show" id="custom-tabs-four-settings" role="tabpanel"
                                      aria-labelledby="custom-tabs-four-settings-tab">

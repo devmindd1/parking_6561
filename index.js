@@ -1,6 +1,5 @@
 require('dotenv').config();
 const path = require('path');
-const cors = require('cors');
 const Socket = require('./core/Socket');
 const socketIo = require('socket.io');
 const express = require('express');
@@ -25,48 +24,38 @@ const io = socketIo(server, {
     }
 });
 
-app.use(cors({
-    credentials: true,
-    // origin: 'http://ec2-100-26-17-9.compute-1.amazonaws.com:8080',
-    origin: 'http://music/',
-}));
-
 app.engine('ejs', ejs_locals_engine);
 app.set("views", path.join(__dirname, "views"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(fileUpload({ createParentPath: true }));
 app.use(express.static(`${__dirname}/${defaultStaticPath}`));
 
+app.use((req, res, next) => {
+    app.res = res;
+    next();
+});
+
 app.get('/favicon.ico', (req, res) => res.status(204));
 
-app.use('/api/v1', [
-    apiResponse(),
-    apiRoutes
-]);
+app.use('/api/v1', [apiResponse(), apiRoutes]);
 
-app.use('/admin',  [
-    adminResponse(),
-    adminRoutes
-]);
+app.use('/admin',  [adminResponse(), adminRoutes]);
 
-app.use('/', [
-    indexResponse(),
-    indexRoutes
-]);
+app.use('/', [indexResponse(), indexRoutes]);
+
+io.on('connection', socket => new Socket(socket));
 
 (() => {
-    try {
-        const port = 9026;
+    const port = 9026;
+    // server.listen(port, '192.168.77.129', () => console.log('server in ' + port));
+    server.listen(port, () => console.log('server in ' + port));
 
-        io.on('connection', socket => new Socket(socket));
+    process.on('uncaughtException', (err) => {
+        console.log(err);
 
-        // server.listen(port, '192.168.77.129', () => console.log('server in ' + port));
-        server.listen(port, () => console.log('server in ' + port));
-    }catch (e) {
-        console.log(e);
-    }
+        app.res.send('ok');
+    })
 })();

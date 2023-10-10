@@ -1,6 +1,5 @@
-const Model = require('../../models/AmenityTypeModel.js');
 const {validationResult} = require('express-validator');
-
+const Model = require('../../models/AmenityTypeModel.js');
 const _module = 'amenity-types';
 
 exports.index = async function(req, res){

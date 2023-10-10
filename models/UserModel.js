@@ -21,14 +21,27 @@ class UserModel extends Model{
         return user;
     }
 
+    async getByForgotPasswordToken(forgotPasswordToken){
+        const [user] = await this.t.select('id').where({
+            forgot_password_token: forgotPasswordToken,
+            role: _ROLES['user']
+        });
+
+        return user;
+    }
+
     getAllOwners(){
         return this.t.select('id', 'status', 'email', 'first_name', 'last_name')
             .where({role: UserModel._ROLES['owner']});
     }
 
+    updateByEmail(email, data){
+        return this.t.update(data).where({email: email});
+    }
+
     async getByEmail(email){
         const [user] = await this.t
-            .select('id', 'first_name', 'last_name', 'email', 'password')
+            .select('id', 'first_name', 'last_name', 'email', 'date_of_birth', 'country_id', 'password')
             .where({
                 email: email,
                 role: UserModel._ROLES['user']
@@ -55,11 +68,16 @@ class UserModel extends Model{
         return item;
     }
 
-    async checkEmailExists(email){
-        const [user] = await this.t.select('email').where({
+    async checkEmailExists(email, userId = 0){
+        const whereNot = {};
+        if(userId) whereNot['id'] = userId;
+
+        const [user] = await this.t.select('email')
+        .where({
             email: email,
             role: UserModel._ROLES['user']
-        });
+        })
+        .andWhereNot(whereNot);
 
         if(user) return true;
     }

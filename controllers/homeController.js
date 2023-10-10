@@ -17,8 +17,15 @@ exports.test1 = function(req, res){
 };
 
 exports.test = async function(req, res){
-    const oaciTypeModel = new OaciTypeModel();
+    // const oaciTypeModel = new OaciTypeModel();
 
+
+
+
+
+    // console.log(req.body);
+    // console.log(req.params);
+    // console.log(req.query);
 
     // $a = "https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_OhvARKi4mJsCzF50FgLbpo3ffdmCEJGJ&scope=read_write&redirect_uri=http://192.168.77.129:9026/stripe-connect";
 
@@ -36,7 +43,55 @@ exports.test = async function(req, res){
 
 
     const stripe = require('stripe')('sk_test_51NsQHOHsAwmdsPL7mMUW05rPs1h28LexLgPCZ0F8v9BMgVtWQlag3V8AbuP3C8VZt85oMXMFE2xb4YQW4hRzrNIl00glLB76xr');
+
+    // 4242424242424242
     //
+    const card = await stripe.customers.createSource(
+        'cus_OgXI9nshn8gaK7',
+        {
+            number: 4242424242424242
+        }
+    );
+
+
+    // const card = await stripe.customers.updateSource(
+    //     'cus_OgX08hFV1PqP3L',
+    //     'card_1Nza2WHsAwmdsPL7R8YXSyJT',
+    //     {name: 'Jenny Rosen'}
+    // );
+
+
+    console.log(card);
+
+
+    // const stripe = require('stripe')('sk_test_51NsQHOHsAwmdsPL7mMUW05rPs1h28LexLgPCZ0F8v9BMgVtWQlag3V8AbuP3C8VZt85oMXMFE2xb4YQW4hRzrNIl00glLB76xr');
+
+    // const paymentMethod = await stripe.paymentMethods.create({
+    //     type: 'card',
+    //     card: {
+    //         number: '4242424242424242',
+    //         exp_month: 8,
+    //         exp_year: 2024,
+    //         cvc: '314',
+    //     },
+    // });
+
+
+
+
+    // const bankAccount = await stripe.accounts.retrieveExternalAccount(
+    //     'acct_1NxmFZQXht3fFlAO',
+    //     'ba_1NxnYKQXht3fFlAOltJy1mbm'
+    // );
+
+
+    // const bankAccounts = await stripe.accounts.listExternalAccounts(
+    //     'acct_1NxmFZQXht3fFlAO',
+    //     {object: 'bank_account'}
+    // );
+    //
+    // console.log(bankAccounts);
+
     // const account = await stripe.accounts.create({
     //     account_token: 'ct_1Nux6dHsAwmdsPL7XhDucLLp',
     //     type: 'custom',
@@ -83,7 +138,7 @@ exports.test = async function(req, res){
         // 'stripe_user[currency]' => $this->currency,
         // 'stripe_user[url]' => base_url().'users/'.$user['user_url'],
 
-    //
+    // //
     // const token = await stripe.tokens.create({
     //     account: {
     //         business_type: 'individual',
@@ -93,7 +148,7 @@ exports.test = async function(req, res){
     //             address: {
     //                 line1: '510 Townsend Street',
     //                 city: 'Paris',
-    //                 state: 'GE',
+    //                 // state: 'GE',
     //                 postal_code: '75001',
     //                 country: 'FR',
     //             },
@@ -109,10 +164,10 @@ exports.test = async function(req, res){
     //         tos_shown_and_accepted: true,
     //     },
     // });
-
-
-    // console.log(token);
     //
+    //
+    // console.log(token);
+    // //
     // // const stripe = require('stripe')('sk_test_51NsQHOHsAwmdsPL7mMUW05rPs1h28LexLgPCZ0F8v9BMgVtWQlag3V8AbuP3C8VZt85oMXMFE2xb4YQW4hRzrNIl00glLB76xr');
     //
     // const account = await stripe.accounts.create({
@@ -120,7 +175,7 @@ exports.test = async function(req, res){
     //     business_profile: {
     //         mcc: '4582',
     //         name: 'test',
-    //         url: 'https://my-first-business.com/',
+    //         // url: 'https://my-first-business.com/',
     //         product_description: 'Car Washes'
     //     },
     //     type: 'custom',
@@ -131,10 +186,10 @@ exports.test = async function(req, res){
     //         transfers: {requested: true},
     //     },
     // });
-
+    //
     //
     // console.log(account);
-    //
+    // //
     //
     //
     // const cardholder = await stripe.issuing.cardholders.create(
@@ -171,6 +226,77 @@ exports.test = async function(req, res){
     //
     //
     // console.log(cardholder);
+
+    // const stripe = require('stripe')('sk_test_your_key');
+
+    // const card = await stripe.customers.createSource('cus_OgX08hFV1PqP3L', {
+    //     source: 'tok_mastercard'
+    // });
+
+
+    // const stripe = require('stripe')('sk_test_51NsQHOHsAwmdsPL7mMUW05rPs1h28LexLgPCZ0F8v9BMgVtWQlag3V8AbuP3C8VZt85oMXMFE2xb4YQW4hRzrNIl00glLB76xr');
+
+    // const cardholder = await stripe.issuing.cardholders.create({
+    //     name: 'Jenny Rosen',
+    //     email: 'jenny.rosen@example.com',
+    //     phone_number: '+33634554477',
+    //     status: 'active',
+    //     type: 'individual',
+    //     individual: {
+    //         first_name: 'Jenny',
+    //         last_name: 'Rosen',
+    //         dob: {day: 1, month: 11, year: 1981},
+    //     },
+    //     billing: {
+    //         address: {
+    //             line1: '123 Main Street',
+    //             city: 'Paris',
+    //             state: 'GA',
+    //             postal_code: '75001',
+    //             country: 'FR',
+    //         },
+    //     },
+    // });
+    //
+    //
+    //
+    // console.log(cardholder);
+
+
+    // const card = await stripe.issuing.cards.create({
+    //     cardholder: 'ich_1NvhIWHsAwmdsPL7BTEe7PW8',
+    //     currency: 'eur',
+    //     type: 'virtual'
+    // });
+    //
+    //
+    // console.log(card);
+
+
+
+    // const card = await stripe.issuing.cards.update(
+    //     'ic_1NvhLbHsAwmdsPL7tZ8O8cDd',
+    //     {
+    //         status: 'active',
+    //     }
+    // );
+    //
+    // console.log(card);
+
+
+
+    // const paymentMethod = await stripe.paymentMethods.create({
+    //     type: 'card',
+    //     card: {
+    //         number: '4242424242424242',
+    //         exp_month: 8,
+    //         exp_year: 2024,
+    //         cvc: '314',
+    //     },
+    // });
+    //
+    //
+    // console.log(paymentMethod);
 
 
     // const accountLink = await stripe.accountLinks.create({

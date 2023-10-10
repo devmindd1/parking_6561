@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const {validationResult} = require('express-validator');
+const {baseUrlApi} = require('../../../config/defaults');
 const UserModel = require('../../../models/UserModel');
 const UsersTokenModel = require('../../../models/UsersTokenModel');
 const UsersEquipmentTypesMapModel = require('../../../models/UsersEquipmentTypesMapModel');
@@ -8,6 +9,7 @@ const UsersCardsModel = require('../../../models/UsersCardsModel');
 const {generateTokens, validateRefreshToken} = require('../../../services/tokenService');
 const UserDto = require('../../../dtos/UserDto');
 const {randomString} = require('../../../helpers/stringHelper');
+const MailHelper = require('../../../helpers/MailHelper');
 
 exports.recoverPasswordValidate = function(req, res){
     const errors = validationResult(req);
@@ -30,9 +32,12 @@ exports.recoverPassword = async function(req, res){
     }
 
     password = await bcrypt.hash(password, 3);
-    user.id = await userModel.update(req.user.id, {
-        password: password
+    await userModel.update(req.user.id, {
+        password: password,
+        forgot_password_token: null
     });
+
+    res.data.message = 'password recover success';
 
     return res.status(200).json(res.data);
 };
@@ -41,7 +46,7 @@ exports.forgotPassword = async function(req, res){
     const {email} = req.body;
     const userModel = new UserModel();
     const forgotPasswordToken = randomString(40);
-    const recoverEmailUrl = _base_url_api + 'recover-password/' + forgotPasswordToken;
+    const recoverEmailUrl = baseUrlApi + 'recover-password/' + forgotPasswordToken;
 
     const errors = validationResult(req);
     if(!errors.isEmpty()){
