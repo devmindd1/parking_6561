@@ -46,7 +46,7 @@ app.use('/admin',  [adminResponse(), adminRoutes]);
 
 app.use('/', [indexResponse(), indexRoutes]);
 
-io.on('connection', socket => new Socket(socket));
+// io.on('connection', socket => new Socket(socket));
 
 (() => {
     const port = 9026;

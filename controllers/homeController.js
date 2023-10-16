@@ -46,22 +46,26 @@ exports.test = async function(req, res){
 
     // 4242424242424242
     //
-    const card = await stripe.customers.createSource(
-        'cus_OgXI9nshn8gaK7',
-        {
-            number: 4242424242424242
-        }
-    );
-
-
-    // const card = await stripe.customers.updateSource(
-    //     'cus_OgX08hFV1PqP3L',
-    //     'card_1Nza2WHsAwmdsPL7R8YXSyJT',
-    //     {name: 'Jenny Rosen'}
+    // const card = await stripe.customers.createSource(
+    //     'cus_OgXI9nshn8gaK7',
+    //     {
+    //         number: 4242424242424242
+    //     }
     // );
 
 
-    console.log(card);
+    const paymentMethod = await stripe.paymentMethods.create({
+        type: 'customer_balance',
+        card: {
+            number: '5555555555554444',
+            exp_month: 8,
+            exp_year: 2024,
+            cvc: '314',
+        },
+    });
+
+
+    console.log(paymentMethod);
 
 
     // const stripe = require('stripe')('sk_test_51NsQHOHsAwmdsPL7mMUW05rPs1h28LexLgPCZ0F8v9BMgVtWQlag3V8AbuP3C8VZt85oMXMFE2xb4YQW4hRzrNIl00glLB76xr');

@@ -84,6 +84,8 @@ exports.create = async function(req, res){
         phone_number: req.body.phone_number,
         manager_name: req.body.manager_name,
         spaces_count: req.body.spaces_count,
+        hangar_count: req.body.hangar_count,
+        parking_count: req.body.parking_count,
         operating_license_img: await upload(req.files?.operating_license_img, airfieldsDocumentsPath),
         latitude: req.body.latitude,
         longitude: req.body.longitude,

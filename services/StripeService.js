@@ -100,6 +100,26 @@ class StripeService{
             {object: 'bank_account'}
         );
     }
+
+    createIntent(customerId, amount){
+        return this.s.charges.create({
+            customer: customerId,
+            amount: amount,
+            currency: 'eur',
+            transfer_group: 'ORDER10',
+        });
+    }
+
+    orderIntent(accountId){
+        return this.s.transfers.create({
+            amount: 2000,
+            currency: 'eur',
+            destination: accountId,
+            transfer_group: 'ORDER10',
+        });
+    }
+
+
 }
 
 module.exports = StripeService;

@@ -1,5 +1,6 @@
 const Model = require('../core/Model');
 const UserModel = require('./UserModel');
+const AirfieldsSpaceModel = require('./AirfieldsSpaceModel');
 
 class AirfieldModel extends Model{
     static _STATUSES = {
@@ -28,11 +29,30 @@ class AirfieldModel extends Model{
         return item;
     }
 
+    async getByOaciId(oaciTypeId){
+        const [airfield] = await  this.t.select('*')
+            .leftJoin('airfields_stripe_accounts', 'airfields.id', 'airfields_stripe_accounts.airfield_id')
+            .where({oaci_type_id: oaciTypeId});
+
+        return airfield;
+    }
+
     async getInfo(id){
         const [airfield] = await this.t.select('airfields.id', 'airfields.spaces_count', 'airfields.short_hr_price_eur',
                 'airfields.long_day_price_eur', 'oaci_types.airfield_name', 'oaci_types.oaci_code')
             .leftJoin('oaci_types', 'airfields.oaci_type_id', 'oaci_types.id')
             .where({'airfields.id': id});
+
+        this.freeResult();
+
+        return airfield;
+    }
+
+    async getInfoByOaciId(oaciId){
+        const [airfield] = await this.t.select('airfields.id', 'airfields.spaces_count', 'airfields.short_hr_price_eur',
+            'airfields.long_day_price_eur', 'oaci_types.airfield_name', 'oaci_types.oaci_code')
+            .leftJoin('oaci_types', 'airfields.oaci_type_id', 'oaci_types.id')
+            .where({'airfields.oaci_type_id': oaciId});
 
         this.freeResult();
 
@@ -78,27 +98,59 @@ class AirfieldModel extends Model{
             .where({status: AirfieldModel._STATUSES[1]['name']});
     }
 
-    getFreeAirfieldsByRange(startDate, endDate){
-        const query =`
+    async getAirfieldIdByOaciId(oaciId){
+        const [airfield] = await this.t.select('id')
+            .where({oaci_type_id: oaciId});
+
+        this.freeResult();
+
+        if(airfield) return airfield['id'];
+
+        return 0;
+    }
+
+    getFreeAirfieldsByRange(data){
+        const oaciId = data.oaciId || 0;
+        const spaceType = AirfieldsSpaceModel._TYPES[data.spaceType];
+        let startDate = '0';
+        let endDate = '0';
+
+        if(data.startDate && data.endDate){
+            startDate = data.startDate;
+            endDate = data.endDate;
+        }
+
+        let query =`
           SELECT
+            oaci_types.airfield_name,
             airfields.id,
-            airfields.latitude,
-            airfields.longitude,
-            f_airfields_spaces_bookings.airfields_space_id AS airfield_space_is_busy,
-            COUNT(airfields.id) AS free_spaces_count
+            airfields.spaces_count,
+            airfields.parking_count,
+            airfields.hangar_count,
+            oaci_types.latitude,
+            oaci_types.longitude,
+            airfields_spaces.type,
+            -- airfields_spaces.id AS airSpa_id,
+            -- f_airfields_spaces_bookings.airfields_space_id AS airfield_space_is_busy,
+            COUNT(*) AS free_spaces_count
           FROM airfields_spaces
           LEFT JOIN (
             SELECT airfields_spaces_bookings.airfields_space_id
             FROM airfields_spaces_bookings
             WHERE start_timestamp BETWEEN '${startDate}' AND '${endDate}'
-              OR end_timestamp BETWEEN '${startDate}' AND '${endDate}'
+               OR end_timestamp BETWEEN '${startDate}' AND '${endDate}'
             GROUP BY airfields_space_id
           ) AS f_airfields_spaces_bookings
-            ON airfields_spaces.id = f_airfields_spaces_bookings.airfields_space_id
+           ON airfields_spaces.id = f_airfields_spaces_bookings.airfields_space_id
           INNER JOIN airfields
-            ON airfields_spaces.airfield_id = airfields.id
+           ON airfields_spaces.airfield_id = airfields.id
+          LEFT JOIN oaci_types ON airfields.oaci_type_id = oaci_types.id
           WHERE f_airfields_spaces_bookings.airfields_space_id IS NULL
-          GROUP BY airfields.id`;
+            AND airfields_spaces.type = '${spaceType}'`;
+
+        if(oaciId) query += ` AND oaci_types.id = ${oaciId}`;
+
+        query += ` GROUP BY airfields.id`;
 
         return this.exec(query);
     }

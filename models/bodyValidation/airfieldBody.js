@@ -1,4 +1,4 @@
-const {body, check, param} = require("express-validator");
+const {body, check, param, query} = require("express-validator");
 const AirfieldModel = require("../../models/AirfieldModel");
 
 const insertBody = [
@@ -66,8 +66,27 @@ const getByIdBody = [
         .withMessage('airfieldId is require')
 ];
 
+const getFiltered = [
+    query('spaceType').notEmpty()
+        .withMessage('spaceType is require')
+];
+
+const bookBody = [
+    body('dateStart').notEmpty()
+        .withMessage('dateStart is require'),
+    body('dateEnd').notEmpty()
+        .withMessage('dateEnd is require'),
+    body('oaciId').notEmpty()
+        .withMessage('oaciId is require'),
+    body('paymentMethod').notEmpty()
+        .withMessage('paymentMethod is require'),
+    body('paymentMethod').isInt({ min: 0, max: 1})
+        .withMessage('paymentMethod is INT 0 || 1'),
+];
 
 module.exports = {
     insertBody,
-    getByIdBody
+    getByIdBody,
+    getFiltered,
+    bookBody
 };

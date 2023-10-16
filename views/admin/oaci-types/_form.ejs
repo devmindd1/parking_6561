@@ -1,5 +1,26 @@
 <div class="card-body">
     <div class="row">
+        <div class="col-sm-12">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <div style="display: none;" class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <input type="text" name="latitude" class="form-control" id="latitude"
+                       value="<%= model['latitude'] ? model['latitude'] : '' %>">
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <input type="text" name="longitude" class="form-control" id="longitude"
+                       value="<%= model['longitude'] ? model['longitude'] : '' %>">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
                 <label for="oaci_code">OACI</label>
@@ -56,4 +77,6 @@
     </div>
 </div>
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5wZV3BX0WF1P41cMheOw27qC8wnVBgQg&callback=initMap&libraries=places&v=weekly" defer></script>
 <script src="/js/admin/oaci-types/validation.js"></script>
+<script src="/js/admin/oaci-types/common/map.js"></script>

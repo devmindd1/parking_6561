@@ -237,17 +237,24 @@
 		},
 		{
 			"name": "http://192.168.77.129:9026/api/v1/airfields/free-by-range",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJhc2RkODhpaThkODhhQG1haWwuY29tIiwiZmlyc3RfbmFtZSI6InNkZnNkIiwibGFzdF9uYW1lIjoic2Rmc2RmIiwiaWF0IjoxNjk1OTg1MzU1LCJleHAiOjE2OTcyODEzNTV9.t_4mLuzAvHlMG4lJnpioSTNGd-DXJsgPKyLzp7qhpeY",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsImVtYWlsIjoidGVzdDFmMjNAbWFpbC5jb20iLCJmaXJzdF9uYW1lIjoic2Rmc2QiLCJsYXN0X25hbWUiOiJzZGZzZGYiLCJkYXRlX29mX2JpcnRoIjoiMjAxMi8xMi8xMiIsImNvdW50cnlfaWQiOiI1IiwiaWF0IjoxNjk3MDMxNDY5LCJleHAiOjE2OTgzMjc0Njl9.9Me5kxDGikZB9NHJGXQWs811mkq1vhEgkjFWLpsHD0o",
 						"type": "text"
 					}
 				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
 				"url": {
-					"raw": "http://192.168.77.129:9026/api/v1/airfields/free-by-range?startDate=2023-09-28 12:00&endDate=2023-09-28 18:00",
+					"raw": "http://192.168.77.129:9026/api/v1/airfields/free-by-range?startDate=2023-09-28 12:00&endDate=2023-09-28 18:00&spaceType=hangar",
 					"protocol": "http",
 					"host": [
 						"192",
@@ -270,6 +277,10 @@
 						{
 							"key": "endDate",
 							"value": "2023-09-28 18:00"
+						},
+						{
+							"key": "spaceType",
+							"value": "hangar"
 						}
 					]
 				}
@@ -399,6 +410,62 @@
 						"api",
 						"v1",
 						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://192.168.77.129:9026/api/v1/airfields/book",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsImVtYWlsIjoidGVzdDFmMjNAbWFpbC5jb20iLCJmaXJzdF9uYW1lIjoic2Rmc2QiLCJsYXN0X25hbWUiOiJzZGZzZGYiLCJkYXRlX29mX2JpcnRoIjoiMjAxMi0xMi0xMVQyMDowMDowMC4wMDBaIiwiY291bnRyeV9pZCI6NSwiaWF0IjoxNjk3MTk5NzI1LCJleHAiOjE2OTg0OTU3MjV9.L0Qw0NpcKw7fhcKZtyH2Q7ivkI2Fd01E-IiHyeTaDMI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "dateStart",
+							"value": "2023-10-18 12:00",
+							"type": "text"
+						},
+						{
+							"key": "dateEnd",
+							"value": "2023-10-18 18:00",
+							"type": "text"
+						},
+						{
+							"key": "oaciId",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "paymentMethod",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://192.168.77.129:9026/api/v1/airfields/book",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"77",
+						"129"
+					],
+					"port": "9026",
+					"path": [
+						"api",
+						"v1",
+						"airfields",
+						"book"
 					]
 				}
 			},

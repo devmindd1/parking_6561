@@ -15,7 +15,7 @@
 					"formdata": [
 						{
 							"key": "email",
-							"value": "as88ii8d88a@mail.com",
+							"value": "asdd88ii8d88a@mail.com",
 							"type": "text"
 						},
 						{
@@ -215,7 +215,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://192.168.77.129:9026/api/v1/sources/aircraft-info-filtered/asd",
+					"raw": "http://192.168.77.129:9026/api/v1/sources/aircraft-info-filtered/SAUL",
 					"protocol": "http",
 					"host": [
 						"192",
@@ -229,7 +229,7 @@
 						"v1",
 						"sources",
 						"aircraft-info-filtered",
-						"asd"
+						"SAUL"
 					]
 				}
 			},
@@ -291,7 +291,7 @@
 						},
 						{
 							"key": "password",
-							"value": "123456789",
+							"value": "",
 							"type": "text"
 						}
 					]
@@ -309,6 +309,96 @@
 						"api",
 						"v1",
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://192.168.77.129:9026/api/v1/airfields/71",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoidGVzdDExMUBtYWlsLmNvbSIsImZpcnN0X25hbWUiOiJzZGZzZCIsImxhc3RfbmFtZSI6InNkZnNkZiIsImlhdCI6MTY5NjgzNDg3OSwiZXhwIjoxNjk4MTMwODc5fQ.lopuB96byTgZKeLuloeEowYAowtn2ahY3FcKQzRptbc",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://192.168.77.129:9026/api/v1/airfields/71",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"77",
+						"129"
+					],
+					"port": "9026",
+					"path": [
+						"api",
+						"v1",
+						"airfields",
+						"71"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "192.168.77.129:9026/api/v1/users",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoidGVzdDEyM0BtYWlsLmNvbSIsImZpcnN0X25hbWUiOiJzZGZzZCIsImxhc3RfbmFtZSI6InNkZnNkZiIsImRhdGVfb2ZfYmlydGgiOiIyMDEyLzEyLzEyIiwiY291bnRyeV9pZCI6IjUiLCJpYXQiOjE2OTY4NDI4OTUsImV4cCI6MTY5ODEzODg5NX0.9ksOGmn-VavFQj03rMKQ6zqV9uc9l7LVH4WgxEsAB9I",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "country_id",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "first_name",
+							"value": "first_name",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "dfsdfs",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "test123@mail.com",
+							"type": "text"
+						},
+						{
+							"key": "date_of_birth",
+							"value": "1995/12/12",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "192.168.77.129:9026/api/v1/users",
+					"host": [
+						"192",
+						"168",
+						"77",
+						"129"
+					],
+					"port": "9026",
+					"path": [
+						"api",
+						"v1",
+						"users"
 					]
 				}
 			},

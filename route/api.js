@@ -2,7 +2,7 @@ const router = new (require('express').Router)();
 const apiAuthMiddleware = require('../middlewares/apiAuthMiddleware');
 const recoverPasswordMiddleware = require('../middlewares/recoverPasswordMiddleware');
 const {signUpBody, loginBody, forgotPasswordBody, recoverPasswordBody, updateBody} = require('../models/bodyValidation/userBody');
-const {getByIdBody} = require('../models/bodyValidation/airfieldBody');
+const {getByIdBody, getFiltered, bookBody} = require('../models/bodyValidation/airfieldBody');
 
 
 const auth = require('../controllers/api/v1/authController');
@@ -30,8 +30,10 @@ router.post('/recover-password/:forgotPasswordToken', [recoverPasswordMiddleware
 //todo authmidlware to all('*'); without login sign in
 
 router.put('/users', [apiAuthMiddleware, updateBody], user.update);
-router.get('/airfields/free-by-range', [apiAuthMiddleware], airfield.freeAirfieldsByRange);
-router.get('/airfields/:airfieldId', [apiAuthMiddleware, getByIdBody], airfield.getById);
+router.get('/airfields/free-by-range', [apiAuthMiddleware, getFiltered], airfield.freeAirfieldsByRange);
+// router.get('/airfields/:airfieldId', [apiAuthMiddleware, getByIdBody], airfield.getById);
+router.get('/airfields/:oaciId', [apiAuthMiddleware, getByIdBody], airfield.getByOaciId);
+router.post('/airfields/book', [apiAuthMiddleware, bookBody], airfield.book);
 router.put('/logout', [apiAuthMiddleware], auth.logout);
 // router.post('/logout', [authMiddleware], auth.logout);
 
