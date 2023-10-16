@@ -112,8 +112,8 @@ class AirfieldModel extends Model{
     getFreeAirfieldsByRange(data){
         const oaciId = data.oaciId || 0;
         const spaceType = AirfieldsSpaceModel._TYPES[data.spaceType];
-        let startDate = '0';
-        let endDate = '0';
+        let startDate = '1970-01-01 00:00';
+        let endDate = '1970-01-01 00:00';
 
         if(data.startDate && data.endDate){
             startDate = data.startDate;
