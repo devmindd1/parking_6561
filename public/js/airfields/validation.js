@@ -63,9 +63,6 @@ addEventListener('DOMContentLoaded', () => {
             'stripe[postal_code]': {
                 required: true
             },
-            address: {
-                required: true
-            },
             runway_type_ids: {
                 required: true
             },

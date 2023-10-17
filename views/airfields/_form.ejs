@@ -5,18 +5,6 @@
         </div>
     </div>
 
-    <div style="display: block;" class="row">
-        <div class="col-sm-6">
-            <div class="form-group">
-                <input type="text" name="latitude" class="form-control" id="latitude">
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="form-group">
-                <input type="text" name="longitude" class="form-control" id="longitude">
-            </div>
-        </div>
-    </div>
     <div class="row margin">
         <div class="col-sm-6">
             <input id="short_hr_price_eur_input" type="text" name="short_hr_price_eur" value="10">
@@ -30,10 +18,10 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label class="form-check-label">OACI</label>
-                <select name="oaci_type_id" class="form-control select2" style="width: 100%;">
+                <select name="oaci_type_id" id="oaci_type_id" class="form-control select2 select2Oaci" style="width: 100%;">
                     <option value="" selected="selected">-- Select OACI --</option>
                     <% oaciTypes.forEach(function(oaciType) { %>
-                        <option value="<%= oaciType.id %>">
+                        <option data-coord="<%= oaciType.latitude %>,<%= oaciType.longitude %>" value="<%= oaciType.id %>">
                             <%= oaciType.oaci_code %>: &#160;&#160; <%= oaciType.airfield_name %>
                         </option>
                     <% }); %>
@@ -53,12 +41,6 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-6">
-            <div class="form-group">
-                <label class="form-check-label">Address</label>
-                <input type="text" id="address" name="address" class="form-control" placeholder="Select your location(OACI)">
-            </div>
-        </div>
 
         <div class="col-md-6">
             <div class="form-group">

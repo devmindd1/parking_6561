@@ -15,9 +15,6 @@ exports.index = async function(req, res){
 };
 
 exports.edit = async function(req, res){
-
-    console.log('ok');
-
     const {id} = req.params;
     const airfieldModel = new AirfieldModel();
     const airfieldsSourceModel = new AirfieldsSourceModel();
@@ -33,8 +30,6 @@ exports.edit = async function(req, res){
     res.data.stripeAccount =  await airfieldsStripeAccountModel.getByAirfieldId(id);
     res.data.stripeAccountBanks =  await airfieldsStripeAccountsBankModel.getByAirfieldStripeAccountId(res.data.stripeAccount.id);
 
-    console.log(res.data.stripeAccountBanks);
-
     res.data.statuses =  AirfieldModel._STATUSES;
 
     return res.render("admin/airfields/edit", res.data);
@@ -48,7 +43,9 @@ exports.update = async function(req, res){
 
     res.data.status = airfield_status;
 
-    await airfieldModel.update(id, res.data);
+    await airfieldModel.update(id, {
+        status: airfield_status
+    });
 
     return res.redirect("/admin/airfields");
 };

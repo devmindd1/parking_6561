@@ -32,6 +32,10 @@ class Model{
         return id;
     }
 
+    disableOnlyFullGroupBy(){
+        return this.exec(`SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));`);
+    }
+
     update(id, data){
         return this.t.update(data).where({id: id});
     }

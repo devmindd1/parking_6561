@@ -13,6 +13,8 @@ const cookieParser = require('cookie-parser');
 const {apiResponse, adminResponse, indexResponse} = require('./core/Response');
 const {defaultStaticPath} = require('./config/defaults');
 
+const Model = require('./core/Model');
+
 const app = express();
 const server = require('http').createServer(app);
 
@@ -33,7 +35,11 @@ app.use(cookieParser());
 app.use(fileUpload({ createParentPath: true }));
 app.use(express.static(`${__dirname}/${defaultStaticPath}`));
 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
+    const model = new Model('countries');
+
+    await model.disableOnlyFullGroupBy();
+
     app.res = res;
     next();
 });

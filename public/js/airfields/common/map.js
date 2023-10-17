@@ -17,6 +17,9 @@ function initMap() {
     function createNewMarker(latLng){
         if(marker) marker.setMap(null);
 
+
+        console.log(latLng);
+
         marker = new google.maps.Marker({
             position: new google.maps.LatLng(latLng),
             map: map,
@@ -51,6 +54,18 @@ function initMap() {
                 addressInput.value = point.formatted_address;
             }
         });
+    });
+
+    $(document).on('change', '#oaci_type_id', function(e){
+        const coords = $(this).find(':selected').attr('data-coord').split(',');
+
+
+
+        if(coords[0] !== 'null' && coords[1] !== 'null')
+            createNewMarker({
+                lat: parseFloat(coords[0]),
+                lng: parseFloat(coords[1])
+            });
     });
 }
 

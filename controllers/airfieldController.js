@@ -79,7 +79,6 @@ exports.create = async function(req, res){
 
     const newAirfieldId = await airfieldModel.insert({
         user_id: req.user.id,
-        address: req.body.address,
         primary_email: req.body.primary_email,
         phone_number: req.body.phone_number,
         manager_name: req.body.manager_name,
@@ -87,8 +86,6 @@ exports.create = async function(req, res){
         hangar_count: req.body.hangar_count,
         parking_count: req.body.parking_count,
         operating_license_img: await upload(req.files?.operating_license_img, airfieldsDocumentsPath),
-        latitude: req.body.latitude,
-        longitude: req.body.longitude,
         oaci_type_id: parseInt(req.body.oaci_type_id),
         short_hr_price_eur: parseFloat(req.body.short_hr_price_eur),
         long_day_price_eur: parseFloat(req.body.long_day_price_eur),

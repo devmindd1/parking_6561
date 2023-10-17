@@ -57,8 +57,6 @@ const insertBody = [
         }),
     body('runway_type_ids').notEmpty()
         .withMessage('runway_type_ids is require'),
-    body('address').notEmpty()
-        .withMessage('Address name is require')
 ];
 
 const getByIdBody = [
