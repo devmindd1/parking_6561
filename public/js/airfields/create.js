@@ -160,11 +160,11 @@ addEventListener('DOMContentLoaded', () => {
     });
 
     $('#long_day_price_eur_input').ionRangeSlider({
-        min     : 0.1,
-        max     : 20,
+        min     : 24,
+        max     : 480,
         type    : 'single',
         step    : 0.1,
-        postfix : ' eur HT/hr',
+        postfix : ' eur HT/day',
         prettify: false,
         // hasGrid : true
     });
