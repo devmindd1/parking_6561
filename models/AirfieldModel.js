@@ -19,8 +19,9 @@ class AirfieldModel extends Model{
     async getById(id){
         const [item] = await this.t.select('users.id', 'users.first_name', 'users.last_name', 'users.email', 'airfields.id AS airfield_id',
             'airfields.spaces_count', 'airfields.address', 'airfields.primary_email', 'airfields.manager_name',
-            'airfields.operating_license_img', 'airfields.status', 'airfields.phone_number')
+            'airfields.operating_license_img', 'airfields.status', 'airfields.phone_number', 'oaci_types.latitude', 'oaci_types.longitude')
             .leftJoin('users', 'airfields.user_id', 'users.id')
+            .leftJoin('oaci_types', 'airfields.oaci_type_id', 'oaci_types.id')
             .where({'airfields.id': id});
 
         this.freeResult();

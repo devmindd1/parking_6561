@@ -26,35 +26,35 @@ function initMap() {
         });
     }
 
-    searchBox.addListener("places_changed", () => {
-        const [place] = searchBox.getPlaces();
+    // searchBox.addListener("places_changed", () => {
+    //     const [place] = searchBox.getPlaces();
+    //
+    //     latitudeInput.value = place.geometry.location.lat();
+    //     longitudeInput.value = place.geometry.location.lng();
+    //
+    //     map.setCenter(place.geometry.location);
+    //
+    //     createNewMarker(place.geometry.location);
+    // });
 
-        latitudeInput.value = place.geometry.location.lat();
-        longitudeInput.value = place.geometry.location.lng();
-
-        map.setCenter(place.geometry.location);
-
-        createNewMarker(place.geometry.location);
-    });
-
-    map.addListener("click", (mapsMouseEvent, t, r) => {
-        const urlLatLng = mapsMouseEvent.latLng.toUrlValue();
-        $.ajax({
-            type: "POST",
-            url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${urlLatLng}&key=AIzaSyB5wZV3BX0WF1P41cMheOw27qC8wnVBgQg`,
-            success: function (data) {
-                if(!data.results || !data.results[0]) return;
-                const point = data.results[0];
-
-                createNewMarker(point.geometry.location);
-
-                latitudeInput.value = point.geometry.location.lat;
-                longitudeInput.value = point.geometry.location.lng;
-
-                addressInput.value = point.formatted_address;
-            }
-        });
-    });
+    // map.addListener("click", (mapsMouseEvent, t, r) => {
+    //     const urlLatLng = mapsMouseEvent.latLng.toUrlValue();
+    //     $.ajax({
+    //         type: "POST",
+    //         url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${urlLatLng}&key=AIzaSyB5wZV3BX0WF1P41cMheOw27qC8wnVBgQg`,
+    //         success: function (data) {
+    //             if(!data.results || !data.results[0]) return;
+    //             const point = data.results[0];
+    //
+    //             createNewMarker(point.geometry.location);
+    //
+    //             latitudeInput.value = point.geometry.location.lat;
+    //             longitudeInput.value = point.geometry.location.lng;
+    //
+    //             addressInput.value = point.formatted_address;
+    //         }
+    //     });
+    // });
 
     $(document).on('change', '#oaci_type_id', function(e){
         const coords = $(this).find(':selected').attr('data-coord').split(',');

@@ -57,7 +57,7 @@ exports.create = async function(req, res){
     const countryModel = new CountryModel();
 
     res.data.runwayTypes = await runwayTypeModel.getAll();
-    res.data.oaciTypes = await oaciTypeModel.getAll();
+    res.data.oaciTypes = await oaciTypeModel.getAllFree();
     res.data.amenities = await amenityTypeModel.getAll();
     res.data.stripeCountries = await countryModel.getAllStripeAvailable();
     res.data.countries = await countryModel.getAll();
