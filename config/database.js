@@ -1,13 +1,13 @@
-module.exports = require('knex')({
-    client: 'mysql2',
-    connection: {
-        host : '127.0.0.1',
-        user : 'root',
-        password : '',
-        database : 'parking',
-        multipleStatements: true
-    }
-});
+// module.exports = require('knex')({
+//     client: 'mysql2',
+//     connection: {
+//         host : '127.0.0.1',
+//         user : 'root',
+//         password : '',
+//         database : 'parking',
+//         multipleStatements: true
+//     }
+// });
 
 // module.exports = require('knex')({
 //     client: 'mysql2',
@@ -21,13 +21,13 @@ module.exports = require('knex')({
 // });
 
 /////// romain domain
-// module.exports = require('knex')({
-//     client: 'mysql2',
-//     connection: {
-//         host:'134.209.113.29',
-//         user: 'avionest_my_1',
-//         database: 'parking',
-//         password: 'test_11##22',
-//         multipleStatements: true
-//     }
-// });
+module.exports = require('knex')({
+    client: 'mysql2',
+    connection: {
+        host:'134.209.113.29',
+        user: 'avionest_my_1',
+        database: 'parking',
+        password: 'test_11##22',
+        multipleStatements: true
+    }
+});
