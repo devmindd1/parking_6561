@@ -36,10 +36,6 @@ app.use(fileUpload({ createParentPath: true }));
 app.use(express.static(`${__dirname}/${defaultStaticPath}`));
 
 app.use(async (req, res, next) => {
-    const model = new Model('countries');
-
-    await model.disableOnlyFullGroupBy();
-
     app.res = res;
     next();
 });
@@ -54,7 +50,11 @@ app.use('/', [indexResponse(), indexRoutes]);
 
 // io.on('connection', socket => new Socket(socket));
 
-(() => {
+(async () => {
+
+    const model = new Model('countries');
+    await model.disableOnlyFullGroupBy();
+
     const port = 9026;
     // server.listen(port, '192.168.77.129', () => console.log('server in ' + port));
     server.listen(port, () => console.log('server in ' + port));
