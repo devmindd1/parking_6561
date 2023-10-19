@@ -1,7 +1,7 @@
 require('dotenv').config();
 const path = require('path');
-const Socket = require('./core/Socket');
-const socketIo = require('socket.io');
+// const Socket = require('./core/Socket');
+// const socketIo = require('socket.io');
 const express = require('express');
 const bodyParser = require('body-parser');
 const apiRoutes = require('./route/api');
@@ -18,13 +18,13 @@ const Model = require('./core/Model');
 const app = express();
 const server = require('http').createServer(app);
 
-const io = socketIo(server, {
-    cors: {
-        withCredentials: true,
-        origin: 'http://music',
-        methods: ["GET", "POST"]
-    }
-});
+// const io = socketIo(server, {
+//     cors: {
+//         withCredentials: true,
+//         origin: 'http://music',
+//         methods: ["GET", "POST"]
+//     }
+// });
 
 app.engine('ejs', ejs_locals_engine);
 app.set("views", path.join(__dirname, "views"));
@@ -61,6 +61,6 @@ app.use('/', [indexResponse(), indexRoutes]);
     process.on('uncaughtException', (err) => {
         console.log(err);
 
-        app.res.send('ok');
+        app.res.status(500).send('server error');
     })
 })();
