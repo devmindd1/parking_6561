@@ -51,7 +51,6 @@ app.use('/', [indexResponse(), indexRoutes]);
 // io.on('connection', socket => new Socket(socket));
 
 (async () => {
-
     const model = new Model('countries');
     await model.disableOnlyFullGroupBy();
 

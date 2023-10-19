@@ -24,7 +24,7 @@
 module.exports = require('knex')({
     client: 'mysql2',
     connection: {
-        host:'134.209.113.29',
+        host: '134.209.113.29',
         user: 'avionest_my_1',
         database: 'parking',
         password: 'test_11##22',

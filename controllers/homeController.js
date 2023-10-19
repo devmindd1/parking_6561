@@ -42,7 +42,27 @@ exports.test = async function(req, res){
     // });
 
 
+
+
+
     const stripe = require('stripe')('sk_test_51NsQHOHsAwmdsPL7mMUW05rPs1h28LexLgPCZ0F8v9BMgVtWQlag3V8AbuP3C8VZt85oMXMFE2xb4YQW4hRzrNIl00glLB76xr');
+
+    const customer = await stripe.customers.retrieveSource(
+        'cus_OgXI9nshn8gaK7',
+        'card_1Nza48HsAwmdsPL7fPy4L06i'
+    );
+
+
+
+    console.log(customer);
+
+    const cards = await stripe.customers.listSources(
+        'cus_OgXI9nshn8gaK7',
+        {object: 'card'}
+    );
+
+    console.log(cards);
+
 
     // 4242424242424242
     //
@@ -54,18 +74,18 @@ exports.test = async function(req, res){
     // );
 
 
-    const paymentMethod = await stripe.paymentMethods.create({
-        type: 'customer_balance',
-        card: {
-            number: '5555555555554444',
-            exp_month: 8,
-            exp_year: 2024,
-            cvc: '314',
-        },
-    });
+    // const paymentMethod = await stripe.paymentMethods.create({
+    //     type: 'customer_balance',
+    //     card: {
+    //         number: '5555555555554444',
+    //         exp_month: 8,
+    //         exp_year: 2024,
+    //         cvc: '314',
+    //     },
+    // });
 
 
-    console.log(paymentMethod);
+    // console.log(paymentMethod);
 
 
     // const stripe = require('stripe')('sk_test_51NsQHOHsAwmdsPL7mMUW05rPs1h28LexLgPCZ0F8v9BMgVtWQlag3V8AbuP3C8VZt85oMXMFE2xb4YQW4hRzrNIl00glLB76xr');

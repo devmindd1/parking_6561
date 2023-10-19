@@ -14,12 +14,12 @@ module.exports = async function (req, res, next){
         if(!accessToken)
             return res.status(401).json();
 
-        const userTokenRow = await usersTokenModel.getByAccessToken(accessToken);
-        if(!userTokenRow)
-            return res.status(401).json();
-
         const user = validateAccessToken(accessToken);
         if(!user)
+            return res.status(401).json();
+
+        const userTokenRow = await usersTokenModel.getByUserId(user.id);
+        if(!userTokenRow || userTokenRow.access_token !== accessToken)
             return res.status(401).json();
 
         req.user = new UserDto(user);

@@ -1,0 +1,7 @@
+root@ password => asd97*/34579Asff
+mysql pass => sa$d798#453#g
+
+
+
+134.209.113.29
+avionest_my@localhost IDENTIFIED BY 's#a$d7+_98#453R';

@@ -42,21 +42,10 @@ const recoverPasswordBody = [
 ];
 
 const signUpBody = [
-    body('card_number').notEmpty()
-        .withMessage('card_number is require'),
-    body('card_number').isCreditCard()
-        .withMessage('card number not valid'),
-    body('card_cvv').notEmpty().isLength({ min: 3, max: 3 })
-        .withMessage('card_cvv is require (min 3 max 3)'),
-    body('card_date').notEmpty()
-        .custom(async value => {
-            if(!(/\b(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})\b/.test(value)))
-                throw new Error('card_date is not valid (MM/YY)');
-        }),
-    body('card_name').isAlpha('en-US', {ignore: ' '})
-        .withMessage('only en-US alpha and ( spaces )'),
-    body('card_name').notEmpty().isAlpha('en-US', {ignore: ' '})
-        .withMessage('card_name is require'),
+    body('stripe_card_token').notEmpty()
+        .withMessage('stripe_card_token is require'),
+    body('stripe_card_id').notEmpty()
+        .withMessage('stripe_card_id is require'),
     body('additional_qualifications').notEmpty()
         .withMessage('additional_qualifications is require (one or more)'),
     body('equipments').notEmpty()

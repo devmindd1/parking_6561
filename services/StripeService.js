@@ -37,6 +37,27 @@ class StripeService{
         return this.result;
     }
 
+    attachSourceToCustomer(customerId, sourceToken){
+        return this.s.customers.createSource(
+            customerId,
+            {source: sourceToken}
+        );
+    }
+
+    getCustomerCardList(customerId){
+        return this.s.customers.listSources(
+            customerId,
+            {object: 'card'}
+        );
+    }
+
+    deleteCustomerSource(customerId, sourceId){
+        return this.s.customers.deleteSource(
+            customerId,
+            sourceId
+        );
+    }
+
     createAccountToken(account){
         const dob = new Date(account.date_of_birth);
         return this.s.tokens.create({
@@ -100,6 +121,11 @@ class StripeService{
             {object: 'bank_account'}
         );
     }
+
+    createCustomer(data){
+        return this.s.customers.create(data);
+    }
+
 
     createIntent(customerId, amount){
         return this.s.charges.create({

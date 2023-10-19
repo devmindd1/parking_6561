@@ -3,6 +3,7 @@ const apiAuthMiddleware = require('../middlewares/apiAuthMiddleware');
 const recoverPasswordMiddleware = require('../middlewares/recoverPasswordMiddleware');
 const {signUpBody, loginBody, forgotPasswordBody, recoverPasswordBody, updateBody} = require('../models/bodyValidation/userBody');
 const {getByIdBody, getFiltered, bookBody} = require('../models/bodyValidation/airfieldBody');
+const {insertCardBody} = require('../models/bodyValidation/usersCardBody');
 
 
 const auth = require('../controllers/api/v1/authController');
@@ -30,6 +31,9 @@ router.post('/recover-password/:forgotPasswordToken', [recoverPasswordMiddleware
 //todo authmidlware to all('*'); without login sign in
 
 router.put('/users', [apiAuthMiddleware, updateBody], user.update);
+router.post('/users/delete-card', [apiAuthMiddleware], user.deleteCard);
+router.get('/users/get-cards', [apiAuthMiddleware], user.getCards);
+router.post('/users/insert-card', [apiAuthMiddleware, insertCardBody], user.insertCard);
 router.get('/airfields/free-by-range', [apiAuthMiddleware, getFiltered], airfield.freeAirfieldsByRange);
 // router.get('/airfields/:airfieldId', [apiAuthMiddleware, getByIdBody], airfield.getById);
 router.get('/airfields/:oaciId', [apiAuthMiddleware, getByIdBody], airfield.getByOaciId);

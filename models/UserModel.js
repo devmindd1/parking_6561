@@ -30,6 +30,19 @@ class UserModel extends Model{
         return user;
     }
 
+
+    async getUserStripeCustomerId(userId){
+        const [user] = await this.t.select('stripe_customer_id')
+            .where({id: userId});
+
+
+        console.log(user);
+
+        if(!user || !user['stripe_customer_id']) return '';
+
+        return user['stripe_customer_id'];
+    }
+
     getAllOwners(){
         return this.t.select('id', 'status', 'email', 'first_name', 'last_name')
             .where({role: UserModel._ROLES['owner']});

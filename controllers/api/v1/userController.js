@@ -1,5 +1,7 @@
 const {validationResult} = require('express-validator');
 const UserModel = require('../../../models/UserModel');
+const UsersCardsModel = require('../../../models/UsersCardsModel');
+const StripeService = require('../../../services/StripeService');
 
 exports.update = async function(req, res){
     const userModel = new UserModel();
@@ -20,19 +22,72 @@ exports.update = async function(req, res){
     return res.status(200).json(res.data);
 };
 
+exports.deleteCard = async function(req, res){
+    const {cardId} = req.body;
+    const stripe = new StripeService();
+    const userModel = new UserModel();
+    const usersCardsModel = new UsersCardsModel();
 
-// exports.profile = async function(req, res){
-//     const postModel = new PostModel();
-//     const postsSourceModel = new PostsSourceModel();
-//     const usersFollowersModel = new UsersFollowersModel();
-//
-//     res.data.followersCount = await usersFollowersModel.getFollowersCount(req.user.id);
-//     res.data.followingsCount = await usersFollowersModel.getFollowingsCount(req.user.id);
-//     res.data.posts = await postModel.getPostsByUserId(req.user.id);
-//     res.data.postsCount = res.data.posts.length;
-//     res.data.postsSources = await postsSourceModel.getByPostIdsIndexed(
-//         res.data.posts.map(p => p.id)
-//     );
-//
-//     return res.status(200).json(res.response);
-// };
+    const customerId = await userModel.getUserStripeCustomerId(req.user.id);
+    const card = await usersCardsModel.getUserCardBySourceId(req.user.id, cardId);
+
+    if(!card)
+        return res.status(400).json(res.data);
+
+    const deletedCard = await stripe._call('deleteCustomerSource', [customerId, cardId]);
+    if(!deletedCard.success)
+        return res.status(400).json(res.data);
+
+    await await usersCardsModel.deleteById(card.id);
+
+    return res.status(200).json(res.data);
+};
+
+exports.getCards = async function(req, res){
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        res.data.validationErrors = errors.array();
+        return res.status(400).json(res.data);
+    }
+
+    const userModel = new UserModel();
+    const stripe = new StripeService();
+
+    const customerId = await userModel.getUserStripeCustomerId(req.user.id);
+
+    const cards = await stripe._call('getCustomerCardList', [customerId]);
+    if(!cards.success)
+        return res.status(400).json(res.data);
+
+    res.data.cards = cards.data;
+
+    return res.status(200).json(res.data);
+};
+
+exports.insertCard = async function(req, res){
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        res.data.validationErrors = errors.array();
+        return res.status(400).json(res.data);
+    }
+
+    const userModel = new UserModel();
+    const stripe = new StripeService();
+    const usersCardsModel = new UsersCardsModel();
+
+    const customerId = await userModel.getUserStripeCustomerId(req.user.id);
+
+    const card = await stripe._call('attachSourceToCustomer', [customerId, req.body.stripe_card_token]);
+    if(!card.success)
+        return res.status(400).json(res.data);
+
+
+    console.log(card);
+
+    await usersCardsModel.insert({
+        user_id: req.user.id,
+        source_id: req.body.stripe_card_id
+    });
+
+    return res.status(200).json(res.data);
+};

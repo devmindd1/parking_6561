@@ -8,6 +8,7 @@ const UsersAdditionalQualificationTypesMapModel = require('../../../models/Users
 const UsersCardsModel = require('../../../models/UsersCardsModel');
 const {generateTokens, validateRefreshToken} = require('../../../services/tokenService');
 const UserDto = require('../../../dtos/UserDto');
+const StripeService = require('../../../services/StripeService');
 const {randomString} = require('../../../helpers/stringHelper');
 const MailHelper = require('../../../helpers/MailHelper');
 
@@ -109,6 +110,7 @@ exports.refresh = async function(req, res){
 exports.signUp = async function(req, res){
     let user = req.body;
     const userModel = new UserModel();
+    const stripe = new StripeService();
     const usersTokenModel = new UsersTokenModel();
     const usersCardsModel = new UsersCardsModel();
     const usersEquipmentTypesMapModel = new UsersEquipmentTypesMapModel();
@@ -120,14 +122,23 @@ exports.signUp = async function(req, res){
         return res.status(400).json(res.data);
     }
 
-    const password = await bcrypt.hash(user.password, 3);
+    const customer = await stripe._call('createCustomer', [{
+        description: `${req.body.first_name} ${req.body.last_name} ${req.body.email}`,
+        source: req.body.stripe_card_token,
+    }]);
+
+    if(!customer.success){
+        res.data.errorMessage = customer.error.message;
+        return res.status(400).json(res.data);
+    }
+
     user.id = await userModel.insert({
         role: UserModel._ROLES['user'],
         email: req.body.email,
         username: req.body.username,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
-        password: password,
+        password: await bcrypt.hash(user.password, 3),
         country_id: req.body.country_id,
         date_of_birth: req.body.date_of_birth,
         home_base: req.body.home_base || '',
@@ -136,7 +147,8 @@ exports.signUp = async function(req, res){
         issue_date: req.body.issue_date,
         license_number: req.body.license_number,
         valid_until_date: req.body.valid_until_date,
-        issuing_country_id: req.body.issuing_country_id
+        issuing_country_id: req.body.issuing_country_id,
+        stripe_customer_id: customer.data.id
     });
 
     for(const equipment of req.body.equipments)
@@ -153,10 +165,7 @@ exports.signUp = async function(req, res){
 
     await usersCardsModel.insert({
         user_id: user.id,
-        name_on_card: req.body.card_name,
-        cvv: req.body.card_cvv,
-        card_number: req.body.card_number,
-        valid_date: req.body.card_date,
+        source_id: req.body.stripe_card_id,
     });
 
     res.data.user = new UserDto(user);

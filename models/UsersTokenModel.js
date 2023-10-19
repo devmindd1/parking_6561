@@ -29,6 +29,16 @@ class UsersTokenModel extends Model{
         return user;
     }
 
+    async getByUserId(userId){
+        const [user] = await this.t
+            .select('user_id', 'access_token')
+            .where({
+                user_id: userId
+            });
+
+        return user;
+    }
+
     async getByRefreshToken(refreshToken){
         const [user] = await this.t
             .select('user_id')
