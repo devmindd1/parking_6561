@@ -4,9 +4,11 @@ const AirfieldModel = require('../../../models/AirfieldModel');
 const AirfieldsAmenityTypesMapModel = require('../../../models/AirfieldsAmenityTypesMapModel');
 const AirfieldsRunwayTypesMapModel = require('../../../models/AirfieldsRunwayTypesMapModel');
 const AirfieldsSourceModel = require('../../../models/AirfieldsSourceModel');
+const OaciTypeModel = require('../../../models/OaciTypeModel');
 
 exports.freeAirfieldsByRange = async function(req, res){
     const airfieldModel = new AirfieldModel();
+    const oaciTypeModel = new OaciTypeModel();
 
     const errors = validationResult(req);
     if(!errors.isEmpty()){
@@ -15,6 +17,8 @@ exports.freeAirfieldsByRange = async function(req, res){
     }
 
     res.data.airfields = await airfieldModel.getFreeAirfieldsByRange(req.query);
+
+    res.data.oacies = await oaciTypeModel.getAllNotConnected();
 
     return res.status(200).json(res.data);
 };

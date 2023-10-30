@@ -2,8 +2,7 @@ const AirfieldModel = require('../../models/AirfieldModel.js');
 const AirfieldsSourceModel = require('../../models/AirfieldsSourceModel.js');
 const RunwayTypeModel = require('../../models/RunwayTypeModel.js');
 const AirfieldsRunwayTypesMapModel = require('../../models/AirfieldsRunwayTypesMapModel.js');
-const AirfieldsStripeAccountModel = require('../../models/AirfieldsStripeAccountModel.js');
-const AirfieldsStripeAccountsBankModel = require('../../models/AirfieldsStripeAccountsBankModel.js');
+const AirfieldsBankModel = require('../../models/AirfieldsBankModel.js');
 
 exports.index = async function(req, res){
     const airfieldModel = new AirfieldModel();
@@ -20,16 +19,13 @@ exports.edit = async function(req, res){
     const airfieldsSourceModel = new AirfieldsSourceModel();
     const runwayTypeModel = new RunwayTypeModel();
     const airfieldsRunwayTypesMapModel = new AirfieldsRunwayTypesMapModel();
-    const airfieldsStripeAccountModel = new AirfieldsStripeAccountModel();
-    const airfieldsStripeAccountsBankModel = new AirfieldsStripeAccountsBankModel();
+    const airfieldsBankModel = new AirfieldsBankModel();
 
     res.data.airfield =  await airfieldModel.getById(id);
     res.data.airfieldPhotos =  await airfieldsSourceModel.getByAirfieldId(id);
     res.data.runwayTypes =  await runwayTypeModel.getAllIndexedById();
     res.data.airfieldRunways =  await airfieldsRunwayTypesMapModel.getByAirfieldId(id);
-    res.data.stripeAccount =  await airfieldsStripeAccountModel.getByAirfieldId(id);
-    res.data.stripeAccountBanks =  await airfieldsStripeAccountsBankModel.getByAirfieldStripeAccountId(res.data.stripeAccount.id);
-
+    res.data.bankInfo =  await airfieldsBankModel.getByAirfieldId(id);
     res.data.statuses =  AirfieldModel._STATUSES;
 
     return res.render("admin/airfields/edit", res.data);

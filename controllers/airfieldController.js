@@ -10,8 +10,7 @@ const OaciTypeModel = require('../models/OaciTypeModel');
 const AmenityTypeModel = require('../models/AmenityTypeModel');
 const AirfieldsRunwayTypesMapModel = require('../models/AirfieldsRunwayTypesMapModel');
 const AirfieldsAmenityTypesMapModel = require('../models/AirfieldsAmenityTypesMapModel');
-const AirfieldsStripeAccountModel = require('../models/AirfieldsStripeAccountModel');
-const AirfieldsStripeAccountsBankModel = require('../models/AirfieldsStripeAccountsBankModel');
+const AirfieldsBankModel = require('../models/AirfieldsBankModel');
 const CountryModel = require('../models/CountryModel');
 const StripeService = require('../services/StripeService');
 
@@ -24,31 +23,31 @@ exports.index = async function(req, res){
     return res.render('airfields/index', res.data);
 };
 
-exports.bankAttached = async function(req, res){
-    const {airfieldId} = req.params;
-
-    const stripe = new StripeService();
-    const airfieldsStripeAccountModel = new AirfieldsStripeAccountModel();
-    const airfieldsStripeAccountsBankModel = new AirfieldsStripeAccountsBankModel();
-
-    const stripeAccount = await airfieldsStripeAccountModel.getAirfieldAccount(airfieldId, req.user.id);
-    if(!stripeAccount)
-        return res.redirect('/airfields');
-
-    const {data: externalAccounts} = await stripe._call('retrieveExternalAccountsByAccountId', [stripeAccount.stripe_account_id]);
-    await airfieldsStripeAccountsBankModel.deleteByAirfieldStripeAccountId(stripeAccount.id);
-
-    for(const bankAccount of externalAccounts.data)
-        await airfieldsStripeAccountsBankModel.insert({
-            airfield_stripe_account_id: stripeAccount.id,
-            bank_account_id: bankAccount.id,
-            currency_id: bankAccount.currency,
-            default_for_currency: bankAccount.default_for_currency * 1,
-            bank_name: bankAccount.bank_name
-        });
-
-    return res.redirect('/airfields');
-};
+// exports.bankAttached = async function(req, res){
+//     const {airfieldId} = req.params;
+//
+//     const stripe = new StripeService();
+//     const airfieldsStripeAccountModel = new AirfieldsStripeAccountModel();
+//     const airfieldsStripeAccountsBankModel = new AirfieldsStripeAccountsBankModel();
+//
+//     const stripeAccount = await airfieldsStripeAccountModel.getAirfieldAccount(airfieldId, req.user.id);
+//     if(!stripeAccount)
+//         return res.redirect('/airfields');
+//
+//     const {data: externalAccounts} = await stripe._call('retrieveExternalAccountsByAccountId', [stripeAccount.stripe_account_id]);
+//     await airfieldsStripeAccountsBankModel.deleteByAirfieldStripeAccountId(stripeAccount.id);
+//
+//     for(const bankAccount of externalAccounts.data)
+//         await airfieldsStripeAccountsBankModel.insert({
+//             airfield_stripe_account_id: stripeAccount.id,
+//             bank_account_id: bankAccount.id,
+//             currency_id: bankAccount.currency,
+//             default_for_currency: bankAccount.default_for_currency * 1,
+//             bank_name: bankAccount.bank_name
+//         });
+//
+//     return res.redirect('/airfields');
+// };
 
 exports.create = async function(req, res){
     const runwayTypeModel = new RunwayTypeModel();
@@ -58,24 +57,36 @@ exports.create = async function(req, res){
 
     res.data.runwayTypes = await runwayTypeModel.getAll();
     res.data.oaciTypes = await oaciTypeModel.getAllFree();
+
+
+    console.log(res.data.oaciTypes);
+
     res.data.amenities = await amenityTypeModel.getAll();
-    res.data.stripeCountries = await countryModel.getAllStripeAvailable();
     res.data.countries = await countryModel.getAll();
 
     if(req.method === 'GET') return res.render('airfields/create', res.data);
+
+
+    console.log(req.body);
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+
+        console.log(errors.mapped());
+
+        res.data.validationErrors = errors.mapped();
+        return res.render('airfields/create', res.data);
+    }
+
+
+
 
     const airfieldModel = new AirfieldModel();
     const airfieldsSpaceModel = new AirfieldsSpaceModel();
     const airfieldsSourceModel = new AirfieldsSourceModel();
     const airfieldsRunwayTypesMapModel = new AirfieldsRunwayTypesMapModel();
     const airfieldsAmenityTypesMapModel = new AirfieldsAmenityTypesMapModel();
-    const airfieldsStripeAccountModel = new AirfieldsStripeAccountModel();
-
-    const errors = validationResult(req);
-    if(!errors.isEmpty()){
-        res.data.validationErrors = errors.mapped();
-        return res.render('airfields/create', res.data);
-    }
+    const airfieldsBankModel = new AirfieldsBankModel();
 
     const newAirfieldId = await airfieldModel.insert({
         user_id: req.user.id,
@@ -127,8 +138,17 @@ exports.create = async function(req, res){
                 amenity_type_id: req.body.amenity_type_ids[i]
             });
 
-    await airfieldsStripeAccountModel.update(req.body.airfield_stripe_account_id, {
-        airfield_id: newAirfieldId
+    await airfieldsBankModel.insert({
+        airfield_id: newAirfieldId,
+        first_name: req.body.bank_first_name,
+        last_name: req.body.bank_last_name,
+        account_name: req.body.bank_account_name,
+        name: req.body.bank_name,
+        bic: req.body.bank_bic,
+        iban_number: req.body.bank_iban_number,
+        email: req.body.bank_email,
+        phone: req.body.bank_phone,
+        country_code: req.body.bank_country_code,
     });
 
     return res.redirect('/airfields');
@@ -142,7 +162,7 @@ exports.createStripeAccount = async function(req, res){
     }
 
     const stripe = new StripeService();
-    const airfieldsStripeAccountModel = new AirfieldsStripeAccountModel();
+    const airfieldsBankModel = new AirfieldsBankModel();
 
     const token = await stripe._call('createAccountToken', [req.body['stripe']]);
     if(!token.success){
@@ -156,30 +176,28 @@ exports.createStripeAccount = async function(req, res){
         return res.status(400).json(res.data);
     }
 
-    res.data.airfieldStripeAccountId = await airfieldsStripeAccountModel.insert({
-        stripe_account_id: account.data.id,
-        first_name: req.body['stripe']['first_name'],
-        last_name: req.body['stripe']['last_name'],
-        email: req.body['stripe']['email'],
-        account_name: req.body['stripe']['account_name'],
-        gender: req.body['stripe']['gender'],
-        date_of_birth: req.body['stripe']['date_of_birth'],
-        country_code: req.body['stripe']['country_code'],
-        city: req.body['stripe']['city'],
-        phone: req.body['stripe']['phone'],
-        postal_code: req.body['stripe']['postal_code']
+    res.data.airfieldStripeAccountId = await airfieldsBankModel.insert({
+        first_name: req.body['bank']['first_name'],
+        last_name: req.body['bank']['last_name'],
+        account_name: req.body['bank']['account_name'],
+        bank_name: req.body['bank']['bank_name'],
+        bic: req.body['bank']['bic'],
+        iban_number: req.body['bank']['iban_number'],
+        email: req.body['bank']['email'],
+        phone: req.body['bank']['phone'],
+        country_code: req.body['bank']['country_code'],
     });
 
     return res.status(200).json(res.data);
 };
 
 exports.checkEmails = async function(req, res){
-    const {primaryEmail, stripeEmail} = req.body;
+    const {primaryEmail, bankEmail} = req.body;
     const airfieldModel = new AirfieldModel();
-    const airfieldsStripeAccountModel = new AirfieldsStripeAccountModel();
+    const airfieldsBankModel = new AirfieldsBankModel();
 
     res.data.primaryEmailExists = await airfieldModel.checkPrimaryEmailExists(req.user.id, primaryEmail);
-    res.data.stripeEmailExists = await airfieldsStripeAccountModel.checkEmailExists(stripeEmail);
+    res.data.stripeEmailExists = await airfieldsBankModel.checkEmailExists(bankEmail);
 
     return res.status(200).json(res.data);
 };
@@ -187,9 +205,9 @@ exports.checkEmails = async function(req, res){
 exports.createLinkForAttachBankToAirfieldAccount = async function(req, res){
     const {airfieldId} = req.body;
     const stripe = new StripeService();
-    const airfieldsStripeAccountModel = new AirfieldsStripeAccountModel();
+    const airfieldsBankModel = new AirfieldsBankModel();
 
-    const stripeAccount = await airfieldsStripeAccountModel.getAirfieldAccount(airfieldId, req.user.id);
+    const stripeAccount = await airfieldsBankModel.getAirfieldBank(airfieldId, req.user.id);
     if(!stripeAccount)
         return res.status(400).json(res.data);
 

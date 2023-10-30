@@ -12,6 +12,14 @@ class UsersCardsModel extends Model{
         return card;
     }
 
+    async getUserCardById(userId, id){
+        const [card] = await this.t.select('id', 'source_id').where({
+            id: id,
+            user_id: userId
+        });
+
+        return card;
+    }
 }
 
 module.exports = UsersCardsModel;

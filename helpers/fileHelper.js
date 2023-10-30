@@ -22,9 +22,8 @@ exports.rmInFolder = async (dir) => {
     if(!files.length)
         return true;
 
-    for (const file of files) {
-        await exports.deleteSync(dir + '/' + file)
-    }
+    for (const file of files)
+        await exports.deleteSync(dir + '/' + file);
 
     return true;
 };

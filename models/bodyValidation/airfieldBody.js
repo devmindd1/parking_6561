@@ -37,8 +37,6 @@ const insertBody = [
         .withMessage('hangar_count >= 0'),
     body('parking_count').isInt({ min: 0})
         .withMessage('parking_count >= 0'),
-    body('airfield_stripe_account_id').notEmpty()
-        .withMessage('airfield_stripe_account_id is require'),
     body('manager_name').notEmpty()
         .withMessage('manager name is require'),
     body('short_hr_price_eur').isNumeric()
@@ -57,6 +55,25 @@ const insertBody = [
         }),
     body('runway_type_ids').notEmpty()
         .withMessage('runway_type_ids is require'),
+
+    body('bank_first_name').notEmpty()
+        .withMessage('bank first_name is require'),
+    body('bank_last_name').notEmpty()
+        .withMessage('bank last_name is require'),
+    body('bank_account_name').notEmpty()
+        .withMessage('bank account_name is require'),
+    body('bank_name').notEmpty()
+        .withMessage('bank bank_name is require'),
+    body('bank_bic').notEmpty()
+        .withMessage('bank bic is require'),
+    body('bank_iban_number').notEmpty()
+        .withMessage('bank iban_number is require'),
+    body('bank_email').notEmpty()
+        .withMessage('bank email is require'),
+    body('bank_phone').notEmpty()
+        .withMessage('bank phone is require'),
+    body('bank_country_code').notEmpty()
+        .withMessage('bank country_code is require'),
 ];
 
 const getByIdBody = [

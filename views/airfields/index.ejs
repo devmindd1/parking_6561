@@ -48,10 +48,6 @@
                                         <a class="btn btn-danger btn-sm" href="javascript:void(0);">
                                             <i class="fas fa-trash"></i>
                                         </a>
-                                        <a class="btn btn-<%- items[i]['has_bank']? 'success' : 'danger'%> btn-sm attach_bank_account"
-                                           data-id="<%= items[i]['id'] %>" href="javascript:void(0);">
-                                            <%- items[i]['has_bank']? 'Update bank account' : 'Attach bank account'%>
-                                        </a>
                                     </td>
                                 </tr>
                             <% } %>

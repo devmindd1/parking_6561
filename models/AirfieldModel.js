@@ -31,7 +31,7 @@ class AirfieldModel extends Model{
 
     async getByOaciId(oaciTypeId){
         const [airfield] = await  this.t.select('*')
-            .leftJoin('airfields_stripe_accounts', 'airfields.id', 'airfields_stripe_accounts.airfield_id')
+            .leftJoin('airfields_banks', 'airfields.id', 'airfields_banks.airfield_id')
             .where({oaci_type_id: oaciTypeId});
 
         return airfield;
@@ -66,11 +66,8 @@ class AirfieldModel extends Model{
 
         if(status) where['status'] = 1;
 
-        return this.t.select('airfields.*', 'airfields_stripe_accounts_banks.bank_account_id AS has_bank')
-            .leftJoin('airfields_stripe_accounts', 'airfields.id', 'airfields_stripe_accounts.airfield_id')
-            .leftJoin('airfields_stripe_accounts_banks', 'airfields_stripe_accounts.id', 'airfields_stripe_accounts_banks.airfield_stripe_account_id')
-            .where(where)
-            .groupBy('airfields.id');
+        return this.t.select('airfields.*')
+            .where(where);
     }
 
     async checkPrimaryEmailExists(userId, primaryEmail){

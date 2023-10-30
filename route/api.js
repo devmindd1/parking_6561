@@ -34,11 +34,15 @@ router.put('/users', [apiAuthMiddleware, updateBody], user.update);
 router.post('/users/delete-card', [apiAuthMiddleware], user.deleteCard);
 router.get('/users/get-cards', [apiAuthMiddleware], user.getCards);
 router.post('/users/insert-card', [apiAuthMiddleware, insertCardBody], user.insertCard);
+router.put('/users/change-default-card', [apiAuthMiddleware], user.changeDefaultCard);
 router.get('/airfields/free-by-range', [apiAuthMiddleware, getFiltered], airfield.freeAirfieldsByRange);
 // router.get('/airfields/:airfieldId', [apiAuthMiddleware, getByIdBody], airfield.getById);
 router.get('/airfields/:oaciId', [apiAuthMiddleware, getByIdBody], airfield.getByOaciId);
 router.post('/airfields/book', [apiAuthMiddleware, bookBody], airfield.book);
 router.put('/logout', [apiAuthMiddleware], auth.logout);
 // router.post('/logout', [authMiddleware], auth.logout);
+
+// Arthur check this route
+router.post('/users/get-bookings', [apiAuthMiddleware], user.getBookings);
 
 module.exports = router;

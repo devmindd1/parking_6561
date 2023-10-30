@@ -70,41 +70,41 @@ function loadInputImage(file){
     });
 }
 
-function createStripeAccountBeforeSend(){
-    const form = $('#stripe_account_form :input');
-    const $modalButton = $('[data-target="#modal-lg-1"]');
-    const $formHeaderErrorBlock = $('.form-header-error');
-
-    return new Promise(resolve => {
-        $.ajax({
-            type: "POST",
-            url: `create-stripe-account`,
-            data: form.serialize(),
-            beforeSend: function(){
-                $formHeaderErrorBlock.html('');
-                $modalButton.closest('.card-default').css('border', '');
-            },
-            success: function (data) {
-                if(!data.airfieldStripeAccountId) resolve(false);
-
-                resolve(data.airfieldStripeAccountId);
-            },
-            error: function(data){
-                if(data.responseJSON.errorMessage){
-                    $formHeaderErrorBlock.html(data.responseJSON.errorMessage);
-                    $modalButton.closest('.card-default').css('border', '1px solid red');
-                    $modalButton.click();
-                }
-
-                resolve(false);
-            }
-        });
-    });
-}
+// function createStripeAccountBeforeSend(){
+//     const form = $('#stripe_account_form :input');
+//     const $modalButton = $('[data-target="#modal-lg-1"]');
+//     const $formHeaderErrorBlock = $('.form-header-error');
+//
+//     return new Promise(resolve => {
+//         $.ajax({
+//             type: "POST",
+//             url: `create-stripe-account`,
+//             data: form.serialize(),
+//             beforeSend: function(){
+//                 $formHeaderErrorBlock.html('');
+//                 $modalButton.closest('.card-default').css('border', '');
+//             },
+//             success: function (data) {
+//                 if(!data.airfieldStripeAccountId) resolve(false);
+//
+//                 resolve(data.airfieldStripeAccountId);
+//             },
+//             error: function(data){
+//                 if(data.responseJSON.errorMessage){
+//                     $formHeaderErrorBlock.html(data.responseJSON.errorMessage);
+//                     $modalButton.closest('.card-default').css('border', '1px solid red');
+//                     $modalButton.click();
+//                 }
+//
+//                 resolve(false);
+//             }
+//         });
+//     });
+// }
 
 function checkEmailsValidationBeforeSend(){
     const primaryEmailInput = $('#primary_email');
-    const stripeEmailInput = $('#stripe_email');
+    const bankEmailInput = $('#bank_email');
     const $modalButton = $('[data-target="#modal-lg-1"]');
 
     return new Promise(resolve => {
@@ -113,27 +113,27 @@ function checkEmailsValidationBeforeSend(){
             url: `check-emails`,
             data: {
                 primaryEmail: primaryEmailInput.val(),
-                stripeEmail: stripeEmailInput.val()
+                bankEmail: bankEmailInput.val()
             },
             beforeSend: function(){
                 primaryEmailInput.removeClass('is-invalid');
                 primaryEmailInput.find('span').remove();
 
-                stripeEmailInput.removeClass('is-invalid');
-                stripeEmailInput.find('span').remove();
+                bankEmailInput.removeClass('is-invalid');
+                bankEmailInput.find('span').remove();
                 $modalButton.closest('.card-default').css('border', '');
             },
             success: function (data) {
-                if(!data.primaryEmailExists && !data.stripeEmailExists) return resolve(true);
+                if(!data.primaryEmailExists && !data.bankEmailExists) return resolve(true);
 
                 if(data.primaryEmailExists){
                     primaryEmailInput.addClass('is-invalid');
                     primaryEmailInput.closest('.form-group').append(createErrorBlock('Primary Email Exists'));
                 }
 
-                if(data.stripeEmailExists){
-                    stripeEmailInput.addClass('is-invalid');
-                    stripeEmailInput.closest('.form-group').append(createErrorBlock('Stripe Email Exists'));
+                if(data.bankEmailExists){
+                    bankEmailInput.addClass('is-invalid');
+                    bankEmailInput.closest('.form-group').append(createErrorBlock('Bank Email Exists'));
                     $modalButton.closest('.card-default').css('border', '1px solid red');
                     $modalButton.click();
                 }
@@ -173,10 +173,6 @@ addEventListener('DOMContentLoaded', () => {
         format: 'L'
     });
 
-    $('#stripe_user_dob').datetimepicker({
-        format:'YYYY-MM-DD',
-    });
-
     $('.select2').select2();
 
     $(document).on('click', '#create', async function(e){
@@ -187,10 +183,10 @@ addEventListener('DOMContentLoaded', () => {
         const emailsIsValid = await checkEmailsValidationBeforeSend();
         if(!emailsIsValid) return;
 
-        const airfieldStripeAccountId = await createStripeAccountBeforeSend();
-        if(!airfieldStripeAccountId) return;
-
-        $('#airfield_stripe_account_id').val(airfieldStripeAccountId);
+        // const airfieldStripeAccountId = await createStripeAccountBeforeSend();
+        // if(!airfieldStripeAccountId) return;
+        //
+        // $('#airfield_stripe_account_id').val(airfieldStripeAccountId);
         $form.submit();
     });
 

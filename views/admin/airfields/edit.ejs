@@ -155,74 +155,46 @@
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="card-body">
-                                                <strong>Stripe account</strong>
-                                                <p class="text-muted">
-                                                    <%= stripeAccount['stripe_account_id'] %>
-                                                </p>
-                                                <hr>
                                                 <strong>Name</strong>
                                                 <p class="text-muted">
-                                                    <%= stripeAccount['first_name'] %> <%= stripeAccount['last_name'] %>
+                                                    <%= bankInfo['first_name'] %> <%= bankInfo['last_name'] %>
+                                                </p>
+                                                <hr>
+                                                <strong>Account Name</strong>
+                                                <p class="text-muted">
+                                                    <%= bankInfo['account_name'] %>
+                                                </p>
+                                                <hr>
+                                                <strong>Bank name</strong>
+                                                <p class="text-muted">
+                                                    <%= bankInfo['name'] %>
+                                                </p>
+                                                <hr>
+                                                <strong>BIC</strong>
+                                                <p class="text-muted">
+                                                    <%= bankInfo['bic'] %>
+                                                </p>
+                                                <hr>
+                                                <strong>IBAN number</strong>
+                                                <p class="text-muted">
+                                                    <%= bankInfo['iban_number'] %>
                                                 </p>
                                                 <hr>
                                                 <strong>Email</strong>
                                                 <p class="text-muted">
-                                                    <%= stripeAccount['email'] %>
-                                                </p>
-                                                <hr>
-                                                <strong>Bank Account Name</strong>
-                                                <p class="text-muted">
-                                                    <%= stripeAccount['account_name'] %>
-                                                </p>
-                                                <hr>
-                                                <strong>Gender</strong>
-                                                <p class="text-muted">
-                                                    <%= stripeAccount['gender'] %>
-                                                </p>
-                                                <hr>
-                                                <strong>Date of birth</strong>
-                                                <p class="text-muted">
-                                                    <%= stripeAccount['date_of_birth'] %>
-                                                </p>
-                                                <hr>
-                                                <strong>Country</strong>
-                                                <p class="text-muted">
-                                                    <%= stripeAccount['country_code'] %>
-                                                </p>
-                                                <hr>
-                                                <strong>City</strong>
-                                                <p class="text-muted">
-                                                    <%= stripeAccount['city'] %>
+                                                    <%= bankInfo['email'] %>
                                                 </p>
                                                 <hr>
                                                 <strong>Phone</strong>
                                                 <p class="text-muted">
-                                                    <%= stripeAccount['phone'] %>
+                                                    <%= bankInfo['phone'] %>
                                                 </p>
                                                 <hr>
-                                                <strong>Postal/Zip Code</strong>
+                                                <strong>Country</strong>
                                                 <p class="text-muted">
-                                                    <%= stripeAccount['postal_code'] %>
+                                                    <%= bankInfo['country_code'] %>
                                                 </p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <div class="card-body">
-                                                <% if (!stripeAccountBanks) { %>
-                                                    <strong>Bank account d`ont attached</strong>
-                                                <% } else { %>
-                                                    <% for(const stripeAccountBank of stripeAccountBanks) { %>
-                                                        <strong><%= stripeAccountBank.bank_name %></strong>
-                                                        <p class="text-muted">
-                                                            Bank account: <%= stripeAccountBank.bank_account_id %>
-                                                            <br>
-                                                            Currency: <%= stripeAccountBank.currency_id %>
-                                                            <br>
-                                                            Default for currency: <%- stripeAccountBank.default_for_currency? 'Yes': 'No' %>
-                                                        </p>
-                                                        <hr>
-                                                    <% } %>
-                                                <% } %>
+                                                <hr>
                                             </div>
                                         </div>
                                     </div>

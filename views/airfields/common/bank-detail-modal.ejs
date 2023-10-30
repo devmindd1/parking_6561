@@ -4,93 +4,77 @@
             <div class="modal-header">
                 <img class="close-modal-custom-icon" data-dismiss="modal" src="/admin/images/close_modal_icon.png" alt="">
             </div>
-            <div id="stripe_account_form">
+            <div>
                 <div class="modal-body">
                     <div style="margin-bottom: 30px;">
                         <b class="modal-title">Bank Information Form</b>
                         <p class="form-header-error"></p>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <input type="text" style="display: none;" id="airfield_stripe_account_id" name="airfield_stripe_account_id" class="form-control">
-                            </div>
-                        </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="form-check-label">First name</label>
-                                <input type="text" name="stripe[first_name]" class="form-control" placeholder="First Name">
+                                <input type="text" name="bank_first_name" class="form-control" placeholder="First Name">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="form-check-label">Last name</label>
-                                <input type="text"  name="stripe[last_name]" class="form-control" placeholder="Last name">
+                                <input type="text" name="bank_last_name" class="form-control" placeholder="Last name">
                             </div>
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-check-label">Account Name</label>
+                                <input type="text" name="bank_account_name" class="form-control" placeholder="Account Name">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-check-label">Bank name</label>
+                                <input type="text" name="bank_name" class="form-control" placeholder="Bank name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-check-label">BIC</label>
+                                <input type="text" name="bank_bic" class="form-control" placeholder="BIC">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-check-label">IBAN NUMBER</label>
+                                <input type="text" name="bank_iban_number" class="form-control" placeholder="IBAN NUMBER">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-check-label">Phone</label>
+                                <input type="text" name="bank_phone" class="form-control" placeholder="Phone">
+                            </div>
+                        </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="form-check-label">Email</label>
-                                <input type="text" id="stripe_email" name="stripe[email]" class="form-control" placeholder="Email">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="form-check-label">Bank Account Name</label>
-                                <input type="text" name="stripe[account_name]" class="form-control" placeholder="Bank Account Name">
+                                <input type="text" id="bank_email" name="bank_email" class="form-control" placeholder="Email">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="form-check-label">Gender:</label>
-                                <select name="stripe[gender]" class="form-control">
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="form-check-label">Date of birth:</label>
-                                <div class="input-group date" id="stripe_user_dob" data-target-input="nearest">
-                                    <input name="stripe[date_of_birth]" type="text" class="form-control datetimepicker-input" data-target="#stripe_user_dob"/>
-                                    <div class="input-group-append" data-target="#stripe_user_dob" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <select name="stripe[country_code]" class="form-control">
+                                <select name="bank_country_code" class="form-control">
                                     <option value="">-- Select country --</option>
-                                    <% stripeCountries.forEach(function(country) { %>
+                                    <% countries.forEach(function(country) { %>
                                         <option value="<%= country.code %>"><%= country.name %></option>
                                     <% }); %>
                                 </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <input type="text" name="stripe[city]" class="form-control" placeholder="City">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <input type="text" name="stripe[phone]" class="form-control" placeholder="Mobile phone">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <input type="text" name="stripe[postal_code]" class="form-control" placeholder="Postal/Zip Code">
                             </div>
                         </div>
                     </div>

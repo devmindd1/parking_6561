@@ -31,36 +31,33 @@ addEventListener('DOMContentLoaded', () => {
     $('form').validate({
         ignore: "",
         rules: {
-            'stripe[first_name]': {
+            'bank_first_name': {
                 required: true
             },
-            'stripe[last_name]': {
+            'bank_last_name': {
                 required: true
             },
-            'stripe[email]': {
+            'bank_account_name': {
+                required: true
+            },
+            'bank_name': {
+                required: true
+            },
+            'bank_bic': {
+                required: true
+            },
+            'bank_iban_number': {
+                required: true
+            },
+            'bank_email': {
                 required: true,
                 isEmail: true
             },
-            'stripe[account_name]': {
-                required: true
-            },
-            'stripe[gender]': {
-                required: true
-            },
-            'stripe[date_of_birth]': {
-                required: true
-            },
-            'stripe[country_code]': {
-                required: true
-            },
-            'stripe[city]': {
-                required: true
-            },
-            'stripe[phone]': {
+            'bank_phone': {
                 required: true,
                 // frPhoneNumber: true
             },
-            'stripe[postal_code]': {
+            'bank_country_code': {
                 required: true
             },
             runway_type_ids: {
@@ -119,7 +116,7 @@ addEventListener('DOMContentLoaded', () => {
             primary_email: {
                 isEmail: 'Please Write Valid Email'
             },
-            'stripe[email]': {
+            'bank_email': {
                 isEmail: 'Please Write Valid Email'
             },
             save_airfield_photo_ids: {
@@ -134,7 +131,6 @@ addEventListener('DOMContentLoaded', () => {
         highlight: function (element, errorClass, validClass) {
             $(element).addClass('is-invalid');
 
-
             if ($(element).hasClass("select2-hidden-accessible")) {
                 $("#select2-" + $(element).attr("id") + "-container").parent().addClass('form-control is-invalid');
             } else {
@@ -145,8 +141,6 @@ addEventListener('DOMContentLoaded', () => {
             // if($(element).closest('.form-group').find('.select2-selection__rendered').length){
             //     $(element).closest('.form-group').find('.select2-selection__rendered').addClass('form-control is-invalid')
             // }
-
-            console.log();
 
             if($(element).closest('.modal').length)
                 $('[data-target="#' + $(element).closest('.modal').attr('id') + '"]').closest('.card-default').css('border', '1px solid red');

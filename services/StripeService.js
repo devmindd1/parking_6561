@@ -126,6 +126,12 @@ class StripeService{
         return this.s.customers.create(data);
     }
 
+    updateCustomerDefaultSource(customerId, sourceId){
+        return this.s.customers.update(
+            customerId,
+            {default_source: sourceId}
+        );
+    }
 
     createIntent(customerId, amount){
         return this.s.charges.create({
