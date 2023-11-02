@@ -61,6 +61,81 @@ exports.getByOaciId = async function(req, res){
     return res.status(200).json(res.data);
 };
 
+exports.calcBookPrice = async function(req, res){
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        res.data.validationErrors = errors.array();
+        return res.status(400).json(res.data);
+    }
+
+    const stripe = new StripeService();
+    const airfieldModel = new AirfieldModel();
+
+    const airfield = await airfieldModel.getByOaciId(req.body.oaciId);
+    if(!airfield)
+        return res.status(400).json(res.data);
+
+
+    const t1 = new Date(req.body.dateStart);
+    const t2 = new Date(req.body.dateEnd);
+    const difDays = Math.abs(t1.getTime() - t2.getTime()) / 1000 / 60 / 60 / 24;
+
+    const price = difDays >= 3 ? airfield.long_day_price_eur: airfield.short_hr_price_eur;
+    const avionestComPercent = difDays >= 3 ? 5: 5;
+
+
+    const amount = parseFloat((difDays * price).toFixed(2));
+    res.data.priceForDay = price;
+
+
+    res.data.amount = amount;
+
+
+    const avionestChargeCom = parseFloat((res.data.amount*avionestComPercent/100 + 0.25).toFixed(2));
+
+
+    console.log(avionestChargeCom);
+
+    res.data.avionestChargeCom = avionestChargeCom;
+    res.data.amount += avionestChargeCom;
+    res.data.amount = parseFloat(res.data.amount.toFixed(2));
+
+    res.data.chargeWithAvionestCom = res.data.amount;
+
+
+
+    console.log(res.data.chargeWithAvionestCom);
+
+
+    // console.log(res.data);
+
+    res.data.amount += res.data.amount*20/100;
+
+
+    res.data.amount = parseFloat(res.data.amount.toFixed(2));
+
+
+    // res.data.fifePercentOfAmount += res.data.amount*20/100;
+
+
+
+    const t = amount - (amount*10/100);
+
+
+
+    res.data.airfield = parseFloat((t + (t * 20 / 100)).toFixed(2));
+    res.data.avionestComFromAirfield = parseFloat((amount * 10 / 100).toFixed(2));
+
+
+
+
+    // const a = await stripe._call('createIntent', ['cus_OgXI9nshn8gaK7', difHours * airfield.short_hr_price_eur]);
+    // const b = await stripe._call('orderIntent', ['acct_1NxmFZQXht3fFlAO', 1000]);
+
+
+    return res.status(200).json(res.data);
+};
+
 exports.book = async function(req, res){
     const errors = validationResult(req);
     if(!errors.isEmpty()){
@@ -78,27 +153,59 @@ exports.book = async function(req, res){
 
     const t1 = new Date(req.body.dateStart);
     const t2 = new Date(req.body.dateEnd);
-    const difHours = Math.abs(t1.getTime() - t2.getTime()) / 1000 / 60 / 60;
+    const difDays = Math.abs(t1.getTime() - t2.getTime()) / 1000 / 60 / 60 / 24;
 
-    const price = req.body.paymentMethod === '1' ? airfield.long_day_price_eur :airfield.short_hr_price_eur;
+    const price = difDays >= 3 ? airfield.long_day_price_eur: airfield.short_hr_price_eur;
+    const avionestComPercent = difDays >= 3 ? 5: 5;
 
-    res.data.amount = difHours * price;
-    res.data.amount += res.data.amount*5/100;
+
+    const amount = parseFloat((difDays * price).toFixed(2));
+    res.data.priceForDay = price;
+
+
+    res.data.amount = amount;
+
+
+    const avionestChargeCom = parseFloat((res.data.amount*avionestComPercent/100 + 0.25).toFixed(2));
+
+
+    console.log(avionestChargeCom);
+
+    res.data.avionestChargeCom = avionestChargeCom;
+    res.data.amount += avionestChargeCom;
+    res.data.amount = parseFloat(res.data.amount.toFixed(2));
+
+    res.data.chargeWithAvionestCom = res.data.amount;
+
+
+
+    console.log(res.data.chargeWithAvionestCom);
+
+
+    // console.log(res.data);
+
     res.data.amount += res.data.amount*20/100;
+
+
+    res.data.amount = parseFloat(res.data.amount.toFixed(2));
+
+
+    // res.data.fifePercentOfAmount += res.data.amount*20/100;
+
+
+
+    const t = amount - (amount*10/100);
+
+
+
+    res.data.airfield = parseFloat((t + (t * 20 / 100)).toFixed(2));
+    res.data.avionestComFromAirfield = parseFloat((amount * 10 / 100).toFixed(2));
+
+
 
 
     // const a = await stripe._call('createIntent', ['cus_OgXI9nshn8gaK7', difHours * airfield.short_hr_price_eur]);
     // const b = await stripe._call('orderIntent', ['acct_1NxmFZQXht3fFlAO', 1000]);
-
-
-    // short_hr_price_eur: '10.00',
-    //     long_day_price_eur: '0.1
-
-
-
-
-    // console.log(a);
-    // console.log(b);
 
 
     return res.status(200).json(res.data);

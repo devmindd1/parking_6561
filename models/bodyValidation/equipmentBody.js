@@ -1,10 +1,10 @@
 const {body} = require("express-validator");
 
-const insertEquipmentBody = [
+const insertEquipmentTypeBody = [
     body('title').notEmpty()
         .withMessage('Title is require')
 ];
 
 module.exports = {
-    insertEquipmentBody,
+    insertEquipmentTypeBody,
 };

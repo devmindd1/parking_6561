@@ -1,6 +1,9 @@
 const {validationResult} = require('express-validator');
 const {string2sha1, randomString} = require('../helpers/stringHelper');
 const UserModel = require('../models/UserModel');
+const UserDto = require('../dtos/UserDto');
+const UsersTokenModel = require('../models/UsersTokenModel');
+const {validateRefreshToken, generateTokens} = require('../services/tokenService');
 
 exports.index = function(req, res){
     return res.render('auth/login');
@@ -38,4 +41,29 @@ exports.login = async function(req, res){
     }
 
     return res.render('auth/login');
+};
+
+exports.refresh = async function(req, res){
+    const userModel = new UserModel();
+    const usersTokenModel = new UsersTokenModel();
+
+    const {refreshToken} = req.body;
+    if(!refreshToken)
+        return res.status(401).json(req.response);
+
+    const userData = validateRefreshToken(refreshToken);
+    if(!userData)
+        return res.status(401).json(res.data);
+
+    const userToken = await usersTokenModel.getByRefreshToken(refreshToken);
+    if(!userToken)
+        return res.status(401).json(res.data);
+
+    const user = await userModel.getById(userToken.user_id);
+    res.data.user = new UserDto(user);
+    res.data.tokens = generateTokens({...res.data.user});
+
+    await usersTokenModel.updateTokens(user.id, res.data.tokens);
+
+    return res.status(200).json(res.data);
 };

@@ -5,17 +5,20 @@ const home = require('../controllers/admin/homeController.js');
 const owner = require('../controllers/admin/ownerController.js');
 const airfield = require('../controllers/admin/airfieldController.js');
 const runwayType = require('../controllers/admin/runwayTypeController.js');
-const equipment = require('../controllers/admin/equipmentController.js');
-const additionalQualification = require('../controllers/admin/additionalQualificationController.js');
-const oaciType = require('../controllers/admin/oaciTypeController.js');
-const amenityType = require('../controllers/admin/amenityTypeController.js');
+
+const OaciType = require('../controllers/admin/OaciTypeController.js');
+const AdditionalQualificationType = require('../controllers/admin/AdditionalQualificationTypeController.js');
+const AmenityType = require('../controllers/admin/AmenityTypeController.js');
+const EquipmentType = require('../controllers/admin/EquipmentTypeController.js');
 
 const adminAuthMiddleware = require('../middlewares/adminAuthMiddleware.js');
 
 const {adminLoginBody} = require('../models/bodyValidation/userBody.js');
 const {insertRunwayTypeBody} = require('../models/bodyValidation/runwayTypeBody.js');
-const {insertEquipmentBody} = require('../models/bodyValidation/equipmentBody.js');
+const {insertEquipmentTypeBody} = require('../models/bodyValidation/equipmentBody.js');
+const {additionalQualificationTypeInsertBody} = require('../models/bodyValidation/additionalQualificationTypeBody.js');
 const {oaciTypeInsertBody} = require('../models/bodyValidation/oaciTypeBody.js');
+const {amenityTypeInsertBody} = require('../models/bodyValidation/amenityTypesBody.js');
 
 
 router.get('/login', auth.index);
@@ -39,24 +42,27 @@ router.all('/runway-types/create', [adminAuthMiddleware, insertRunwayTypeBody], 
 router.all('/runway-types/edit/:id', [adminAuthMiddleware, insertRunwayTypeBody], runwayType.edit);
 router.get('/runway-types/delete/:id', [adminAuthMiddleware], runwayType.delete);
 
-router.get('/equipments', [adminAuthMiddleware], equipment.index);
-router.all('/equipments/create', [adminAuthMiddleware, insertEquipmentBody], equipment.create);
-router.all('/equipments/edit/:id', [adminAuthMiddleware, insertEquipmentBody], equipment.edit);
-router.get('/equipments/delete/:id', [adminAuthMiddleware], equipment.delete);
 
-router.get('/additional-qualifications', [adminAuthMiddleware], additionalQualification.index);
-router.all('/additional-qualifications/create', [adminAuthMiddleware], additionalQualification.create);
-router.all('/additional-qualifications/edit/:id', [adminAuthMiddleware], additionalQualification.edit);
-router.get('/additional-qualifications/delete/:id', [adminAuthMiddleware], additionalQualification.delete);
 
-router.get('/oaci-types', [adminAuthMiddleware], oaciType.index);
-router.all('/oaci-types/create', [adminAuthMiddleware, oaciTypeInsertBody], oaciType.create);
-router.all('/oaci-types/edit/:id', [adminAuthMiddleware, oaciTypeInsertBody], oaciType.edit);
-router.get('/oaci-types/delete/:id', [adminAuthMiddleware], oaciType.delete);
 
-router.get('/amenity-types', [adminAuthMiddleware], amenityType.index);
-router.all('/amenity-types/create', [adminAuthMiddleware], amenityType.create);
-router.all('/amenity-types/edit/:id', [adminAuthMiddleware], amenityType.edit);
-router.get('/amenity-types/delete/:id', [adminAuthMiddleware], amenityType.delete);
+router.get('/amenity-types', [adminAuthMiddleware], (...args) => new AmenityType(...args, 'index'));
+router.all('/amenity-types/create', [adminAuthMiddleware, amenityTypeInsertBody], (...args) => new AmenityType(...args, 'create'));
+router.all('/amenity-types/edit/:id', [adminAuthMiddleware, amenityTypeInsertBody], (...args) => new AmenityType(...args, 'edit'));
+router.get('/amenity-types/delete/:id', [adminAuthMiddleware], (...args) => new AmenityType(...args, 'delete'));
+
+router.get('/equipment-types', [adminAuthMiddleware], (...args) => new EquipmentType(...args, 'index'));
+router.all('/equipment-types/create', [adminAuthMiddleware, insertEquipmentTypeBody], (...args) => new EquipmentType(...args, 'create'));
+router.all('/equipment-types/edit/:id', [adminAuthMiddleware, insertEquipmentTypeBody], (...args) => new EquipmentType(...args, 'edit'));
+router.get('/equipment-types/delete/:id', [adminAuthMiddleware], (...args) => new EquipmentType(...args, 'delete'));
+
+router.get('/additional-qualification-types', [adminAuthMiddleware], (...args) => new AdditionalQualificationType(...args, 'index'));
+router.all('/additional-qualification-types/create', [adminAuthMiddleware, additionalQualificationTypeInsertBody], (...args) => new AdditionalQualificationType(...args, 'create'));
+router.all('/additional-qualification-types/edit/:id', [adminAuthMiddleware, additionalQualificationTypeInsertBody], (...args) => new AdditionalQualificationType(...args, 'edit'));
+router.get('/additional-qualification-types/delete/:id', [adminAuthMiddleware], (...args) => new AdditionalQualificationType(...args, 'delete'));
+
+router.get('/oaci-types', [adminAuthMiddleware], (...args) => new OaciType(...args, 'index'));
+router.all('/oaci-types/create', [adminAuthMiddleware, oaciTypeInsertBody], (...args) => new OaciType(...args, 'create'));
+router.all('/oaci-types/edit/:id', [adminAuthMiddleware, oaciTypeInsertBody], (...args) => new OaciType(...args, 'edit'));
+router.get('/oaci-types/delete/:id', [adminAuthMiddleware], (...args) => new OaciType(...args, 'delete'));
 
 module.exports = router;

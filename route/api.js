@@ -39,6 +39,7 @@ router.get('/airfields/free-by-range', [apiAuthMiddleware, getFiltered], airfiel
 // router.get('/airfields/:airfieldId', [apiAuthMiddleware, getByIdBody], airfield.getById);
 router.get('/airfields/:oaciId', [apiAuthMiddleware, getByIdBody], airfield.getByOaciId);
 router.post('/airfields/book', [apiAuthMiddleware, bookBody], airfield.book);
+router.post('/airfields/calc-book-price', [apiAuthMiddleware, bookBody], airfield.calcBookPrice);
 router.put('/logout', [apiAuthMiddleware], auth.logout);
 // router.post('/logout', [authMiddleware], auth.logout);
 

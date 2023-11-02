@@ -16,8 +16,13 @@ router.get('/test', home.test);
 
 router.get('/login', auth.login);
 router.post('/login', [loginBody], auth.login);
+router.put('/auth-refresh', auth.refresh);
+
 router.get('/logout', [authMiddleware], auth.logout);
 router.get('/', [authMiddleware], home.index);
+
+
+
 
 router.get('/airfields', [authMiddleware], airfield.index);
 router.get('/airfields/create', [authMiddleware], airfield.create);

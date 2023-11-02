@@ -32,7 +32,7 @@ exports.indexResponse = function(){
 exports.adminResponse = function(){
     return function(req, res, next){
         res.data = new AdminResponse();
-        res.data.activeMenu = req.originalUrl === '/admin' ? '/': req.originalUrl.split('/')[2];
+        res.data.activeMenu = req.originalUrl === '/admin/' ? '/': req.originalUrl.split('/')[2];
 
         next();
     }

@@ -5,10 +5,9 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">DataTable with default features</h3>
+                        <h3 class="card-title"><%= _name %></h3>
                     </div>
                     <div class="card-body">
-
                         <div class="row">
                             <div class="col-sm-12">
                                 <div id="map"></div>
@@ -17,7 +16,7 @@
 
                         <div class="row" style="margin-bottom: 5px;">
                             <div class="col-sm-4">
-                                <a href="/admin/oaci-types/create" style="width: 100px;" class="btn btn-block bg-gradient-success btn-sm">Create</a>
+                                <a href="/admin/<%= _module %>/create" style="width: 100px;" class="btn btn-block bg-gradient-success btn-sm">Create</a>
                             </div>
                         </div>
                         <table id="example1" class="table table-bordered table-striped">
@@ -33,15 +32,15 @@
                             <tbody>
                                 <% for(var i=0; i < items.length; i++) { %>
                                     <tr data-latitude="<%= items[i]['latitude'] %>" data-longitude="<%= items[i]['longitude'] %>">
-                                        <td><a class="main-anchor-link" href="/admin/oaci-types/edit/<%= items[i]['id'] %>"><%= items[i]['oaci_code'] %></a></td>
+                                        <td><a class="main-anchor-link" href="/admin/<%= _module %>/edit/<%= items[i]['id'] %>"><%= items[i]['oaci_code'] %></a></td>
                                         <td><%= items[i]['airfield_name'] %></td>
                                         <td><%= items[i]['city'] %></td>
                                         <td><%= items[i]['type'] %></td>
                                         <td class="project-actions">
-                                            <a class="btn btn-info btn-sm" href="/admin/oaci-types/edit/<%= items[i]['id'] %>">
+                                            <a class="btn btn-info btn-sm" href="/admin/<%= _module %>/edit/<%= items[i]['id'] %>">
                                                 <i class="fas fa-pencil-alt"></i>
                                             </a>
-                                            <a class="btn btn-danger btn-sm delete-module-item" href="/admin/oaci-types/delete/<%= items[i]['id'] %>">
+                                            <a class="btn btn-danger btn-sm delete-module-item" href="/admin/<%= _module %>/delete/<%= items[i]['id'] %>">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </td>
@@ -56,8 +55,5 @@
     </div>
 </section>
 
-<script src="/js/admin/oaci-types/index.js"></script>
+<script src="/js/admin/<%= _module %>/index.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5wZV3BX0WF1P41cMheOw27qC8wnVBgQg&callback=initMap&libraries=places&v=weekly" defer></script>
-
-
-

@@ -124,6 +124,9 @@ addEventListener('DOMContentLoaded', () => {
             }
         },
         errorElement: 'span',
+        error: function(){
+            console.log('okokok')
+        },
         errorPlacement: function (error, element) {
             error.addClass('invalid-feedback');
             element.closest('.form-group').append(error);

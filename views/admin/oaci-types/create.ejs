@@ -1,10 +1,15 @@
 <% layout("../main") -%>
 
 <section class="content">
-    <form action="/admin/oaci-types/create" id="form" method="post">
+    <form action="/admin/<%= _module %>/create" id="form" method="post">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Title</h3>
+                <h3 class="card-title">Create</h3>
+                <div class="col-md-2 float-right">
+                    <a class="btn btn-outline-primary btn-block" href="/admin/<%= _module %>">
+                        <i class="fas fa-arrow-left"></i> back
+                    </a>
+                </div>
             </div>
 
             <%- include ./_form.ejs %>
@@ -12,7 +17,7 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col-12">
-                        <input type="submit" value="Save Changes" id="create" class="btn btn-success float-right">
+                        <input type="submit" value="Create" id="create" class="btn btn-success float-right">
                     </div>
                 </div>
             </div>

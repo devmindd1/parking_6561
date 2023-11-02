@@ -92,11 +92,7 @@ const bookBody = [
     body('dateEnd').notEmpty()
         .withMessage('dateEnd is require'),
     body('oaciId').notEmpty()
-        .withMessage('oaciId is require'),
-    body('paymentMethod').notEmpty()
-        .withMessage('paymentMethod is require'),
-    body('paymentMethod').isInt({ min: 0, max: 1})
-        .withMessage('paymentMethod is INT 0 || 1'),
+        .withMessage('oaciId is require')
 ];
 
 module.exports = {

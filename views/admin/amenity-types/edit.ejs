@@ -1,10 +1,15 @@
 <% layout("../main") -%>
 
 <section class="content">
-    <form action="/admin/<%= module %>/edit/<%= model['id'] %>" id="form" method="post">
+    <form action="/admin/<%= _module %>/edit/<%= id %>" id="form" method="post">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Title</h3>
+                <h3 class="card-title">Edit</h3>
+                <div class="col-md-2" style="float: right;">
+                    <a class="btn btn-outline-primary btn-block" href="/admin/<%= _module %>">
+                        <i class="fas fa-arrow-left"></i> back
+                    </a>
+                </div>
             </div>
 
             <%- include ./_form.ejs %>
