@@ -149,26 +149,6 @@ addEventListener('DOMContentLoaded', () => {
     const uploadedImages = $('#uploaded-images');
     const uploadedDocument = $('#uploaded-document');
 
-    $('#short_hr_price_eur_input').ionRangeSlider({
-        min     : 0.1,
-        max     : 20,
-        type    : 'single',
-        step    : 0.1,
-        postfix : ' eur HT/hr',
-        prettify: false,
-        // hasGrid : true
-    });
-
-    $('#long_day_price_eur_input').ionRangeSlider({
-        min     : 24,
-        max     : 480,
-        type    : 'single',
-        step    : 0.1,
-        postfix : ' eur HT/day',
-        prettify: false,
-        // hasGrid : true
-    });
-
     $('#reservationdate').datetimepicker({
         format: 'L'
     });

@@ -56,11 +56,15 @@ exports.getCards = async function(req, res){
 
     const customerId = await userModel.getUserStripeCustomerId(req.user.id);
 
-    const cards = await stripe._call('getCustomerCardList', [customerId]);
+    const cards = await stripe._call('getCustomerPaymentMethodsList', [customerId]);
     if(!cards.success)
         return res.status(400).json(res.data);
-
     res.data.cards = cards.data;
+
+    const defaultCard = await stripe._call('getCustomerDefaultCard', [customerId]);
+    if(!defaultCard.success)
+        return res.status(400).json(res.data);
+    res.data.defaultCardId = defaultCard.data.data[0]?.id || '';
 
     return res.status(200).json(res.data);
 };
@@ -101,6 +105,11 @@ exports.changeDefaultCard = async function(req, res){
     const customerId = await userModel.getUserStripeCustomerId(req.user.id);
 
     const card = await usersCardsModel.getUserCardBySourceId(req.user.id, cardId);
+
+
+    console.log(card);
+    console.log(cardId);
+
     if(!card)
         return res.status(400).json(res.data);
 

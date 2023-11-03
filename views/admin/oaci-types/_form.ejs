@@ -8,44 +8,16 @@
     <div style="display: none;" class="row">
         <div class="col-sm-6">
             <div class="form-group">
-                <% inputName = 'latitude'; %>
-                <input type="text" name="<%= inputName %>" class="form-control" id="<%= inputName %>"
-                       value="<%= model[inputName] ? model[inputName] : '' %>">
+                <% name = 'latitude'; %>
+                <input type="text" name="<%= name %>" class="form-control" id="<%= name %>"
+                       value="<%= model[name] ? model[name] : '' %>">
             </div>
         </div>
         <div class="col-sm-6">
             <div class="form-group">
-                <% inputName = 'longitude'; %>
-                <input type="text" name="<%= inputName %>" class="form-control" id="<%= inputName %>"
-                       value="<%= model[inputName] ? model[inputName] : '' %>">
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="form-group">
-                <% inputName = 'oaci_code'; %>
-                <label for="<%= inputName %>">OACI</label>
-                <input type="text"  name="<%= inputName %>" id="<%= inputName %>"
-                       class="form-control <%= errors[inputName] ? 'is-invalid' : '' %>"
-                       value="<%= model[inputName] ? model[inputName] : '' %>">
-                <span class="error invalid-feedback">
-                    <%= errors[inputName] ? errors[inputName]['msg']: ''%>
-                </span>
-            </div>
-        </div>
-
-        <div class="col-sm-6">
-            <div class="form-group">
-                <% inputName = 'airfield_name'; %>
-                <label for="<%= inputName %>">Airfield name</label>
-                <input type="text" name="<%= inputName %>" id="<%= inputName %>"
-                       class="form-control <%= errors[inputName] ? 'is-invalid' : '' %>"
-                       value="<%= model[inputName] ? model[inputName] : '' %>">
-                <span class="error invalid-feedback">
-                    <%= errors[inputName] ? errors[inputName]['msg']: ''%>
-                </span>
+                <% name = 'longitude'; %>
+                <input type="text" name="<%= name %>" class="form-control" id="<%= name %>"
+                       value="<%= model[name] ? model[name] : '' %>">
             </div>
         </div>
     </div>
@@ -53,26 +25,26 @@
     <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
-                <% inputName = 'city'; %>
-                <label for="<%= inputName %>">City</label>
-                <input type="text"  name="<%= inputName %>" id="<%= inputName %>"
-                       class="form-control <%= errors[inputName] ? 'is-invalid' : '' %>"
-                       value="<%= model[inputName] ? model[inputName] : '' %>">
+                <% name = 'oaci_code'; %>
+                <label for="<%= name %>">OACI</label>
+                <input type="text"  name="<%= name %>" id="<%= name %>"
+                       class="form-control <%= errors[name] ? 'is-invalid' : '' %>"
+                       value="<%= model[name] ? model[name] : '' %>">
                 <span class="error invalid-feedback">
-                    <%= errors[inputName] ? errors[inputName]['msg']: ''%>
+                    <%= errors[name] ? errors[name]['msg']: ''%>
                 </span>
             </div>
         </div>
 
         <div class="col-sm-6">
             <div class="form-group">
-                <% inputName = 'runways_count'; %>
-                <label for="<%= inputName %>">Runways count</label>
-                <input type="text"  name="<%= inputName %>" id="<%= inputName %>"
-                       class="form-control <%= errors[inputName] ? 'is-invalid' : '' %>"
-                       value="<%= model[inputName] ? model[inputName] : '' %>">
+                <% name = 'airfield_name'; %>
+                <label for="<%= name %>">Airfield name</label>
+                <input type="text" name="<%= name %>" id="<%= name %>"
+                       class="form-control <%= errors[name] ? 'is-invalid' : '' %>"
+                       value="<%= model[name] ? model[name] : '' %>">
                 <span class="error invalid-feedback">
-                    <%= errors[inputName] ? errors[inputName]['msg']: ''%>
+                    <%= errors[name] ? errors[name]['msg']: ''%>
                 </span>
             </div>
         </div>
@@ -81,13 +53,41 @@
     <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
-                <% inputName = 'type'; %>
-                <label for="<%= inputName %>">Type</label>
-                <input type="text"  name="<%= inputName %>" id="<%= inputName %>"
-                       class="form-control <%= errors[inputName] ? 'is-invalid' : '' %>"
-                       value="<%= model[inputName] ? model[inputName] : '' %>">
+                <% name = 'city'; %>
+                <label for="<%= name %>">City</label>
+                <input type="text"  name="<%= name %>" id="<%= name %>"
+                       class="form-control <%= errors[name] ? 'is-invalid' : '' %>"
+                       value="<%= model[name] ? model[name] : '' %>">
                 <span class="error invalid-feedback">
-                    <%= errors[inputName] ? errors[inputName]['msg']: ''%>
+                    <%= errors[name] ? errors[name]['msg']: ''%>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="form-group">
+                <% name = 'runways_count'; %>
+                <label for="<%= name %>">Runways count</label>
+                <input type="text"  name="<%= name %>" id="<%= name %>"
+                       class="form-control <%= errors[name] ? 'is-invalid' : '' %>"
+                       value="<%= model[name] ? model[name] : '' %>">
+                <span class="error invalid-feedback">
+                    <%= errors[name] ? errors[name]['msg']: ''%>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <% name = 'type'; %>
+                <label for="<%= name %>">Type</label>
+                <input type="text"  name="<%= name %>" id="<%= name %>"
+                       class="form-control <%= errors[name] ? 'is-invalid' : '' %>"
+                       value="<%= model[name] ? model[name] : '' %>">
+                <span class="error invalid-feedback">
+                    <%= errors[name] ? errors[name]['msg']: ''%>
                 </span>
             </div>
         </div>

@@ -6,11 +6,55 @@
     </div>
 
     <div class="row margin">
-        <div class="col-sm-6">
-            <input id="short_hr_price_eur_input" type="text" name="short_hr_price_eur" value="10">
+        <div class="col-sm-6" style="border: 1px dotted;">
+            <p><b>Hangar</b></p>
+
+            <% for(let i=0; i < weightTypes.length; i++) { %>
+                <%- i%2 === 0 ? '<div class="row">': '' %>
+                    <div class="col-sm-6" style="border: 1px solid grey;">
+                        <span><b><%= weightTypes[i]['title'] %></b></span>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-check-label">Long</label>
+                                    <input type="text" name="phone_number" class="form-control" placeholder="Long price">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-check-label">Short</label>
+                                    <input type="text" name="phone_number" class="form-control" placeholder="Short price">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <%- i%2 === 1 ? '</div>': '' %>
+            <% } %>
+
         </div>
-        <div class="col-sm-6">
-            <input id="long_day_price_eur_input" type="text" name="long_day_price_eur" value="10">
+        <div class="col-sm-6" style="border: 1px dotted;">
+            <p><b>Outdoor</b></p>
+            <% for(let i=0; i < weightTypes.length; i++) { %>
+                <%- i%2 === 0 ? '<div class="row">': '' %>
+                <div class="col-sm-6" style="border: 1px solid grey;">
+                    <span><b><%= weightTypes[i]['title'] %></b></span>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-check-label">Long</label>
+                                <input type="text" name="phone_number" class="form-control" placeholder="Long price">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-check-label">Short</label>
+                                <input type="text" name="phone_number" class="form-control" placeholder="Short price">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%- i%2 === 1 ? '</div>': '' %>
+            <% } %>
         </div>
     </div>
 
@@ -75,7 +119,7 @@
         </div>
         <div class="col-sm-2">
             <div class="form-group">
-                <label class="form-check-label">Total number of Spaces</label>
+                <label class="form-check-label">Number of Spaces</label>
                 <input type="text" name="spaces_count" class="form-control" placeholder="Number of Spaces">
             </div>
         </div>

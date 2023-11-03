@@ -44,11 +44,25 @@ class StripeService{
         );
     }
 
+    getCustomerDefaultCard(customerId){
+        return this.s.customers.listSources(
+            customerId,
+            {object: 'card', limit: 1}
+        );
+    }
+
     getCustomerCardList(customerId){
         return this.s.customers.listSources(
             customerId,
             {object: 'card'}
         );
+    }
+
+    getCustomerPaymentMethodsList(customerId){
+        return this.s.paymentMethods.list({
+            customer: customerId,
+            type: 'card',
+        });
     }
 
     deleteCustomerSource(customerId, sourceId){

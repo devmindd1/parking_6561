@@ -12,11 +12,13 @@ const AirfieldsRunwayTypesMapModel = require('../models/AirfieldsRunwayTypesMapM
 const AirfieldsAmenityTypesMapModel = require('../models/AirfieldsAmenityTypesMapModel');
 const AirfieldsBankModel = require('../models/AirfieldsBankModel');
 const CountryModel = require('../models/CountryModel');
+const WeightTypeModel = require('../models/WeightTypeModel');
 const StripeService = require('../services/StripeService');
 
 exports.index = async function(req, res){
     const airfieldModel = new AirfieldModel();
 
+    res.data.items = await airfieldModel.getByUserId(req.user.id);
     res.data.items = await airfieldModel.getByUserId(req.user.id);
     res.data.statuses = await AirfieldModel._STATUSES;
 
@@ -54,6 +56,11 @@ exports.create = async function(req, res){
     const oaciTypeModel = new OaciTypeModel();
     const amenityTypeModel = new AmenityTypeModel();
     const countryModel = new CountryModel();
+    const weightTypeModel = new WeightTypeModel();
+
+
+
+    res.data.weightTypes = await weightTypeModel.getAll();
 
     res.data.runwayTypes = await runwayTypeModel.getAll();
     res.data.oaciTypes = await oaciTypeModel.getAllFree();

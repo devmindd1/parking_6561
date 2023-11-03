@@ -108,19 +108,19 @@ exports.refresh = async function(req, res){
 };
 
 exports.signUp = async function(req, res){
-    let user = req.body;
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        res.data.validationErrors = errors.array();
+        return res.status(400).json(res.data);
+    }
+
+    const user = req.body;
     const userModel = new UserModel();
     const stripe = new StripeService();
     const usersTokenModel = new UsersTokenModel();
     const usersCardsModel = new UsersCardsModel();
     const usersEquipmentTypesMapModel = new UsersEquipmentTypesMapModel();
     const usersAdditionalQualificationTypesMapModel = new UsersAdditionalQualificationTypesMapModel();
-
-    const errors = validationResult(req);
-    if(!errors.isEmpty()){
-        res.data.validationErrors = errors.array();
-        return res.status(400).json(res.data);
-    }
 
     const customer = await stripe._call('createCustomer', [{
         description: `${req.body.first_name} ${req.body.last_name} ${req.body.email}`,
@@ -144,10 +144,12 @@ exports.signUp = async function(req, res){
         home_base: req.body.home_base || '',
         aircraft_id: req.body.aircraft_id,
         color_id: req.body.color_id || 0,
+        color_id_1: req.body.color_id_1 || 0,
         issue_date: req.body.issue_date,
         license_number: req.body.license_number,
         valid_until_date: req.body.valid_until_date,
         issuing_country_id: req.body.issuing_country_id,
+        weight_type_id: req.body.weight_type_id,
         stripe_customer_id: customer.data.id
     });
 
@@ -165,7 +167,7 @@ exports.signUp = async function(req, res){
 
     await usersCardsModel.insert({
         user_id: user.id,
-        source_id: req.body.stripe_card_id,
+        source_id: req.body.stripe_card_id
     });
 
     res.data.user = new UserDto(user);

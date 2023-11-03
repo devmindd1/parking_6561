@@ -102,6 +102,8 @@ const signUpBody = [
         .withMessage('date_of_birth is require'),
     body('date_of_birth').isDate()
         .withMessage("Invalid day received format (YYYY/MM/DD)"),
+    body('weight_type_id').isDate()
+        .withMessage("weight_type_id is required"),
     body('additional_qualifications').custom(async (value, {req}) => {
         if(!Array.isArray(value))
             throw new Error('additional_qualifications is array input [ARRAY] with int params');
@@ -121,7 +123,6 @@ const signUpBody = [
         });
     })
 ];
-
 
 const updateBody = [
     body('first_name').notEmpty()

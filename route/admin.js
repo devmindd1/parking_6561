@@ -7,6 +7,7 @@ const airfield = require('../controllers/admin/airfieldController.js');
 const runwayType = require('../controllers/admin/runwayTypeController.js');
 
 const OaciType = require('../controllers/admin/OaciTypeController.js');
+const WeightType = require('../controllers/admin/WeightTypeController.js');
 const AdditionalQualificationType = require('../controllers/admin/AdditionalQualificationTypeController.js');
 const AmenityType = require('../controllers/admin/AmenityTypeController.js');
 const EquipmentType = require('../controllers/admin/EquipmentTypeController.js');
@@ -18,6 +19,7 @@ const {insertRunwayTypeBody} = require('../models/bodyValidation/runwayTypeBody.
 const {insertEquipmentTypeBody} = require('../models/bodyValidation/equipmentBody.js');
 const {additionalQualificationTypeInsertBody} = require('../models/bodyValidation/additionalQualificationTypeBody.js');
 const {oaciTypeInsertBody} = require('../models/bodyValidation/oaciTypeBody.js');
+const {insertWeightTypeBody} = require('../models/bodyValidation/weightTypeBody.js');
 const {amenityTypeInsertBody} = require('../models/bodyValidation/amenityTypesBody.js');
 
 
@@ -64,5 +66,11 @@ router.get('/oaci-types', [adminAuthMiddleware], (...args) => new OaciType(...ar
 router.all('/oaci-types/create', [adminAuthMiddleware, oaciTypeInsertBody], (...args) => new OaciType(...args, 'create'));
 router.all('/oaci-types/edit/:id', [adminAuthMiddleware, oaciTypeInsertBody], (...args) => new OaciType(...args, 'edit'));
 router.get('/oaci-types/delete/:id', [adminAuthMiddleware], (...args) => new OaciType(...args, 'delete'));
+
+router.get('/weight-types', [adminAuthMiddleware], (...args) => new WeightType(...args, 'index'));
+router.all('/weight-types/create', [adminAuthMiddleware, insertWeightTypeBody], (...args) => new WeightType(...args, 'create'));
+router.all('/weight-types/edit/:id', [adminAuthMiddleware, insertWeightTypeBody], (...args) => new WeightType(...args, 'edit'));
+router.get('/weight-types/delete/:id', [adminAuthMiddleware], (...args) => new WeightType(...args, 'delete'));
+
 
 module.exports = router;
