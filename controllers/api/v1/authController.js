@@ -150,7 +150,8 @@ exports.signUp = async function(req, res){
         valid_until_date: req.body.valid_until_date,
         issuing_country_id: req.body.issuing_country_id,
         weight_type_id: req.body.weight_type_id,
-        stripe_customer_id: customer.data.id
+        stripe_customer_id: customer.data.id,
+        registration_number_id: req.body.registration_number_id
     });
 
     for(const equipment of req.body.equipments)
