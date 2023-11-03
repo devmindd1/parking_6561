@@ -62,5 +62,5 @@ app.use('/', [indexResponse(), indexRoutes]);
         console.log(err);
 
         app.res.status(500).send('server error');
-    })
+    });
 })();

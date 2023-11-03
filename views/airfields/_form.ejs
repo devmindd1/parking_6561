@@ -6,12 +6,11 @@
     </div>
 
     <div class="row margin">
-        <div class="col-sm-6" style="border: 1px dotted;">
+        <div class="col-sm-6" style="border: 1px dotted grey;">
             <p><b>Hangar</b></p>
-
             <% for(let i=0; i < weightTypes.length; i++) { %>
                 <%- i%2 === 0 ? '<div class="row">': '' %>
-                    <div class="col-sm-6" style="border: 1px solid grey;">
+                    <div class="col-sm-6" style="border: 1px dotted grey;">
                         <span><b><%= weightTypes[i]['title'] %></b></span>
                         <div class="row">
                             <div class="col-sm-6">
@@ -30,13 +29,12 @@
                     </div>
                 <%- i%2 === 1 ? '</div>': '' %>
             <% } %>
-
         </div>
-        <div class="col-sm-6" style="border: 1px dotted;">
+        <div class="col-sm-6" style="border: 1px dotted grey;">
             <p><b>Outdoor</b></p>
             <% for(let i=0; i < weightTypes.length; i++) { %>
                 <%- i%2 === 0 ? '<div class="row">': '' %>
-                <div class="col-sm-6" style="border: 1px solid grey;">
+                <div class="col-sm-6" style="border: 1px dotted grey;">
                     <span><b><%= weightTypes[i]['title'] %></b></span>
                     <div class="row">
                         <div class="col-sm-6">
