@@ -2,7 +2,6 @@ const database = require('../config/database.js');
 
 class Model{
     constructor(table){
-        this._SORT_TYPES = ['ASC', 'DESC'];
         this._table = table;
         this.db = database;
         this.t = this.db(this._table);
@@ -14,6 +13,12 @@ class Model{
         this.freeResult();
 
         return item;
+    }
+
+    async getAllCount(){
+        const [row] = await this.t.count();
+
+        return parseInt(row['count(*)']);
     }
 
     deleteById(id){

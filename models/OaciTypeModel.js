@@ -15,6 +15,18 @@ class OaciTypeModel extends Model{
             .whereNull('airfields.id')
             .whereNotNull('oaci_types.latitude');
     }
+
+
+
+    /////////////////////////// TODO TEST
+
+    startTransaction(){
+        return this.exec(`START TRANSACTION`);
+    }
+
+    commitTransaction(){
+        return this.exec(`COMMIT`);
+    }
 }
 
 module.exports = OaciTypeModel;

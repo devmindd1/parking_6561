@@ -147,12 +147,14 @@ class StripeService{
         );
     }
 
-    createIntent(customerId, amount){
-        return this.s.charges.create({
+    createIntent(customerId, cardId, amount){
+        return this.s.paymentIntents.create({
             customer: customerId,
             amount: amount,
             currency: 'eur',
-            transfer_group: 'ORDER10',
+            automatic_payment_methods: {enabled: false},
+            payment_method_types: ['card'],
+            payment_method: cardId
         });
     }
 

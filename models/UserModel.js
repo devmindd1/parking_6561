@@ -11,6 +11,18 @@ class UserModel extends Model{
 
     constructor(){ super('users'); }
 
+    getOwners(){
+        return this.t.select('*').where({
+            role: UserModel._ROLES['owner']
+        });
+    }
+
+    async getOwnersCount(){
+        const [row] =  await this.t.count().where({role: UserModel._ROLES['owner']});
+
+        return row['count(*)']
+    }
+
     async getAdminByEmailPassword(email, password){
         const [user] =  await this.t.select('*').where({
             email: email,
@@ -34,9 +46,6 @@ class UserModel extends Model{
     async getUserStripeCustomerId(userId){
         const [user] = await this.t.select('stripe_customer_id')
             .where({id: userId});
-
-
-        console.log(user);
 
         if(!user || !user['stripe_customer_id']) return '';
 

@@ -39,10 +39,6 @@ const insertBody = [
         .withMessage('parking_count >= 0'),
     body('manager_name').notEmpty()
         .withMessage('manager name is require'),
-    body('short_hr_price_eur').isNumeric()
-        .withMessage('short_hr_price_eur name is numeric'),
-    body('long_day_price_eur').isNumeric()
-        .withMessage('long_day_price_eur name is require'),
     body('primary_email').notEmpty()
         .withMessage('Email is require'),
     body('primary_email').isEmail().normalizeEmail().withMessage('please write true email')

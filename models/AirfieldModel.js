@@ -49,8 +49,7 @@ class AirfieldModel extends Model{
     }
 
     async getInfoByOaciId(oaciId){
-        const [airfield] = await this.t.select('airfields.id', 'airfields.spaces_count', 'airfields.short_hr_price_eur',
-            'airfields.long_day_price_eur', 'oaci_types.airfield_name', 'oaci_types.oaci_code')
+        const [airfield] = await this.t.select('airfields.id', 'airfields.spaces_count', 'oaci_types.airfield_name', 'oaci_types.oaci_code')
             .leftJoin('oaci_types', 'airfields.oaci_type_id', 'oaci_types.id')
             .where({'airfields.oaci_type_id': oaciId});
 
@@ -107,47 +106,40 @@ class AirfieldModel extends Model{
     }
 
     getFreeAirfieldsByRange(data){
-        const oaciId = data.oaciId || 0;
         const spaceType = AirfieldsSpaceModel._TYPES[data.spaceType];
-        let startDate = '1970-01-01 00:00';
-        let endDate = '1970-01-01 00:00';
+        const oaciWhere = data.oaciId ? `oaci_types.id = ${data.oaciId}`: 1;
 
+        let startDate = '1970-01-01';
+        let endDate = '1970-01-01';
         if(data.startDate && data.endDate){
             startDate = data.startDate;
             endDate = data.endDate;
         }
 
         let query =`
-          SELECT
-            oaci_types.airfield_name,
-            airfields.id,
-            airfields.spaces_count,
-            airfields.parking_count,
-            airfields.hangar_count,
-            oaci_types.latitude,
-            oaci_types.longitude,
-            airfields_spaces.type,
-            -- airfields_spaces.id AS airSpa_id,
-            -- f_airfields_spaces_bookings.airfields_space_id AS airfield_space_is_busy,
-            COUNT(*) AS free_spaces_count
-          FROM airfields_spaces
-          LEFT JOIN (
-            SELECT airfields_spaces_bookings.airfields_space_id
-            FROM airfields_spaces_bookings
-            WHERE start_timestamp BETWEEN '${startDate}' AND '${endDate}'
-               OR end_timestamp BETWEEN '${startDate}' AND '${endDate}'
-            GROUP BY airfields_space_id
-          ) AS f_airfields_spaces_bookings
-           ON airfields_spaces.id = f_airfields_spaces_bookings.airfields_space_id
-          INNER JOIN airfields
-           ON airfields_spaces.airfield_id = airfields.id
-          LEFT JOIN oaci_types ON airfields.oaci_type_id = oaci_types.id
-          WHERE f_airfields_spaces_bookings.airfields_space_id IS NULL
-            AND airfields_spaces.type = '${spaceType}'`;
-
-        if(oaciId) query += ` AND oaci_types.id = ${oaciId}`;
-
-        query += ` GROUP BY airfields.id`;
+            SELECT
+              airfields.id,
+              COUNT(f_airfields_spaces_bookings.airfield_id) AS reserved_count,
+              oaci_types.id AS oaci_id,
+              oaci_types.airfield_name,
+              airfields.spaces_count,
+              airfields.parking_count,
+              airfields.hangar_count,
+              oaci_types.latitude,
+              oaci_types.longitude
+            FROM airfields
+            LEFT JOIN (
+              SELECT airfields_spaces.airfield_id 
+              FROM airfields_spaces_bookings
+              LEFT JOIN airfields_spaces ON airfields_spaces_bookings.airfields_space_id = airfields_spaces.id 
+              WHERE (start_timestamp BETWEEN '${startDate}' AND '${endDate}' OR end_timestamp BETWEEN '${startDate}' AND '${endDate}') 
+              AND type = '${spaceType}' 
+              GROUP BY airfields_space_id
+            ) AS f_airfields_spaces_bookings ON airfields.id = f_airfields_spaces_bookings.airfield_id
+            LEFT JOIN oaci_types ON airfields.oaci_type_id = oaci_types.id 
+            WHERE ${oaciWhere}
+            GROUP BY airfields.id
+            HAVING reserved_count < airfields.${spaceType}_count`;
 
         return this.exec(query);
     }

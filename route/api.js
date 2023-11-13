@@ -37,7 +37,7 @@ router.post('/users/insert-card', [apiAuthMiddleware, insertCardBody], user.inse
 router.put('/users/change-default-card', [apiAuthMiddleware], user.changeDefaultCard);
 router.get('/airfields/free-by-range', [apiAuthMiddleware, getFiltered], airfield.freeAirfieldsByRange);
 // router.get('/airfields/:airfieldId', [apiAuthMiddleware, getByIdBody], airfield.getById);
-router.get('/airfields/:oaciId', [apiAuthMiddleware, getByIdBody], airfield.getByOaciId);
+router.get('/airfields/:oaciId/:spaceType', [apiAuthMiddleware, getByIdBody], airfield.getByOaciId);
 router.post('/airfields/book', [apiAuthMiddleware, bookBody], airfield.book);
 router.post('/airfields/calc-book-price', [apiAuthMiddleware, bookBody], airfield.calcBookPrice);
 router.put('/logout', [apiAuthMiddleware], auth.logout);

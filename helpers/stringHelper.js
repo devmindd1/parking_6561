@@ -11,3 +11,7 @@ exports.randomString = function(bytes = 20){
 exports.titleFromUrl = function(url){
     return url.replace(/^https?:\/\//, '').replaceAll('/', ' ').replaceAll('-', ' ').replaceAll('_', ' ');
 };
+
+exports.keyFromTitle = function(title){
+    return title.replace(/  +/g, ' ').replace(/\s+/g, '_').toLowerCase();
+};

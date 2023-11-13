@@ -10,6 +10,7 @@ const OaciTypeModel = require('../models/OaciTypeModel');
 const AmenityTypeModel = require('../models/AmenityTypeModel');
 const AirfieldsRunwayTypesMapModel = require('../models/AirfieldsRunwayTypesMapModel');
 const AirfieldsAmenityTypesMapModel = require('../models/AirfieldsAmenityTypesMapModel');
+const AirfieldsWeightTypesMapModel = require('../models/AirfieldsWeightTypesMapModel');
 const AirfieldsBankModel = require('../models/AirfieldsBankModel');
 const CountryModel = require('../models/CountryModel');
 const WeightTypeModel = require('../models/WeightTypeModel');
@@ -18,7 +19,6 @@ const StripeService = require('../services/StripeService');
 exports.index = async function(req, res){
     const airfieldModel = new AirfieldModel();
 
-    res.data.items = await airfieldModel.getByUserId(req.user.id);
     res.data.items = await airfieldModel.getByUserId(req.user.id);
     res.data.statuses = await AirfieldModel._STATUSES;
 
@@ -58,35 +58,19 @@ exports.create = async function(req, res){
     const countryModel = new CountryModel();
     const weightTypeModel = new WeightTypeModel();
 
-
-
     res.data.weightTypes = await weightTypeModel.getAll();
-
     res.data.runwayTypes = await runwayTypeModel.getAll();
     res.data.oaciTypes = await oaciTypeModel.getAllFree();
-
-
-    console.log(res.data.oaciTypes);
-
     res.data.amenities = await amenityTypeModel.getAll();
     res.data.countries = await countryModel.getAll();
 
     if(req.method === 'GET') return res.render('airfields/create', res.data);
 
-
-    console.log(req.body);
-
     const errors = validationResult(req);
     if(!errors.isEmpty()){
-
-        console.log(errors.mapped());
-
         res.data.validationErrors = errors.mapped();
         return res.render('airfields/create', res.data);
     }
-
-
-
 
     const airfieldModel = new AirfieldModel();
     const airfieldsSpaceModel = new AirfieldsSpaceModel();
@@ -94,6 +78,7 @@ exports.create = async function(req, res){
     const airfieldsRunwayTypesMapModel = new AirfieldsRunwayTypesMapModel();
     const airfieldsAmenityTypesMapModel = new AirfieldsAmenityTypesMapModel();
     const airfieldsBankModel = new AirfieldsBankModel();
+    const airfieldsWeightTypesMapModel = new AirfieldsWeightTypesMapModel();
 
     const newAirfieldId = await airfieldModel.insert({
         user_id: req.user.id,
@@ -104,9 +89,7 @@ exports.create = async function(req, res){
         hangar_count: req.body.hangar_count,
         parking_count: req.body.parking_count,
         operating_license_img: await upload(req.files?.operating_license_img, airfieldsDocumentsPath),
-        oaci_type_id: parseInt(req.body.oaci_type_id),
-        short_hr_price_eur: parseFloat(req.body.short_hr_price_eur),
-        long_day_price_eur: parseFloat(req.body.long_day_price_eur),
+        oaci_type_id: parseInt(req.body.oaci_type_id)
     });
 
     const saveAirfieldImagesIds = req.body.save_airfield_photo_ids.split(',');
@@ -144,6 +127,18 @@ exports.create = async function(req, res){
                 airfield_id: newAirfieldId,
                 amenity_type_id: req.body.amenity_type_ids[i]
             });
+
+    for(const weightType of res.data.weightTypes)
+        for(const [, spaceType] of Object.entries(AirfieldsSpaceModel._TYPES))
+            for(const [, priceType] of Object.entries(AirfieldsWeightTypesMapModel._PRICE_TYPES))
+                if(req.body[`weight_type[${spaceType}][${weightType.id}][${priceType}]`])
+                    await airfieldsWeightTypesMapModel.insert({
+                        price: req.body[`weight_type[${spaceType}][${weightType.id}][${priceType}]`],
+                        airfield_id: newAirfieldId,
+                        weight_type_id: weightType.id,
+                        space_type: spaceType,
+                        price_type: priceType,
+                    });
 
     await airfieldsBankModel.insert({
         airfield_id: newAirfieldId,

@@ -2,19 +2,20 @@ const router = new (require('express').Router)();
 
 const auth = require('../controllers/admin/authController.js');
 const home = require('../controllers/admin/homeController.js');
-const owner = require('../controllers/admin/ownerController.js');
 const airfield = require('../controllers/admin/airfieldController.js');
 const runwayType = require('../controllers/admin/runwayTypeController.js');
 
 const OaciType = require('../controllers/admin/OaciTypeController.js');
 const WeightType = require('../controllers/admin/WeightTypeController.js');
+const Manager = require('../controllers/admin/ManagerController.js');
+const Setting = require('../controllers/admin/SettingController.js');
 const AdditionalQualificationType = require('../controllers/admin/AdditionalQualificationTypeController.js');
 const AmenityType = require('../controllers/admin/AmenityTypeController.js');
 const EquipmentType = require('../controllers/admin/EquipmentTypeController.js');
 
 const adminAuthMiddleware = require('../middlewares/adminAuthMiddleware.js');
 
-const {adminLoginBody} = require('../models/bodyValidation/userBody.js');
+const {adminLoginBody, adminOwnerInsertBody} = require('../models/bodyValidation/userBody.js');
 const {insertRunwayTypeBody} = require('../models/bodyValidation/runwayTypeBody.js');
 const {insertEquipmentTypeBody} = require('../models/bodyValidation/equipmentBody.js');
 const {additionalQualificationTypeInsertBody} = require('../models/bodyValidation/additionalQualificationTypeBody.js');
@@ -31,8 +32,6 @@ router.get('/admin', [adminAuthMiddleware], home.index);
 router.get('/edit', [adminAuthMiddleware], home.edit);
 
 
-
-router.get('/owners', [adminAuthMiddleware], owner.index);
 router.get('/airfields', [adminAuthMiddleware], airfield.index);
 
 
@@ -43,9 +42,6 @@ router.get('/runway-types', [adminAuthMiddleware], runwayType.index);
 router.all('/runway-types/create', [adminAuthMiddleware, insertRunwayTypeBody], runwayType.create);
 router.all('/runway-types/edit/:id', [adminAuthMiddleware, insertRunwayTypeBody], runwayType.edit);
 router.get('/runway-types/delete/:id', [adminAuthMiddleware], runwayType.delete);
-
-
-
 
 router.get('/amenity-types', [adminAuthMiddleware], (...args) => new AmenityType(...args, 'index'));
 router.all('/amenity-types/create', [adminAuthMiddleware, amenityTypeInsertBody], (...args) => new AmenityType(...args, 'create'));
@@ -72,5 +68,14 @@ router.all('/weight-types/create', [adminAuthMiddleware, insertWeightTypeBody], 
 router.all('/weight-types/edit/:id', [adminAuthMiddleware, insertWeightTypeBody], (...args) => new WeightType(...args, 'edit'));
 router.get('/weight-types/delete/:id', [adminAuthMiddleware], (...args) => new WeightType(...args, 'delete'));
 
+router.get('/managers', [adminAuthMiddleware], (...args) => new Manager(...args, 'index'));
+router.all('/managers/create', [adminAuthMiddleware, adminOwnerInsertBody], (...args) => new Manager(...args, 'create'));
+router.all('/managers/edit/:id', [adminAuthMiddleware, adminOwnerInsertBody], (...args) => new Manager(...args, 'edit'));
+router.get('/managers/delete/:id', [adminAuthMiddleware], (...args) => new Manager(...args, 'delete'));
+
+router.get('/settings', [adminAuthMiddleware], (...args) => new Setting(...args, 'index'));
+router.all('/settings/create', [adminAuthMiddleware], (...args) => new Setting(...args, 'create'));
+router.all('/settings/edit/:id', [adminAuthMiddleware], (...args) => new Setting(...args, 'edit'));
+router.get('/settings/delete/:id', [adminAuthMiddleware], (...args) => new Setting(...args, 'delete'));
 
 module.exports = router;

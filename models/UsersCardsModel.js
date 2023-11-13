@@ -20,6 +20,16 @@ class UsersCardsModel extends Model{
 
         return card;
     }
+
+
+    async getCardByUserId(userId, sourceId){
+        const [card] = await this.t.select('id', 'source_id').where({
+            source_id: sourceId,
+            user_id: userId
+        });
+
+        return card;
+    }
 }
 
 module.exports = UsersCardsModel;

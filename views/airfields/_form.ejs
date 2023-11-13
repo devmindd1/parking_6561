@@ -6,53 +6,76 @@
     </div>
 
     <div class="row margin">
-        <div class="col-sm-6" style="border: 1px dotted grey;">
-            <p><b>Hangar</b></p>
-            <% for(let i=0; i < weightTypes.length; i++) { %>
-                <%- i%2 === 0 ? '<div class="row">': '' %>
-                    <div class="col-sm-6" style="border: 1px dotted grey;">
-                        <span><b><%= weightTypes[i]['title'] %></b></span>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="form-check-label">Long</label>
-                                    <input type="text" name="phone_number" class="form-control" placeholder="Long price">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="form-check-label">Short</label>
-                                    <input type="text" name="phone_number" class="form-control" placeholder="Short price">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <%- i%2 === 1 ? '</div>': '' %>
-            <% } %>
-        </div>
-        <div class="col-sm-6" style="border: 1px dotted grey;">
-            <p><b>Outdoor</b></p>
-            <% for(let i=0; i < weightTypes.length; i++) { %>
-                <%- i%2 === 0 ? '<div class="row">': '' %>
-                <div class="col-sm-6" style="border: 1px dotted grey;">
-                    <span><b><%= weightTypes[i]['title'] %></b></span>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="form-check-label">Long</label>
-                                <input type="text" name="phone_number" class="form-control" placeholder="Long price">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="form-check-label">Short</label>
-                                <input type="text" name="phone_number" class="form-control" placeholder="Short price">
-                            </div>
-                        </div>
+        <div class="col-md-6">
+            <div class="card card-success collapsed-card" id="weight_types_hangar">
+                <div class="card-header" style="background-color: #034168;">
+                    <h3 class="card-title">Hangar prices</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
                     </div>
                 </div>
-                <%- i%2 === 1 ? '</div>': '' %>
-            <% } %>
+                <div class="card-body">
+                    <% for(let i=0; i < weightTypes.length; i++) { %>
+                        <%- i%2 === 0 ? '<div class="row">': '' %>
+                        <div class="col-sm-6" style="border: 1px dotted grey;">
+                            <span><b><%= weightTypes[i]['title'] %></b></span>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-check-label">Long</label>
+                                        <input type="text" name="weight_type[hangar][<%= weightTypes[i]['id'] %>][long]" class="form-control" placeholder="Long price">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-check-label">Short</label>
+                                        <input type="text" name="weight_type[hangar][<%= weightTypes[i]['id'] %>][short]" class="form-control" placeholder="Short price">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%- i%2 === 1 ? '</div>': '' %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card card-success collapsed-card" id="weight_types_parking">
+                <div class="card-header" style="background-color: #034168;">
+                    <h3 class="card-title">Outdoor prices</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <% for(let i=0; i < weightTypes.length; i++) { %>
+                        <%- i%2 === 0 ? '<div class="row">': '' %>
+                        <div class="col-sm-6" style="border: 1px dotted grey;">
+                            <span><b><%= weightTypes[i]['title'] %></b></span>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-check-label">Long</label>
+                                        <input type="text" name="weight_type[parking][<%= weightTypes[i]['id'] %>][long]" class="form-control" placeholder="Long price">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-check-label">Short</label>
+                                        <input type="text" name="weight_type[parking][<%= weightTypes[i]['id'] %>][short]" class="form-control" placeholder="Short price">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%- i%2 === 1 ? '</div>': '' %>
+                    <% } %>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -129,8 +152,8 @@
         </div>
         <div class="col-sm-2">
             <div class="form-group">
-                <label class="form-check-label">Number of parking</label>
-                <input type="text" name="parking_count" class="form-control" placeholder="Number of parking">
+                <label class="form-check-label">Number of outdoor</label>
+                <input type="text" name="parking_count" class="form-control" placeholder="Number of outdoor">
             </div>
         </div>
     </div>

@@ -18,6 +18,29 @@ exports.test1 = function(req, res){
 
 exports.test = async function(req, res){
 
+
+
+
+
+    function decimalAdjust(value, exp) {
+
+    }
+
+    const a = decimalAdjust(50.255, -2);
+
+
+
+    console.log(a);
+
+
+    // const model = new OaciTypeModel();
+
+
+    // await model.startTransaction();
+    // await model.commitTransaction();
+
+
+
     // $a = "https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_OhvARKi4mJsCzF50FgLbpo3ffdmCEJGJ&scope=read_write&redirect_uri=http://192.168.77.129:9026/stripe-connect";
 
     // axios.post('https://connect.stripe.com/oauth/token', {
@@ -36,7 +59,7 @@ exports.test = async function(req, res){
 
 
 
-    const stripe = require('stripe')('sk_test_51NsQHOHsAwmdsPL7mMUW05rPs1h28LexLgPCZ0F8v9BMgVtWQlag3V8AbuP3C8VZt85oMXMFE2xb4YQW4hRzrNIl00glLB76xr');
+    // const stripe = require('stripe')('sk_test_51NsQHOHsAwmdsPL7mMUW05rPs1h28LexLgPCZ0F8v9BMgVtWQlag3V8AbuP3C8VZt85oMXMFE2xb4YQW4hRzrNIl00glLB76xr');
     //
     // const customer = await stripe.customers.update(
     //     'cus_OqEHlBVUW9y21x',
@@ -49,14 +72,14 @@ exports.test = async function(req, res){
 
 
 
-    const a = await stripe.customers.deleteSource(
-        'cus_OqEHlBVUW9y21x',
-        'card_1O2r2JHsAwmdsPL7c10fSuaG'
-    );
-
-
-
-    console.log(a);
+    // const a = await stripe.customers.deleteSource(
+    //     'cus_OqEHlBVUW9y21x',
+    //     'card_1O2r2JHsAwmdsPL7c10fSuaG'
+    // );
+    //
+    //
+    //
+    // console.log(a);
 
 
 
@@ -147,33 +170,28 @@ exports.test = async function(req, res){
 
     // const stripe = require('stripe')('sk_test_51NsQHOHsAwmdsPL7mMUW05rPs1h28LexLgPCZ0F8v9BMgVtWQlag3V8AbuP3C8VZt85oMXMFE2xb4YQW4hRzrNIl00glLB76xr');
     //
-    //
     // const transfer = await stripe.transfers.create({
     //     amount: 400,
     //     currency: 'eur',
     //     destination: 'acct_1NvakAQYaUT33qSt'
     // });
     //
-    //
-    //
     // console.log(transfer);
 
-    // console.log(transfer);
-
-        // 'stripe_user[country]' => 'FR',
-        // 'stripe_user[phone_number]' => $user['phone'],
-        // 'stripe_user[business_name]' => $user['business_name'],
-        // 'stripe_user[first_name]' => $user['first_name'],
-        // 'stripe_user[last_name]' => $user['last_name'],
-        // 'stripe_user[street_address]' => $user['address'],
-        // 'stripe_user[city]' => $user['city'],
-        // 'stripe_user[zip]' => $user['zip_code'],
-        // 'stripe_user[state]' => substr($user['zip_code'], 0, 2),
-        // 'stripe_user[dob_day]' => $birth_day,
-        // 'stripe_user[dob_month]' => $birth_month,
-        // 'stripe_user[dob_year]' => $birth_year,
-        // 'stripe_user[currency]' => $this->currency,
-        // 'stripe_user[url]' => base_url().'users/'.$user['user_url'],
+    // 'stripe_user[country]' => 'FR',
+    // 'stripe_user[phone_number]' => $user['phone'],
+    // 'stripe_user[business_name]' => $user['business_name'],
+    // 'stripe_user[first_name]' => $user['first_name'],
+    // 'stripe_user[last_name]' => $user['last_name'],
+    // 'stripe_user[street_address]' => $user['address'],
+    // 'stripe_user[city]' => $user['city'],
+    // 'stripe_user[zip]' => $user['zip_code'],
+    // 'stripe_user[state]' => substr($user['zip_code'], 0, 2),
+    // 'stripe_user[dob_day]' => $birth_day,
+    // 'stripe_user[dob_month]' => $birth_month,
+    // 'stripe_user[dob_year]' => $birth_year,
+    // 'stripe_user[currency]' => $this->currency,
+    // 'stripe_user[url]' => base_url().'users/'.$user['user_url'],
 
     // //
     // const token = await stripe.tokens.create({
@@ -348,20 +366,30 @@ exports.test = async function(req, res){
 
 
     // const stripe = require('stripe')('sk_test_51NsQHOHsAwmdsPL7mMUW05rPs1h28LexLgPCZ0F8v9BMgVtWQlag3V8AbuP3C8VZt85oMXMFE2xb4YQW4hRzrNIl00glLB76xr');
-
-    // const paymentIntent = await stripe.paymentIntents.create({
-    //     customer: 'cus_OgXI9nshn8gaK7',
-    //     amount: 100,
-    //     currency: 'eur'
-    // });
-
+    // //
+    // // const paymentIntent = await stripe.paymentIntents.create({
+    // //     customer: 'cus_Oy5tYJAxyTgmdZ',
+    // //     amount: 100,
+    // //     currency: 'eur',
+    // //     automatic_payment_methods: {enabled: false},
+    // //     payment_method_types: ['card'],
+    // //     payment_method: 'card_1OA9hJHsAwmdsPL72gQQHARE'
+    // // });
+    // // //
+    // // console.log(paymentIntent);
+    //
+    //
+    // const paymentIntent = await stripe.paymentIntents.confirm(
+    //     'pi_3OArroHsAwmdsPL70xAtalRv'
+    // );
+    //
     // console.log(paymentIntent);
 
 
-    const paymentMethods = await stripe.paymentMethods.list({
-        customer: 'cus_OqEHlBVUW9y21x',
-        type: 'card',
-    });
+    // const paymentMethods = await stripe.paymentMethods.list({
+    //     customer: 'cus_OqEHlBVUW9y21x',
+    //     type: 'card',
+    // });
 
 
     // const paymentIntent = await stripe.charges.create({

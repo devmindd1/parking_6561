@@ -1,0 +1,74 @@
+<div class="card-body">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <% name = 'first_name'; %>
+                <label for="<%= name %>">First name</label>
+                <input type="text"  name="<%= name %>" id="<%= name %>"
+                       class="form-control <%= errors[name] ? 'is-invalid' : '' %>"
+                       value="<%= model[name] ? model[name] : '' %>">
+                <span class="error invalid-feedback">
+                    <%= errors[name] ? errors[name]['msg']: ''%>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="form-group">
+                <% name = 'last_name'; %>
+                <label for="<%= name %>">Last name</label>
+                <input type="text" name="<%= name %>" id="<%= name %>"
+                       class="form-control <%= errors[name] ? 'is-invalid' : '' %>"
+                       value="<%= model[name] ? model[name] : '' %>">
+                <span class="error invalid-feedback">
+                    <%= errors[name] ? errors[name]['msg']: ''%>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <% name = 'email'; %>
+                <label for="<%= name %>">Email</label>
+                <input type="text"  name="<%= name %>" id="<%= name %>"
+                       class="form-control <%= errors[name] ? 'is-invalid' : '' %>"
+                       value="<%= model[name] ? model[name] : '' %>">
+                <span class="error invalid-feedback">
+                    <%= errors[name] ? errors[name]['msg']: ''%>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="form-group">
+                <% name = 'password'; %>
+                <label for="<%= name %>">Password</label>
+                <input type="text"  name="<%= name %>" id="<%= name %>"
+                       class="form-control <%= errors[name] ? 'is-invalid' : '' %>"
+                       value="<%= model[name] ? model[name] : '' %>">
+                <span class="error invalid-feedback">
+                    <%= errors[name] ? errors[name]['msg']: ''%>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="form-group">
+                <% name = 'date_of_birth'; %>
+                <label class="form-check-label">Date of birth</label>
+                <div class="input-group date" id="<%= name %>" data-target-input="nearest">
+                    <input type="text" name="<%= name %>" class="form-control datetimepicker-input"
+                           data-target="#<%= name %>" value="<%= model[name] ? model[name] : '' %>">
+                    <div class="input-group-append" data-target="#<%= name %>" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/admin/<%= _module %>/validation.js"></script>
+<script src="/js/admin/<%= _module %>/_form.js"></script>

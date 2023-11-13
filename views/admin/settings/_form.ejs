@@ -1,0 +1,32 @@
+<div class="card-body">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <% name = 'title'; %>
+                <label for="<%= name %>">Title</label>
+                <input type="text"  name="<%= name %>" id="<%= name %>"
+                       class="form-control <%= errors[name] ? 'is-invalid' : '' %>"
+                       value="<%= model[name] ? model[name] : '' %>">
+                <span class="error invalid-feedback">
+                    <%= errors[name] ? errors[name]['msg']: ''%>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="form-group">
+                <% name = 'value'; %>
+                <label for="<%= name %>">Value</label>
+                <input type="text" name="<%= name %>" id="<%= name %>"
+                       class="form-control <%= errors[name] ? 'is-invalid' : '' %>"
+                       value="<%= model[name] ? model[name] : '' %>">
+                <span class="error invalid-feedback">
+                    <%= errors[name] ? errors[name]['msg']: ''%>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/admin/<%= _module %>/validation.js"></script>
+<script src="/js/admin/<%= _module %>/_form.js"></script>

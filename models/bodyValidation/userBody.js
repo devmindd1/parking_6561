@@ -1,6 +1,27 @@
 const {body} = require("express-validator");
 const UserModel = require("../UserModel");
 
+const adminOwnerInsertBody = [
+    body('first_name').notEmpty()
+        .withMessage('first_name is require'),
+    body('last_name').notEmpty()
+        .withMessage('last_name is require'),
+    body('email').notEmpty()
+        .withMessage('Email is require'),
+    body('email').isEmail().normalizeEmail().withMessage('please write true email')
+        .custom(async value => {
+            const userModel = new UserModel();
+
+            return userModel.checkEmailExists(value).then(has => {
+                if(has) throw new Error('Email is exists');
+            });
+        }),
+    body('password').isLength({ min: 6 })
+        .withMessage('password min size 6 symbols'),
+    body('password').notEmpty()
+        .withMessage('Password is require'),
+];
+
 const adminLoginBody = [
     body('email').notEmpty()
         .withMessage('Email is require'),
@@ -153,5 +174,6 @@ module.exports = {
     loginBody,
     forgotPasswordBody,
     recoverPasswordBody,
-    updateBody
+    updateBody,
+    adminOwnerInsertBody
 };

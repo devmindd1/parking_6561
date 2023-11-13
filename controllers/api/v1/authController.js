@@ -23,18 +23,16 @@ exports.recoverPasswordValidate = function(req, res){
 };
 
 exports.recoverPassword = async function(req, res){
-    let {password} = req.body;
-    const userModel = new UserModel();
-
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         res.data.validationErrors = errors.array();
         return res.status(400).json(res.data);
     }
 
-    password = await bcrypt.hash(password, 3);
+    const userModel = new UserModel();
+
     await userModel.update(req.user.id, {
-        password: password,
+        password: await bcrypt.hash(req.body.password, 3),
         forgot_password_token: null
     });
 
