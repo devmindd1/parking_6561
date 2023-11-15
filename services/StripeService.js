@@ -27,14 +27,18 @@ class StripeService{
 
             this.result.success = false;
             this.result.error.type = e.type;
+            this.result.error.message = e.raw.message;
 
-            if(e.type === 'StripeInvalidRequestError'){
-                this.result.error.message = e.raw.message;
+            if(e.type === 'StripeInvalidRequestError')
                 this.result.error.param = e.raw.param.split('][')[1].replace(/.$/, '');
-            }
+
         }
 
         return this.result;
+    }
+
+    cancelIntent(paymentIntentId){
+        return this.s.paymentIntents.cancel(paymentIntentId);
     }
 
     attachSourceToCustomer(customerId, sourceToken){
@@ -166,8 +170,6 @@ class StripeService{
             transfer_group: 'ORDER10',
         });
     }
-
-
 }
 
 module.exports = StripeService;

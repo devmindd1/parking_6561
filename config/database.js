@@ -12,7 +12,7 @@
 module.exports = require('knex')({
     client: 'mysql2',
     connection: {
-        host:'65.109.11.93',
+        host: '65.109.11.93',
         user: 'powerd',
         database: 'parking',
         password: 'Powerd@2023',

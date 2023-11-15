@@ -7,6 +7,7 @@ exports.index = async function(req, res){
 
     res.data.airfieldsCount = await airfieldModel.getAllCount();
     res.data.managersCount = await userModel.getOwnersCount();
+    res.data.reservationsCount = 42;
 
     return res.render('admin/home/index', res.data);
 };

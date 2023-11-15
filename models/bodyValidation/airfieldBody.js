@@ -1,5 +1,6 @@
 const {body, check, param, query} = require("express-validator");
 const AirfieldModel = require("../../models/AirfieldModel");
+const UsersCardsModel = require("../../models/UsersCardsModel");
 
 const insertBody = [
     check('airfield_images').custom(async (value, {req}) => {
@@ -82,18 +83,34 @@ const getFiltered = [
         .withMessage('spaceType is require')
 ];
 
-const bookBody = [
+const bookCalcBody = [
     body('dateStart').notEmpty()
         .withMessage('dateStart is require'),
     body('dateEnd').notEmpty()
         .withMessage('dateEnd is require'),
     body('oaciId').notEmpty()
-        .withMessage('oaciId is require')
+        .withMessage('oaciId is require'),
+    body('spaceType').notEmpty()
+        .withMessage('spaceType is require'),
+];
+
+const bookBody = [
+        ...bookCalcBody,
+    body('stripeCardId').notEmpty()
+        .withMessage('stripeCardId is require'),
+    body('stripeCardId').custom(async (value, {req}) => {
+            const usersCardsModel = new UsersCardsModel();
+
+            const card = await usersCardsModel.getCardByUserId(req.user.id, value);
+            if(!card)
+                throw new Error('cardId dont found');
+        })
 ];
 
 module.exports = {
     insertBody,
     getByIdBody,
     getFiltered,
-    bookBody
+    bookCalcBody,
+    bookBody,
 };

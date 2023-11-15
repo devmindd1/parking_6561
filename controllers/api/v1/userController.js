@@ -94,7 +94,6 @@ exports.insertCard = async function(req, res){
     return res.status(200).json(res.data);
 };
 
-
 exports.changeDefaultCard = async function(req, res){
     const {cardId} = req.body;
 
@@ -103,12 +102,7 @@ exports.changeDefaultCard = async function(req, res){
     const userModel = new UserModel();
 
     const customerId = await userModel.getUserStripeCustomerId(req.user.id);
-
     const card = await usersCardsModel.getUserCardBySourceId(req.user.id, cardId);
-
-
-    console.log(card);
-    console.log(cardId);
 
     if(!card)
         return res.status(400).json(res.data);
@@ -118,13 +112,4 @@ exports.changeDefaultCard = async function(req, res){
         return res.status(400).json(res.data);
 
     return res.status(200).json(res.data);
-};
-
-
-// Arthur check this query, I created this for get bookings
-exports.getBookings = async (req, res) => {
-    const bookings = new AirfieldsSpacesBookingModel();
-    const data = await bookings.getBooks(req.body.userId);
-
-    return res.status(200).json(data);
 };

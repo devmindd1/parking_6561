@@ -101,7 +101,7 @@ class UserModel extends Model{
         })
         .andWhereNot(whereNot);
 
-        if(user) return true;
+        return !!user;
     }
 
     updateToken(userId, token){

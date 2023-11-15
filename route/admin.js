@@ -12,6 +12,7 @@ const Setting = require('../controllers/admin/SettingController.js');
 const AdditionalQualificationType = require('../controllers/admin/AdditionalQualificationTypeController.js');
 const AmenityType = require('../controllers/admin/AmenityTypeController.js');
 const EquipmentType = require('../controllers/admin/EquipmentTypeController.js');
+const Booking = require('../controllers/admin/BookingController.js');
 
 const adminAuthMiddleware = require('../middlewares/adminAuthMiddleware.js');
 
@@ -77,5 +78,7 @@ router.get('/settings', [adminAuthMiddleware], (...args) => new Setting(...args,
 router.all('/settings/create', [adminAuthMiddleware], (...args) => new Setting(...args, 'create'));
 router.all('/settings/edit/:id', [adminAuthMiddleware], (...args) => new Setting(...args, 'edit'));
 router.get('/settings/delete/:id', [adminAuthMiddleware], (...args) => new Setting(...args, 'delete'));
+
+router.get('/bookings/:airfieldId', [adminAuthMiddleware], (...args) => new Booking(...args, 'index'));
 
 module.exports = router;

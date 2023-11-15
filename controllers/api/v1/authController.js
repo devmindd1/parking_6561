@@ -105,6 +105,15 @@ exports.refresh = async function(req, res){
     return res.status(200).json(res.data);
 };
 
+exports.checkEmailExists = async function(req, res){
+    const {email} = req.body;
+
+    const userModel = new UserModel();
+    res.data.emailExists = await userModel.checkEmailExists(email);
+
+    return res.status(200).json(res.data);
+};
+
 exports.signUp = async function(req, res){
     const errors = validationResult(req);
     if(!errors.isEmpty()){

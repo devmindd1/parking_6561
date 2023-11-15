@@ -1,0 +1,55 @@
+<% layout("../main") -%>
+ <section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><%= _name %></h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" style="margin-bottom: 5px;">
+                            <div class="col-sm-4">
+                                <a href="/admin/<%= _module %>/create" style="width: 100px;" class="btn btn-block bg-gradient-success btn-sm">Create</a>
+                            </div>
+                        </div>
+
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>User name</th>
+                                    <th>Start date</th>
+                                    <th>End Date</th>
+                                    <th>Status</th>
+                                    <th>Quick Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% items.forEach(function(item) { %>
+                                <tr>
+                                    <td>
+                                        <a class="main-anchor-link" href="/admin/<%= _module %>/edit/<%= item['id'] %>">
+                                            <%= item['first_name'] + ' ' + item['first_name'] %>
+                                        </a>
+                                    </td>
+                                    <td><%= item['start_timestamp'] %></td>
+                                    <td><%= item['end_timestamp'] %></td>
+                                    <td><%= item['status'] %></td>
+                                    <td class="project-actions">
+                                        <a class="btn btn-info btn-sm" href="/admin/<%= _module %>/edit/<%= item['id'] %>">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+

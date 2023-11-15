@@ -7,6 +7,21 @@ class Model{
         this.t = this.db(this._table);
     }
 
+    async startTransaction(isolationLevel){
+        await this.exec(`SET TRANSACTION ISOLATION LEVEL ${isolationLevel};`);
+        await this.exec(`START TRANSACTION;`);
+
+        return true;
+    }
+
+    commit(){
+        return this.exec(`COMMIT;`);
+    }
+
+    rollback(){
+        return this.exec(`ROLLBACK;`);
+    }
+
     async getById(id){
         const [item] = await this.t.select('*').where({id: id});
 

@@ -9,12 +9,13 @@ module.exports = class SettingModel extends Model{
             .where({'key': 'vat_percent'})
             .orWhere({'key': 'pilot_short_com'})
             .orWhere({'key': 'pilot_long_com'})
-            .orWhere({'key': 'airfield_com'});
+            .orWhere({'key': 'airfield_com'})
+            .orWhere({'key': 'custom_fee'});
 
         this.freeResult();
 
         for(const setting of settings)
-            result[setting['key']] = parseInt(setting['value']);
+            result[setting['key']] = parseFloat(setting['value']);
 
         return result;
     }

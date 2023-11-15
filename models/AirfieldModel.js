@@ -117,29 +117,21 @@ class AirfieldModel extends Model{
         }
 
         let query =`
-            SELECT
-              airfields.id,
-              COUNT(f_airfields_spaces_bookings.airfield_id) AS reserved_count,
-              oaci_types.id AS oaci_id,
-              oaci_types.airfield_name,
-              airfields.spaces_count,
-              airfields.parking_count,
-              airfields.hangar_count,
-              oaci_types.latitude,
-              oaci_types.longitude
-            FROM airfields
+            SELECT airfields_spaces.airfield_id, airfields.id, COUNT(*) AS free_count, oaci_types.id AS oaci_id,
+               oaci_types.airfield_name, airfields.spaces_count, airfields.parking_count, airfields.hangar_count,
+               oaci_types.latitude, oaci_types.longitude, airfields_spaces.id AS one_free_space_id
+            FROM airfields_spaces
             LEFT JOIN (
-              SELECT airfields_spaces.airfield_id 
-              FROM airfields_spaces_bookings
-              LEFT JOIN airfields_spaces ON airfields_spaces_bookings.airfields_space_id = airfields_spaces.id 
-              WHERE (start_timestamp BETWEEN '${startDate}' AND '${endDate}' OR end_timestamp BETWEEN '${startDate}' AND '${endDate}') 
-              AND type = '${spaceType}' 
-              GROUP BY airfields_space_id
-            ) AS f_airfields_spaces_bookings ON airfields.id = f_airfields_spaces_bookings.airfield_id
-            LEFT JOIN oaci_types ON airfields.oaci_type_id = oaci_types.id 
+                SELECT id, airfields_space_id
+                FROM airfields_spaces_bookings
+                WHERE (start_timestamp BETWEEN '${startDate}' AND '${endDate}' OR end_timestamp BETWEEN '${startDate}' AND '${endDate}')
+            ) AS f_airfields_spaces_bookings ON airfields_spaces.id = f_airfields_spaces_bookings.airfields_space_id
+            LEFT JOIN airfields ON airfields_spaces.airfield_id = airfields.id
+            LEFT JOIN oaci_types ON airfields.oaci_type_id = oaci_types.id
             WHERE ${oaciWhere}
-            GROUP BY airfields.id
-            HAVING reserved_count < airfields.${spaceType}_count`;
+            AND airfields_spaces.type = '${spaceType}'
+            AND f_airfields_spaces_bookings.id IS NULL
+            GROUP BY airfields_spaces.airfield_id`;
 
         return this.exec(query);
     }
