@@ -101,7 +101,7 @@ const bookBody = [
     body('stripeCardId').custom(async (value, {req}) => {
             const usersCardsModel = new UsersCardsModel();
 
-            const card = await usersCardsModel.getCardByUserId(req.user.id, value);
+            const card = await usersCardsModel.getUserCardBySourceId(req.user.id, value);
             if(!card)
                 throw new Error('cardId dont found');
         })

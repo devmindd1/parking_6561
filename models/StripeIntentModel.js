@@ -23,4 +23,15 @@ module.exports = class StripeIntentModel extends Model{
 
         return this.exec(query);
     }
+
+    async getByAirfieldsSpacesBookingId(airfieldsSpacesBookingId){
+        const [intent] = await this.t.select('stripe_intents.id', 'payment_intent_id')
+            .leftJoin('airfields_spaces_bookings_info', 'stripe_intents.id', 'airfields_spaces_bookings_info.stripe_intent_id')
+            .leftJoin('airfields_spaces_bookings', 'airfields_spaces_bookings_info.id', 'airfields_spaces_bookings.airfields_spaces_bookings_info_id')
+            .where({
+                'airfields_spaces_bookings.id': airfieldsSpacesBookingId
+            });
+
+        return intent;
+    }
 };

@@ -13,6 +13,7 @@ const AirfieldsSpacesBookingsInfoModel = require('../../../models/AirfieldsSpace
 const StripeIntentModel = require('../../../models/StripeIntentModel');
 const SettingModel = require('../../../models/SettingModel');
 const UserModel = require('../../../models/UserModel');
+const UsersCardsModel = require('../../../models/UsersCardsModel');
 
 exports.freeAirfieldsByRange = async function(req, res){
     const airfieldModel = new AirfieldModel();
@@ -66,7 +67,7 @@ exports.getByOaciId = async function(req, res){
     const paymentSettings = await settingModel.getPaymentSettings();
     res.data.airfield.prices = {long: '', short: ''};
 
-    for(const priceType of AirfieldsWeightTypesMapModel._PRICE_TYPES){
+    for(const [, priceType] of Object.entries(AirfieldsWeightTypesMapModel._PRICE_TYPES)){
         let price = await airfieldsWeightTypesMapModel.getPrice(
             req.user.id,
             AirfieldsSpaceModel._TYPES[spaceType],
@@ -132,6 +133,7 @@ exports.book = async function(req, res){
     const airfieldsSpacesBookingModel = new AirfieldsSpacesBookingModel();
     const airfieldsWeightTypesMapModel = new AirfieldsWeightTypesMapModel();
     const airfieldsSpacesBookingsInfoModel = new AirfieldsSpacesBookingsInfoModel();
+    const usersCardsModel = new UsersCardsModel();
 
     const {oaciId, startDate, endDate, spaceType, stripeCardId} = req.body;
     const longTime = 3; //TODO config same var exports.calcBookPrice
@@ -146,6 +148,7 @@ exports.book = async function(req, res){
     const amount = decimal(difDays * price);
     const airfieldExcludedCom = amount - (amount*paymentSettings['airfield_com']/100);
     const comPilot = decimal(amount*comPilotPercent/100 + paymentSettings['custom_fee']);
+    const userCard = await usersCardsModel.getUserCardBySourceId(req.user.id, stripeCardId);
 
     res.data.priceWithoutFees = amount;
     res.data.amount = amount + comPilot;
@@ -178,7 +181,7 @@ exports.book = async function(req, res){
 
         const newStripeIntentId = await stripeIntentModel.insert({
             payment_intent_id: intent.data.id,
-            users_cards_id: stripeCardId,
+            users_cards_id: userCard.id,
             amount: res.data.amount,
             created_timestamp: intent.data.created
         });

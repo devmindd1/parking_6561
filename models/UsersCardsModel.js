@@ -4,7 +4,7 @@ class UsersCardsModel extends Model{
     constructor(){ super('users_cards'); }
 
     async getUserCardBySourceId(userId, sourceId){
-        const [card] = await this.t.select('id').where({
+        const [card] = await this.t.select('id', 'source_id').where({
             source_id: sourceId,
             user_id: userId
         });
@@ -15,16 +15,6 @@ class UsersCardsModel extends Model{
     async getUserCardById(userId, id){
         const [card] = await this.t.select('id', 'source_id').where({
             id: id,
-            user_id: userId
-        });
-
-        return card;
-    }
-
-
-    async getCardByUserId(userId, sourceId){
-        const [card] = await this.t.select('id', 'source_id').where({
-            source_id: sourceId,
             user_id: userId
         });
 

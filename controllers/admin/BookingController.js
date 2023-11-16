@@ -1,5 +1,7 @@
 const {validate} = require('../../core/validator');
 const Model = require('../../models/AirfieldsSpacesBookingModel.js');
+const StripeIntentModel = require('../../models/StripeIntentModel.js');
+const StripeService = require('../../services/StripeService.js');
 
 module.exports = class EquipmentTypeController{
     constructor(req, res, next, action){
@@ -18,19 +20,19 @@ module.exports = class EquipmentTypeController{
     }
 
     async view(req, res){
-        res.data.bookingSpaceId = req.params.bookingSpaceId;
+        res.data.airfieldsSpacesBookingId = req.params.airfieldsSpacesBookingId;
         res.data.airfieldId = req.params.airfieldId;
-        res.data.item = await this.model.getById(res.data.bookingSpaceId);
+        res.data.item = await this.model.getById(res.data.airfieldsSpacesBookingId);
 
         return res.render(`admin/${res.data._module}/view`, res.data);
     }
 
     async submit(req, res){
         const {submit} = req.body;
-        res.data.bookingSpaceId = req.params.bookingSpaceId;
+        res.data.airfieldsSpacesBookingId = req.params.airfieldsSpacesBookingId;
         res.data.airfieldId = req.params.airfieldId;
 
-        res.data.item = await this.model.getByAirfieldId(res.data.bookingSpaceId, res.data.airfieldId);
+        res.data.item = await this.model.getByAirfieldId(res.data.airfieldsSpacesBookingId, res.data.airfieldId);
         if(!res.data.item)
             return res.redirect(`/admin/${res.data._module}/${res.data.airfieldId}`);
 
@@ -38,34 +40,36 @@ module.exports = class EquipmentTypeController{
         if(!status)
             return res.redirect(`/admin/${res.data._module}/${res.data.airfieldId}`);
 
+        const stripeIntentModel = new StripeIntentModel();
+        const stripe = new StripeService();
+
+        const stripePaymentIntent = await stripeIntentModel.getByAirfieldsSpacesBookingId(res.data.airfieldsSpacesBookingId);
+
         let intent;
         try {
             await this.model.startTransaction('READ COMMITTED');
 
-            intent = await stripe._call('createIntent', [customerId, stripeCardId, res.data.amount*100]);
+            // await stripeIntentModel.
+
+
+
+
+            intent = await stripe._call(`${submit}Intent`, [stripePaymentIntent['payment_intent_id']]);
             if(!intent.success){
                 res.data.errorMessage = intent.error.message;
-                await airfieldModel.rollback();
-                return res.status(400).json(res.data);
+                await this.model.rollback();
+                return res.redirect(`/admin/${res.data._module}/${res.data.airfieldId}`);
             }
 
-            await airfieldModel.commit();
-        }catch (e) {
 
+
+            await this.model.commit();
+        }catch (e) {
             console.log(e);
 
-            await airfieldModel.rollback();
-            if(intent && intent.success)
-                intent = await stripe._call('cancelIntent', [intent.data.id]);
-
-            if(!intent.success)
-            // TODO LOG WRITE;
-
-                return res.status(400).json(res.data);
+            await this.model.rollback();
         }
 
-        //
-
-        return res.render(`admin/${res.data._module}/view`, res.data);
+        return res.redirect(`/admin/${res.data._module}/${res.data.airfieldId}`);
     }
 };
