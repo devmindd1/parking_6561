@@ -4,6 +4,39 @@ const {_ROLES} = require('../models/UserModel');
 class AirfieldsSpacesBookingModel extends Model{
     constructor(){ super('airfields_spaces_bookings'); }
 
+    static _STATUSES = {
+        accepted: 10,
+        canceled: 0,
+        pending: 1, //default SELECTABLE
+    };
+
+    async getById(airfieldSpaceId){
+        const [booking] = await this.t.select('created', 'airfields_spaces_bookings.user_id', 'users.first_name', 'users.last_name', 'users.email',
+                'users.address', 'oaci_types.airfield_name', 'oaci_types.oaci_code', 'airfields_spaces_bookings_info.price',
+                'airfields_spaces_bookings_info.com_pilot', 'airfields_spaces_bookings_info.total_vat', 'airfields_spaces_bookings_info.vat_percent',
+                'stripe_intents.amount')
+            .leftJoin('airfields_spaces_bookings_info', 'airfields_spaces_bookings.airfields_spaces_bookings_info_id', 'airfields_spaces_bookings_info.id')
+            .leftJoin('stripe_intents', 'airfields_spaces_bookings_info.stripe_intent_id', 'stripe_intents.id')
+            .leftJoin('users', 'airfields_spaces_bookings.user_id', 'users.id')
+            .leftJoin('airfields_spaces', 'airfields_spaces_bookings.airfields_space_id', 'airfields_spaces.id')
+            .leftJoin('airfields', 'airfields_spaces.airfield_id', 'airfields.id')
+            .leftJoin('oaci_types', 'airfields.oaci_type_id', 'oaci_types.id')
+            .where({'airfields_spaces_bookings.id': airfieldSpaceId});
+
+        return booking;
+    }
+
+    async getByAirfieldId(airfieldSpaceId, airfieldId){
+        const [booking] = await this.t.select('status')
+            .leftJoin('airfields_spaces', 'airfields_spaces_bookings.airfields_space_id', 'airfields_spaces.id')
+            .where({
+                'airfields_spaces.airfield_id': airfieldId,
+                'airfields_spaces_bookings.id': airfieldSpaceId
+            });
+
+        return booking;
+    }
+
     getByRange(startDate, endDate, filter){
         const where = {
             'airfields_spaces.airfield_id': filter.airfieldId

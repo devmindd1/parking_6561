@@ -19,25 +19,33 @@ class StripeService{
         try {
             this.result.data = await this[method](...args);
 
-            console.log(this.result.data);
+            //console.log(this.result.data);
 
         }catch (e) {
+            // console.log(e);
 
-            console.log(e);
+
+            console.log(e.raw.message);
 
             this.result.success = false;
             this.result.error.type = e.type;
             this.result.error.message = e.raw.message;
 
-            if(e.type === 'StripeInvalidRequestError')
-                this.result.error.param = e.raw.param.split('][')[1].replace(/.$/, '');
-
+            if(e.type === 'StripeInvalidRequestError' && e.raw.param)
+                this.result.error.param = e.raw.param;
         }
+
+
+        console.log('test11');
 
         return this.result;
     }
 
-    cancelIntent(paymentIntentId){
+    acceptedIntent(paymentIntentId){
+        return this.s.paymentIntents.confirm(paymentIntentId);
+    }
+
+    canceledIntent(paymentIntentId){
         return this.s.paymentIntents.cancel(paymentIntentId);
     }
 

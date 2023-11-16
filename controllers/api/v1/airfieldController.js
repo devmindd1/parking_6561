@@ -6,7 +6,6 @@ const AirfieldsAmenityTypesMapModel = require('../../../models/AirfieldsAmenityT
 const AirfieldsRunwayTypesMapModel = require('../../../models/AirfieldsRunwayTypesMapModel');
 const AirfieldsSourceModel = require('../../../models/AirfieldsSourceModel');
 const OaciTypeModel = require('../../../models/OaciTypeModel');
-const UsersCardsModel = require('../../../models/UsersCardsModel');
 const AirfieldsWeightTypesMapModel = require('../../../models/AirfieldsWeightTypesMapModel');
 const AirfieldsSpaceModel = require('../../../models/AirfieldsSpaceModel');
 const AirfieldsSpacesBookingModel = require('../../../models/AirfieldsSpacesBookingModel');
@@ -26,7 +25,6 @@ exports.freeAirfieldsByRange = async function(req, res){
     }
 
     res.data.airfields = await airfieldModel.getFreeAirfieldsByRange(req.query);
-
     res.data.oacies = await oaciTypeModel.getAllNotConnected();
 
     return res.status(200).json(res.data);
@@ -54,25 +52,19 @@ exports.getById = async function(req, res){
 exports.getByOaciId = async function(req, res){
     const {oaciId, spaceType} = req.params;
     const airfieldModel = new AirfieldModel();
-    const airfieldsAmenityTypesMapModel = new AirfieldsAmenityTypesMapModel();
-    const airfieldsRunwayTypesMapModel = new AirfieldsRunwayTypesMapModel();
-    const airfieldsSourceModel = new AirfieldsSourceModel();
 
     res.data.airfield = await airfieldModel.getInfoByOaciId(oaciId);
     if(!res.data.airfield)
         return res.status(400).json(res.data);
 
+    const airfieldsAmenityTypesMapModel = new AirfieldsAmenityTypesMapModel();
+    const airfieldsRunwayTypesMapModel = new AirfieldsRunwayTypesMapModel();
+    const airfieldsSourceModel = new AirfieldsSourceModel();
     const airfieldsWeightTypesMapModel = new AirfieldsWeightTypesMapModel();
+    const settingModel = new SettingModel();
 
-    const chgitemInchTokos = 0.25;
-    const vat_percent = 20;
-    const setting_pilot_short_com = 5;
-    const setting_pilot_long_com = 3;
-
-    res.data.airfield.prices = {
-        long: '',
-        short: ''
-    };
+    const paymentSettings = await settingModel.getPaymentSettings();
+    res.data.airfield.prices = {long: '', short: ''};
 
     for(const priceType of AirfieldsWeightTypesMapModel._PRICE_TYPES){
         let price = await airfieldsWeightTypesMapModel.getPrice(
@@ -82,10 +74,8 @@ exports.getByOaciId = async function(req, res){
             res.data.airfield.id
         );
 
-        const comPilotPercent = priceType === 'long' ? setting_pilot_long_com: setting_pilot_short_com;
-
-        price = decimal(price + (price*comPilotPercent/100 + chgitemInchTokos));
-        price = decimal(price + price*vat_percent/100);
+        price = decimal(price + (price*paymentSettings[`pilot_${priceType}_com`]/100 + paymentSettings['custom_fee']));
+        price = decimal(price + price*paymentSettings['vat_percent']/100);
 
         res.data.airfield.prices[priceType] = price;
     }
@@ -109,7 +99,7 @@ exports.calcBookPrice = async function(req, res){
     const airfieldsWeightTypesMapModel = new AirfieldsWeightTypesMapModel();
 
     const {oaciId, dateStart, dateEnd, spaceType} = req.body;
-    const longTime = 3; //TODO config same var exports.calcBookPrice
+    const longTime = 3; //TODO config same var exports.book
     const airfieldId = await airfieldModel.getAirfieldIdByOaciId(oaciId);
     const paymentSettings = await settingModel.getPaymentSettings();
     const difDays = Math.abs((new Date(dateStart)).getTime() - (new Date(dateEnd)).getTime()) / 1000 / 60 / 60 / 24;
@@ -132,6 +122,7 @@ exports.book = async function(req, res){
         return res.status(400).json(res.data);
     }
 
+    //TODO calc i mej nuyn bann a grac kareli a mi tex grel mas mas anel
     //TODO kareli a dzel es
     const userModel = new UserModel();
     const stripe = new StripeService();
@@ -142,12 +133,12 @@ exports.book = async function(req, res){
     const airfieldsWeightTypesMapModel = new AirfieldsWeightTypesMapModel();
     const airfieldsSpacesBookingsInfoModel = new AirfieldsSpacesBookingsInfoModel();
 
-    const {oaciId, dateStart, dateEnd, spaceType, stripeCardId} = req.body;
+    const {oaciId, startDate, endDate, spaceType, stripeCardId} = req.body;
     const longTime = 3; //TODO config same var exports.calcBookPrice
     const airfieldId = await airfieldModel.getAirfieldIdByOaciId(oaciId);
     const customerId = await userModel.getUserStripeCustomerId(req.user.id);
     const paymentSettings = await settingModel.getPaymentSettings();
-    const difDays = Math.abs((new Date(dateStart)).getTime() - (new Date(dateEnd)).getTime()) / 1000 / 60 / 60 / 24;
+    const difDays = Math.abs((new Date(startDate)).getTime() - (new Date(endDate)).getTime()) / 1000 / 60 / 60 / 24;
     const priceType = difDays >= longTime? AirfieldsWeightTypesMapModel._PRICE_TYPES['long']: AirfieldsWeightTypesMapModel._PRICE_TYPES['short'];
 
     const price = await airfieldsWeightTypesMapModel.getPrice(req.user.id, AirfieldsSpaceModel._TYPES[spaceType], priceType, airfieldId);
@@ -159,7 +150,7 @@ exports.book = async function(req, res){
     res.data.priceWithoutFees = amount;
     res.data.amount = amount + comPilot;
     res.data.comPilot = comPilot;
-    res.data.vat = decimal(comPilot + res.data.amount*paymentSettings['vat_percent']/100);
+    res.data.vat = decimal(res.data.amount*paymentSettings['vat_percent']/100);
     res.data.amount = decimal(res.data.amount + res.data.amount*paymentSettings['vat_percent']/100);
     res.data.airfieldVat = decimal(airfieldExcludedCom * paymentSettings['vat_percent'] / 100);
     res.data.airfieldAmount = decimal(airfieldExcludedCom);
@@ -170,12 +161,13 @@ exports.book = async function(req, res){
     try {
         await airfieldModel.startTransaction('READ COMMITTED');
 
-        const [airfieldFreeSpace] = await airfieldModel.getFreeAirfieldsByRange(oaciId, dateStart, dateEnd, spaceType);
+        const [airfieldFreeSpace] = await airfieldModel.getFreeAirfieldsByRange({oaciId, startDate, endDate, spaceType});
         if(!airfieldFreeSpace){
-            res.data.errorMessage = 'parking space dont available';
+            res.data.errorMessage = 'Space dont available';
             await airfieldModel.rollback();
             return res.status(400).json(res.data);
         }
+
 
         intent = await stripe._call('createIntent', [customerId, stripeCardId, res.data.amount*100]);
         if(!intent.success){
@@ -199,26 +191,32 @@ exports.book = async function(req, res){
             com_airfield: res.data.comAirfield,
             airfield_amount: res.data.airfieldAmount,
             airfield_amount_vat: res.data.airfieldVat,
-            airfield_transfer: decimal(res.data.airfieldAmount + res.data.airfieldVat)
+            airfield_transfer: decimal(res.data.airfieldAmount + res.data.airfieldVat),
+            vat_percent: decimal(paymentSettings['vat_percent'])
         });
 
+        const created = new Date().toISOString().split('T');
         await airfieldsSpacesBookingModel.insert({
             user_id: req.user.id,
-            airfields_space_id: airfieldFreeSpace.one_free_space_id,
-            start_timestamp: dateStart,
-            end_timestamp: dateEnd,
-            created: new Date().toISOString().split('T')[0],
+            airfields_space_id: airfieldFreeSpace.next_free_space_id,
+            start_timestamp: startDate,
+            end_timestamp: endDate,
+            created: `${created[0]} ${created[1].split('.')[0]}`,
             airfields_spaces_bookings_info_id: newAirfieldSpaceBookingInfoId
         });
 
         await airfieldModel.commit();
     }catch (e) {
+
+        console.log(e);
+
+        await airfieldModel.rollback();
         if(intent && intent.success)
-            intent = await stripe._call('cancelIntent', [intent.id]);
+            intent = await stripe._call('cancelIntent', [intent.data.id]);
+
         if(!intent.success)
             // TODO LOG WRITE;
 
-        await airfieldModel.rollback();
         return res.status(400).json(res.data);
     }
 

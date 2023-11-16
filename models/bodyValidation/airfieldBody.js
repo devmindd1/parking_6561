@@ -84,10 +84,10 @@ const getFiltered = [
 ];
 
 const bookCalcBody = [
-    body('dateStart').notEmpty()
-        .withMessage('dateStart is require'),
-    body('dateEnd').notEmpty()
-        .withMessage('dateEnd is require'),
+    body('startDate').notEmpty()
+        .withMessage('startDate is require'),
+    body('endDate').notEmpty()
+        .withMessage('endDate is require'),
     body('oaciId').notEmpty()
         .withMessage('oaciId is require'),
     body('spaceType').notEmpty()

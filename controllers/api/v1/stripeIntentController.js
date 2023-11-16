@@ -4,7 +4,7 @@ exports.getUserIntents = async function(req, res){
 
     res.data.stripeIntents = await stripeIntentModel.getIntentsInfoByUserId(req.user.id);
 
-    console.log(res.data.stripeIntents);
+    console.log(req.user.id);
 
     return res.status(200).json(res.data);
 };

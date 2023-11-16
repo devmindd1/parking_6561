@@ -80,5 +80,7 @@ router.all('/settings/edit/:id', [adminAuthMiddleware], (...args) => new Setting
 router.get('/settings/delete/:id', [adminAuthMiddleware], (...args) => new Setting(...args, 'delete'));
 
 router.get('/bookings/:airfieldId', [adminAuthMiddleware], (...args) => new Booking(...args, 'index'));
+router.get('/bookings/view/:airfieldId/:bookingSpaceId', [adminAuthMiddleware], (...args) => new Booking(...args, 'view'));
+router.post('/bookings/submit/:airfieldId/:bookingSpaceId', [adminAuthMiddleware], (...args) => new Booking(...args, 'submit'));
 
 module.exports = router;

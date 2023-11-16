@@ -119,7 +119,7 @@ class AirfieldModel extends Model{
         let query =`
             SELECT airfields_spaces.airfield_id, airfields.id, COUNT(*) AS free_count, oaci_types.id AS oaci_id,
                oaci_types.airfield_name, airfields.spaces_count, airfields.parking_count, airfields.hangar_count,
-               oaci_types.latitude, oaci_types.longitude, airfields_spaces.id AS one_free_space_id
+               oaci_types.latitude, oaci_types.longitude, airfields_spaces.id AS next_free_space_id
             FROM airfields_spaces
             LEFT JOIN (
                 SELECT id, airfields_space_id
