@@ -99,11 +99,11 @@ exports.calcBookPrice = async function(req, res){
     const airfieldModel = new AirfieldModel();
     const airfieldsWeightTypesMapModel = new AirfieldsWeightTypesMapModel();
 
-    const {oaciId, dateStart, dateEnd, spaceType} = req.body;
+    const {oaciId, startDate, endDate, spaceType} = req.body;
     const longTime = 3; //TODO config same var exports.book
     const airfieldId = await airfieldModel.getAirfieldIdByOaciId(oaciId);
     const paymentSettings = await settingModel.getPaymentSettings();
-    const difDays = Math.abs((new Date(dateStart)).getTime() - (new Date(dateEnd)).getTime()) / 1000 / 60 / 60 / 24;
+    const difDays = Math.abs((new Date(startDate)).getTime() - (new Date(endDate)).getTime()) / 1000 / 60 / 60 / 24;
     const priceType = difDays >= longTime? AirfieldsWeightTypesMapModel._PRICE_TYPES['long']: AirfieldsWeightTypesMapModel._PRICE_TYPES['short'];
     const price = await airfieldsWeightTypesMapModel.getPrice(req.user.id, AirfieldsSpaceModel._TYPES[spaceType], priceType, airfieldId);
     const comPilotPercent = difDays >= longTime ? paymentSettings['pilot_long_com']: paymentSettings['pilot_short_com'];
