@@ -24,6 +24,28 @@ class AirfieldsWeightTypesMapModel extends Model{
 
         return 0;
     }
+
+    async getAirfieldWeights(airfieldId){
+        const result = {};
+
+        const weightTypes = await this.t.select('*')
+            .where({
+                'airfield_id': airfieldId
+            });
+
+
+        for(const type of weightTypes){
+            if(!result[type.space_type])
+                result[type.space_type] = {};
+
+            if(!result[type.space_type][type.weight_type_id])
+                result[type.space_type][type.weight_type_id] = {};
+
+            result[type.space_type][type.weight_type_id][type.price_type] = type.price;
+        }
+
+        return result;
+    }
 }
 
 module.exports = AirfieldsWeightTypesMapModel;

@@ -142,8 +142,8 @@ exports.book = async function(req, res){
     const paymentSettings = await settingModel.getPaymentSettings();
     const difDays = Math.abs((new Date(startDate)).getTime() - (new Date(endDate)).getTime()) / 1000 / 60 / 60 / 24;
     const priceType = difDays >= longTime? AirfieldsWeightTypesMapModel._PRICE_TYPES['long']: AirfieldsWeightTypesMapModel._PRICE_TYPES['short'];
-
     const price = await airfieldsWeightTypesMapModel.getPrice(req.user.id, AirfieldsSpaceModel._TYPES[spaceType], priceType, airfieldId);
+
     const comPilotPercent = difDays >= longTime ? paymentSettings['pilot_long_com']: paymentSettings['pilot_short_com'];
     const amount = decimal(difDays * price);
     const airfieldExcludedCom = amount - (amount*paymentSettings['airfield_com']/100);
@@ -159,6 +159,9 @@ exports.book = async function(req, res){
     res.data.airfieldAmount = decimal(airfieldExcludedCom);
     res.data.comAirfield = decimal(amount * paymentSettings['airfield_com'] / 100);
     res.data.comTotal = decimal(res.data.comAirfield + comPilot);
+
+
+    console.log(price);
 
     let intent;
     try {

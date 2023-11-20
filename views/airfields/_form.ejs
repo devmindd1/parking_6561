@@ -25,13 +25,15 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="form-check-label">Long</label>
-                                        <input type="text" name="weight_type[hangar][<%= weightTypes[i]['id'] %>][long]" class="form-control" placeholder="Long price">
+                                        <input type="text" name="weight_type[hangar][<%= weightTypes[i]['id'] %>][long]" class="form-control" placeholder="Long price"
+                                            value="<%= model.weightTypes['hangar'][weightTypes[i]['id']]['long'] ? model.weightTypes['hangar'][weightTypes[i]['id']]['long']: '' %>">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="form-check-label">Short</label>
-                                        <input type="text" name="weight_type[hangar][<%= weightTypes[i]['id'] %>][short]" class="form-control" placeholder="Short price">
+                                        <input type="text" name="weight_type[hangar][<%= weightTypes[i]['id'] %>][short]" class="form-control" placeholder="Short price"
+                                               value="<%= model.weightTypes['hangar'][weightTypes[i]['id']]['short'] ? model.weightTypes['hangar'][weightTypes[i]['id']]['short']: '' %>">
                                     </div>
                                 </div>
                             </div>
@@ -61,13 +63,15 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="form-check-label">Long</label>
-                                        <input type="text" name="weight_type[parking][<%= weightTypes[i]['id'] %>][long]" class="form-control" placeholder="Long price">
+                                        <input type="text" name="weight_type[parking][<%= weightTypes[i]['id'] %>][long]" class="form-control" placeholder="Long price"
+                                               value="<%= model.weightTypes['parking'][weightTypes[i]['id']]['long'] ? model.weightTypes['parking'][weightTypes[i]['id']]['long']: '' %>">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="form-check-label">Short</label>
-                                        <input type="text" name="weight_type[parking][<%= weightTypes[i]['id'] %>][short]" class="form-control" placeholder="Short price">
+                                        <input type="text" name="weight_type[parking][<%= weightTypes[i]['id'] %>][short]" class="form-control" placeholder="Short price"
+                                               value="<%= model.weightTypes['parking'][weightTypes[i]['id']]['short'] ? model.weightTypes['parking'][weightTypes[i]['id']]['short']: '' %>">
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +90,8 @@
                 <select name="oaci_type_id" id="oaci_type_id" class="form-control select2 select2Oaci" style="width: 100%;">
                     <option value="" selected="selected">-- Select OACI --</option>
                     <% oaciTypes.forEach(function(oaciType) { %>
-                        <option data-coord="<%= oaciType.latitude %>,<%= oaciType.longitude %>" value="<%= oaciType.id %>">
+                        <option data-coord="<%= oaciType.latitude %>,<%= oaciType.longitude %>" value="<%= oaciType.id %>"
+                                <%= model['oaci_type_id'] === oaciType.id ? 'selected': '' %>>
                             <%= oaciType.oaci_code %>: &#160;&#160; <%= oaciType.airfield_name %>
                         </option>
                     <% }); %>

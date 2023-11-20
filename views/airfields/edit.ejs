@@ -1,46 +1,28 @@
-<% layout("../main") -%>
+<% layout("../layouts/main") -%>
+
 <section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
+    <form id="form" method="post" enctype="multipart/form-data">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Title</h3>
+            </div>
 
-                <% if (typeof errors !== "undefined") { %>
-                    <% errors.forEach(error => { %>
-                        <p class="error"><%= error.msg %></p>
-                    <% }) %>
-                <%} %>
+            <%- include ./_form.ejs %>
 
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Quick Example</h3>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12">
+                        <input type="button" value="Save Changes" id="create" class="btn btn-success float-right">
                     </div>
-                    <form action="" method="POST">
-                        <div class="card-body row">
-
-                            <div class="form-group col-md-6">
-                                <label for="title">title</label>
-                                <input value="<%= model['title'] %>" type="text" class="form-control" name="title" id="title" placeholder="Enter title">
-                            </div>
-
-                            <div class="form-group col-sm-6">
-                                <label>User</label>
-                                <select class="form-control" name="user_id">
-                                    <option value=""> -- select user -- </option>
-                                    <% for(var i=0; i < usersList.length; i++) { %>
-                                        <option value="<%= usersList[i]['id'] %>" <% if (usersList[i]['id'] == model['user_id']) { %> <%= 'selected' %> <% } %>>
-                                            <%= usersList[i]['first_name'] + ' ' + usersList[i]['last_name'] %>
-                                        </option>
-                                    <% } %>
-                                </select>
-                            </div>
-
-                        </div>
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </section>
+
+<script src="/js/airfields/common/map.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5wZV3BX0WF1P41cMheOw27qC8wnVBgQg&callback=initMap&libraries=places&v=weekly" async></script>
+<script src="/js/airfields/validation.js"></script>
+<script src="/js/airfields/create.js"></script>
+
+

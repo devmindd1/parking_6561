@@ -57,6 +57,8 @@ class Model{
     }
 
     update(id, data){
+        this.freeResult();
+
         return this.t.update(data).where({id: id});
     }
 

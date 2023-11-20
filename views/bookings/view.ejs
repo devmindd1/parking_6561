@@ -1,0 +1,133 @@
+<% layout("../layouts/main") -%>
+<section class="content">
+    <form method="post" action="/admin/<%= _module %>/submit/<%= airfieldId %>/<%= airfieldsSpacesBookingId %>">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="invoice p-3 mb-3">
+                        <div id="print-block">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4>
+                                        <img src="/sources/images/admin-logo-black.png" alt="User Image">
+                                        <small class="float-right">Date: <%= item['created'] %></small>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="row invoice-info">
+                                <div class="col-sm-4 invoice-col">
+                                    <address>
+                                        <strong>AVIONEST</strong><br>
+                                        60, Rue Francis 1er<br>
+                                        75008, PARIS<br>
+                                        Email: info@avionest.com
+                                    </address>
+                                </div>
+                                <div class="col-sm-4 invoice-col">
+                                    <address>
+                                        <strong><%= item['airfield_name'] %></strong><br>
+                                        <%= item['airfield_address'] %><br>
+                                        Email: <%= item['primary_email'] %>
+                                    </address>
+                                </div>
+                                <div class="col-sm-4 invoice-col">
+                                    <b>Invoice #<%= item['id'] %></b><br>
+                                    <br>
+                                    <b>Order ID:</b> <%= item['id'] %><br>
+                                    <b>Payment Due:</b> <%= item['created'] %><br>
+                                    <b>Account:</b> <%= item['airfield_id'] %>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Qty</th>
+                                            <th>Product</th>
+                                            <th>Description</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Daily parking fee</td>
+                                            <td>AVIONEST <%= item['first_name'] + ' ' + item['last_name']%></td>
+                                            <td><%= item['airfield_amount'] %> EUR</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="lead">Payment Methods:</p>
+                                    <img src="/admin/dist/img/credit/visa.png" alt="Visa">
+                                    <img src="/admin/dist/img/credit/mastercard.png" alt="Mastercard">
+                                    <img src="/admin/dist/img/credit/american-express.png" alt="American Express">
+                                    <img src="/admin/dist/img/credit/paypal2.png" alt="Paypal">
+
+                                    <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
+                                        <b>Amount will be paid out to the following account via bank transfer:</b>
+                                    </p>
+                                    <p class="text-muted well well-sm shadow-none">
+                                        <b>IBAN: <%= airfieldBank['iban_number'] %></b>
+                                    </p>
+                                    <p class="text-muted well well-sm shadow-none">
+                                        <b>BANK:  <%= airfieldBank['bank_name'] %></b>
+                                    </p>
+                                    <p class="text-muted well well-sm shadow-none">
+                                        <b>ACCOUNT NAME: <%= airfieldBank['account_name'] %></b>
+                                    </p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="lead">Amount Due <%= item['created'] %></p>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tr>
+                                                <th style="width:50%">Subtotal:</th>
+                                                <td><%= item['airfield_amount'] %> EUR</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Tax (<%= item['vat_percent'] %>%)</th>
+                                                <td><%= item['airfield_amount_vat'] %> EUR</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Total:</th>
+                                                <td><%= item['airfield_transfer'] %> EUR</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row no-print">
+                            <div class="col-12">
+                                <% if(submitButtons){ %>
+                                    <button name="submit" value="accepted" class="btn btn-success float-right">
+                                        <i class="far fa-credit-card"></i>
+                                        Submit Payment
+                                    </button>
+                                    <button name="submit" value="canceled" class="btn btn-success float-right" style="margin-right: 5px;">
+                                        <i class="far fa-credit-card"></i>
+                                        Cancel Payment
+                                    </button>
+                                <% }else{ %>
+                                    <p class="booking-payment-status-message"> <%= statusMessage %></p>
+                                <% } %>
+                                <button id="generate_pdf" type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                                    <i class="fas fa-download"></i>
+                                    Generate PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+<script src="/admin/js/html2pdf.js"></script>
+<script src="/js/admin/<%= _module %>/view.js"></script>

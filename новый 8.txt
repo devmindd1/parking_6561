@@ -8,6 +8,12 @@ avionest_my@localhost IDENTIFIED BY 's#a$d7+_98#453R';
 
 
 
+ssh_host: 65.109.11.93
+ssh_user: root
+ssh_pass: y54!h5oEBsDf
+
+
+
 
 
 

@@ -21,16 +21,14 @@ exports.test = async function(req, res){
 
 
 
-
-    function decimalAdjust(value, exp) {
-
-    }
-
-    const a = decimalAdjust(50.255, -2);
+    const m = new OaciTypeModel();
 
 
 
-    console.log(a);
+    const re = await m.exec('DESCRIBE users;');
+
+
+    console.log(re);
 
 
     // const model = new OaciTypeModel();
@@ -289,20 +287,20 @@ exports.test = async function(req, res){
     // });
 
 
-    const stripe = require('stripe')('sk_test_51NsQHOHsAwmdsPL7mMUW05rPs1h28LexLgPCZ0F8v9BMgVtWQlag3V8AbuP3C8VZt85oMXMFE2xb4YQW4hRzrNIl00glLB76xr');
-
-
-
-
-
-
-    const aff = await stripe.customers.create({
-        description: `test test test`,
-        source: 'tok_1OCeoQHsAwmdsPL794Z8FohS'
-    });
-
-
-    console.log(aff);
+    // const stripe = require('stripe')('sk_test_51NsQHOHsAwmdsPL7mMUW05rPs1h28LexLgPCZ0F8v9BMgVtWQlag3V8AbuP3C8VZt85oMXMFE2xb4YQW4hRzrNIl00glLB76xr');
+    //
+    //
+    //
+    //
+    //
+    //
+    // const aff = await stripe.customers.create({
+    //     description: `test test test`,
+    //     source: 'tok_1OCeoQHsAwmdsPL794Z8FohS'
+    // });
+    //
+    //
+    // console.log(aff);
 
     // const cardholder = await stripe.issuing.cardholders.create({
     //     name: 'Jenny Rosen',

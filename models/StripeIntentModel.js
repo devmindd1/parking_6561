@@ -3,6 +3,12 @@ const Model = require('../core/Model');
 module.exports = class StripeIntentModel extends Model{
     constructor(){ super('stripe_intents'); }
 
+    static _STATUSES = {
+        accepted: 'succeeded',
+        canceled: 'canceled',
+        pending: 'requires_confirmation' //default SELECTABLE
+    };
+
     getIntentsInfoByUserId(userId){
         const query =`
             SELECT

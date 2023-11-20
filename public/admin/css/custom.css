@@ -81,3 +81,9 @@
     font-size: 14px;
     color: #dc3545;
 }
+
+.booking-payment-status-message{
+    border: 1px dotted;
+    font-size: 19px;
+    color: blue;
+}

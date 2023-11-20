@@ -31,7 +31,6 @@ exports.deleteCard = async function(req, res){
 
     const customerId = await userModel.getUserStripeCustomerId(req.user.id);
     const card = await usersCardsModel.getUserCardBySourceId(req.user.id, cardId);
-
     if(!card)
         return res.status(400).json(res.data);
 
@@ -39,7 +38,7 @@ exports.deleteCard = async function(req, res){
     if(!deletedCard.success)
         return res.status(400).json(res.data);
 
-    await await usersCardsModel.deleteById(card.id);
+    await await usersCardsModel.setDeleted(card.id);
 
     return res.status(200).json(res.data);
 };
