@@ -8,7 +8,7 @@ const home = require('../controllers/homeController.js');
 const customer = require('../controllers/customerController.js');
 const airfieldsSpace = require('../controllers/airfieldsSpaceController.js');
 
-const Airfield = require('../controllers/airfieldController.js');
+const Airfield = require('../controllers/AirfieldController.js');
 const Booking = require('../controllers/BookingController.js');
 
 const {insertBody} = require('../models/bodyValidation/airfieldBody');
